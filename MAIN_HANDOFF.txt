@@ -1,0 +1,11 @@
+수신: PACE 메인 AI
+작업: AI-01 / PACE-AI-01-7145f0f360-r3 / 원본 7145f0f3601cd4a6a369a80006fa73cbd142054d
+제출: AI-01-20261019-iteration-005 / 이전 AI-01-20261019-iteration-004 / iteration 5
+로컬 기준: a5693e9a01b27027b65351773940c10dee2df95c / 결과 5c0c41cc526739ab7dec2abe6a548c52ef38886c / ai/quiz-quality-01
+상태: 검산 실패 후 재호출 방지·오류 상태 분류만 유지. 엄격한 답 일치 규칙과 관련 도우미 철회. DOI suffix의 ?/#가 URL query/fragment로 바뀌는 출처 링크 결함 수정. 동일 중심 질문의 탐구 후보 중복을 거절하고 기존 1회 복구 상한을 검증. 한국어 조사형 검색어의 관련 문단 누락을 낮은 가중치의 제한적 조사 제거형으로 보완.
+변경 파일: AI_QUALITY_NOTES.md, lib/ai.ts, lib/quiz-review.ts, lib/research.ts, lib/topics.ts, tests/ai.test.mjs, tests/quiz-review.test.mjs, tests/research-quality.test.mjs, tests/topics.test.mjs
+검사: iteration2 신규12개 통과·전체102개 통과·타입·빌드 통과. 원본 실패 처리8개는 총4→2호출, iteration1에서 거절한 동치답4개는 모두 허용. 실제 모델 정확도는 미검증.
+미검증/제약: 실제 모델·E2E·제품 통합 미실행. 예약 도구 없음으로 자동 재개 불가. 새 결제·키·한도 우회·배포 없음.
+전달: AI-01-20261019-iteration-005.zip. 원본 기준 누적 패치이며 iteration1에 덧붙이는 패치가 아님. 철회 파일은 REPORT.json 참고.
+다음 동작: REPORT.json의 기준·해시·허용 경로 검토 및 원본 기준 적용 가능성·검사 재확인. 사용자에게 코드 검수를 맡기지 말 것.
+추가 개선/검사: DOI suffix의 ?/#가 URL query/fragment로 바뀌는 출처 링크 결함 수정. 동일 중심 질문의 탐구 후보 중복을 거절하고 기존 1회 복구 상한을 검증. 한국어 조사형 검색어의 관련 문단 누락을 낮은 가중치의 제한적 조사 제거형으로 보완. 상세 결과는 REPORT.json 참조.
