@@ -30,5 +30,21 @@
     "zipBytes": 49184,
     "zipSha256": "30fc4983a73122e9983ba4553b1d4758e75079d55312c996516a2f4144ceadcb",
     "zipPath": "iteration-005/PACE_AI_01_result.zip"
+  },
+  {
+    "iteration": 6,
+    "submissionId": "AI-01-20261019-iteration-006",
+    "resultCommit": "94e2d7e4da546eebb3dc6ece6883fc495dcc8340",
+    "zipBytes": 52807,
+    "zipSha256": "57e85d72408e41b6baa0141b8fa5aa040fc1b6c763c42f67e4875c43d6ca6b96",
+    "zipPath": "iteration-006/PACE_AI_01_result.zip"
+  },
+  {
+    "iteration": 7,
+    "submissionId": "AI-01-20261019-iteration-007",
+    "resultCommit": "4edb7b923ec66ff2e119a6dd6efb51d400c3a610",
+    "zipBytes": 56138,
+    "zipSha256": "ce6bda65a188fb13e765a0b0a2db373cb91c8041bde7df3cfc71d16844d8f275",
+    "zipPath": "iteration-007/PACE_AI_01_result.zip"
   }
 ]

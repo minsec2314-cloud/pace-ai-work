@@ -1,0 +1,337 @@
+diff --git a/AI_QUALITY_NOTES.md b/AI_QUALITY_NOTES.md
+new file mode 100644
+index 0000000..ade9397
+--- /dev/null
++++ b/AI_QUALITY_NOTES.md
+@@ -0,0 +1,68 @@
++# AI-01 품질 체크포인트 — iteration 2
++
++작업 계약: protocolVersion 2 / AI-01 / PACE-AI-01-7145f0f360-r3. 원본 sourceCommit: 7145f0f3601cd4a6a369a80006fa73cbd142054d. 로컬 기준 커밋: a5693e9a01b27027b65351773940c10dee2df95c. 저장소/브랜치: minsec2314-cloud/pace-ai-work / ai/quiz-quality-01.
++
++## 최신 사용자 결정과 범위
++
++메인은 첫 결과 중 검산 실패 뒤 재호출 방지와 오류 상태 분류만 타당하다고 판단했다. 엄격한 답 일치 규칙은 동치 답도 거절하므로 통합 보류했다. 이번 iteration 2는 원본 기준 누적 변경이며 해당 두 수정과 검증만 남긴다. 화면·API·일정·저장·의존성·배포는 변경하지 않는다. 후속 독립 개선은 별도 iteration으로 구분한다.
++
++## 유지한 수정
++
++- generateAI의 생성 형식/근거 복구 재시도는 최대 1회 유지한다. 검산 단계에서 실패하면 오류를 그대로 전달하며 생성부터 재호출하지 않는다. 생성 최대 2회 + 검산 최대 1회, 전체 상한 3회다. 정상 생성 뒤 검산 429 상황은 원본의 총 4호출에서 2호출로 줄었다.
++- 검산 HTTP 429는 429, 401/403은 연결 설정 문제인 503, 다른 HTTP 오류는 502, 검산 연결 실패는 기존 504를 보존한다. 유료 모델 전환이나 새 의존성은 없다.
++
++## 철회한 수정과 한계
++
++iteration 1의 answersAgree와 수치 동치 도우미, 관련 새 파일·fixture는 제거했다. 이 파일들은 원본에는 없으므로 iteration 2의 누적 패치에는 생성/삭제 경로로도 나오지 않는다. 기존 원본의 검산 답 반환 계약을 복원했다. 초안과 검산 답이 다르다고 거절하거나 의미적 동치를 보증하지 않는다. 따라서 실제 정답 충돌의 자동 판정·잘못된 답 덮어쓰기 문제는 해결되지 않은 원본의 한계로 남긴다. 독립 풀이가 실제 정답 인증인 것처럼 표현하지 않는다.
++
++원본 첫 테스트의 오답 초안을 검산 답으로 바꾸는 기대는 그대로 유지했다. 새 모의 테스트는 2x/x+x, 물/물(H₂O), 물/H₂O, 6 N/6N에서 반환·인용·입력 보존을 확인한다. 동치 여부를 판정하는 새 로직을 추가한 것은 아니다.
++
++## 재현·전후 비교
++
++같은 새 검사 12개(검산 실패 8개 + 동치 답 4개)를 원본 소스 사본과 이번 수정본에 실행한다. 원본: 4통과/8실패. iteration 1의 동치 답 검사: 0/4 통과. 이번 결과와 최종 테스트 수·타입·빌드는 REPORT.json의 실제 기록을 따른다. 실제 모델 정답률·거절률·토큰·응답 지연은 측정하지 않았다.
++
++## 지속 상태와 다음 작업
++
++iteration 1 결과는 /workspace/ai01-state/history/iteration-001에 보존한다. iteration 2는 submissionId AI-01-20261019-iteration-002, parentSubmissionId AI-01-20261019-iteration-001로 original_bundle 누적 패치를 반환한다. 메인이 iteration 1을 이미 반영했다면 단순 덧붙이기로 적용하지 말고 철회된 파일도 비교해야 한다.
++
++현재 실제 예약·자동 실행·사용 한도 조회 도구가 없다. 자동 재개는 설정하지 않았으며 한도 잔량은 알 수 없다. 유료 전환·리셋 크레딧·다른 계정 우회는 하지 않는다. 현재 턴의 독립 작업은 계속하되 무인 재개나 종료 후 계속 개발을 주장하지 않는다.
++
++다음 단일 작업: iteration 2 검증과 반환 파일을 먼저 확정하고, 별도 iteration에서 담당 범위의 다음 오류를 재현한다. 실제 학생 자료나 개인 API 키는 사용하지 않는다. 최신 체크포인트와 상세 증거는 /workspace/ai01-state에 보관한다.
++
++
++# iteration 3 — DOI 출처 링크 보존
++
++iteration 2 결과 커밋 45f29ddaf48cf8b77ab699576ed534fba4590463과 ZIP을 확정·보존한 뒤 별도 개선했다. Crossref DOI의 ?/# 문자가 encodeURI에 의해 남아서 resolver URL의 쿼리·프래그먼트로 해석되고 원래 식별자가 달라지는 오류를 재현했다. DOI 경로 세그먼트마다 encodeURIComponent를 적용해 전체 식별자를 보존한다. 기존 id·출처 필드·API·의존성은 바꾸지 않는다.
++
++같은 자작 DOI 5개 중 수정 전 2/5, 수정 후 5/5가 전체 식별자·고정 origin·빈 query/fragment·왕복 디코딩 검사에 통과했다. 실제 논문 존재나 관련성·외부 DOI resolver의 응답을 검증한 결과는 아니다. 단순 문자열 존재 검사를 넘어 URL 파싱 후 경로가 원래 식별자와 일치하는지 검사한다.
++
++iteration 3은 original_bundle 누적, parentSubmissionId=AI-01-20261019-iteration-002다. 최신 검증·커밋은 REPORT.json, iteration 2만 필요한 메인은 보존된 iteration-002 결과를 사용한다. 다음 단일 작업은 탐구 후보 중복 등 다음 재현 가능한 품질 오류를 별도 iteration으로 조사하는 것이다.
++
++
++# iteration 4 — 탐구 후보의 동일 중심 질문 중복 거절
++
++iteration 3 결과와 ZIP을 먼저 보존한 뒤 탐구 후보 3개가 완전히 같은 질문을 반복해도 통과하는 오류를 재현했다. topicSystem은 서로 다른 후보 3개를 요구하지만 readTopicIdeas는 항목별 형식과 개수만 검사했다. 이제 중심 질문의 앞뒤 및 연속 공백만 정규화해 정확히 중복된 질문은 거절한다. 제목·방법의 공통점이나 자연어 의미의 유사성으로 중복을 추측하지 않는다. 같은 제목/방법을 쓴 서로 다른 질문은 허용하는 대조 검사를 추가했다.
++
++기존 유효 응답 fixture 중 같은 후보를 세 번 복제한 부분은 서로 다른 질문 3개로 바꿨다. 중복 탐지 없이 그 검사를 통과했다고 실제 주제 품질이 좋다고 주장하지 않는다. 중복 시 기존 형식 복구 1회로 서로 다른 후보를 반환하는 경로와 중복이 계속되면 2호출 뒤 502로 실패하는 경로를 검사했다. 새 동일4개 검사: 원본 1/4 통과, 수정 후 4/4 통과. 전체 자동 검사는 111개다. 실제 모델의 중복 발생률·제약 충족·탐구 실현 가능성 개선은 미측정이다.
++
++iteration 4는 original_bundle 누적, parentSubmissionId=AI-01-20261019-iteration-003다. 각 회차 체크포인트와 ZIP은 별도로 보존하며 iteration 2의 분리된 전달본도 유지한다. 다음 단일 작업은 실제 답 충돌 처리의 요구를 메인과 조율하기 전, 과목 자료 검색의 관련 근거 누락을 새 합성 사례로 조사하는 것이다. 검증하지 않은 개선을 억지로 추가하거나 예약·사용 한도 상태를 꾸며 내지 않는다.
++
++
++# iteration 5 — 한국어 조사 때문에 관련 문단을 놓치는 검색 오류
++
++iteration 4를 먼저 확정·보관한 뒤, 미분계수는/극한의/운동량을 등의 질문에서 조사까지 포함한 문자열만 대조하여 관련 개념이 있는 페이지를 놓치는 오류를 재현했다. 기존 검색어는 그대로 두고, 한글 단어의 제한된 조사 제거형을 낮은 가중치(0.5)로 보강한다. 후보 원문·인용 내용·자료별 커버리지·예산·기출/수업 자료 역할은 바꾸지 않는다. 의미 검색이나 완전한 형태소 분석을 구현한 것은 아니다.
++
++첫 7개 사례에 이어 별도 개념 3개와 짧은 명사 대조 2개를 추가했다. 최종 동일 검색 사례12개는 원본3/12→수정후12/12 통과다. 조사로 끝나는 명사 자체의 모호성, 혼합 영문·수식, 동의어 및 긴 실제 PDF 검색의 효과는 미검증이다. 실제 답변 정확도 개선 수치로 해석하지 않는다. 기존 정확한 검색어와 숫자, 짧은 사과/효과 명사를 보존하는 대조 검사를 포함했다. 전체 모의 테스트123개·타입·빌드 통과.
++
++iteration 5는 original_bundle 누적, parentSubmissionId=AI-01-20261019-iteration-004다. iteration 2만 필요한 메인은 보존된 iteration-002 결과를 선택할 수 있다. 다음 단일 작업은 한국어 조사 보강의 모호한 명사·실제 형태 차이·다중 자료 순위 회귀를 추가 사례로 평가하는 것이다. 현재 계정의 잔량은 조회할 수 없고 한도 소진을 주장하지 않는다. 실제 예약이 없으므로 응답 종료 뒤 자동으로 개발이 이어진다고 말하지 않는다.
++
++
++# iteration 6 — 부분적으로 잘못된 학술 검색 응답에서 정상 출처 보존
++
++iteration 5 전달 ZIP은 GitHub 전달 전용 브랜치에 업로드하고 실제 HTTP 200·파일 SHA256까지 확인했다. 기본 브랜치·제품 소스 브랜치·배포를 변경하지 않았다. 메인이 자동 수신했다고 가정하지 않는다.
++
++학술 검색 결과 한 항목이 null이거나 author 형식이 잘못되면 전체 목록 변환이 예외로 끝나는 오류, 배열이 아닌 title이 첫 글자로 잘려 출처 제목이 되는 오류, 마크업만 있는 빈 제목과 suffix 없는 DOI가 표시되는 오류를 재현했다. 정상 필수 항목만 변환하고 잘못된 선택 메타데이터는 저자 미확인으로 처리해 나머지 정상 출처를 보존한다. URL origin·DOI 인코딩·기존 Source 필드 계약은 유지한다.
++
++API envelope 또는 JSON 자체가 잘못되면 성공한 빈 결과로 위장하지 않고 읽기 가능한 형식 오류를 전달한다. 동일 신규5개: 원본0/5→수정후5/5. DOI 포함 출처 검사10개·전체 모의128개·타입·빌드 통과. 이는 합성 응답의 변환/오류 경로 검사이며 실제 논문 존재·관련성·검색 정확도를 입증하지 않는다.
++
++iteration 6은 original_bundle 누적, parentSubmissionId=AI-01-20261019-iteration-005다. 다음 단일 작업은 자료 ID가 중복될 때 기출 근거가 수업 자료 근거로 오인되는지 별도 재현하는 것이다.
+diff --git a/lib/ai.ts b/lib/ai.ts
+index 573aa62..92c2e82 100644
+--- a/lib/ai.ts
++++ b/lib/ai.ts
+@@ -6,9 +6,17 @@ export class AIError extends Error { status:number; constructor(message:string,s
+ type Chunk={referenceId?:string;materialId:string;page:number;text:string;kind:string;name:string};
+ export function selectContext(materials:Material[],query:string,budget=11000):Chunk[]{
+  const words=Array.from(new Set(query.toLowerCase().match(/[\p{L}\p{N}]{2,}/gu)||[]));
++ // Preserve exact query terms; add a lower-weight Korean particle-stripped
++ // form so e.g. 미분계수는 can retrieve a paragraph containing 미분계수.
++ const particles=['에서는','으로는','에는','에서','으로','은','는','이','가','을','를','에','의','와','과','로'];
++ const expandedWords=[...new Set(words.flatMap(word=>{
++  if(!/^[가-힣]+$/.test(word))return [];
++  const particle=particles.find(p=>word.endsWith(p)&&word.length-p.length>=2);
++  return particle?[word.slice(0,-particle.length)]:[];
++ }))].filter(word=>!words.includes(word));
+  const chunks:Chunk[]=[];
+  for(const m of materials)for(const section of m.sections){if(!readableText(section.text))continue;for(let i=0;i<section.text.length;i+=450){const text=section.text.slice(i,i+500);if(text.trim())chunks.push({materialId:m.id,page:section.page,text,kind:m.kind,name:m.name});}}
+- const score=(c:Chunk)=>words.reduce((s,w)=>s+(c.text.toLowerCase().includes(w)?Math.min(w.length,8):0),0)+(c.kind==='exam'?0.5:0);
++ const score=(c:Chunk)=>words.reduce((s,w)=>s+(c.text.toLowerCase().includes(w)?Math.min(w.length,8):0),0)+expandedWords.reduce((s,w)=>s+(c.text.toLowerCase().includes(w)?Math.min(w.length,8)*.5:0),0)+(c.kind==='exam'?0.5:0);
+  const ranked=chunks.map((c,i)=>({c,i,score:score(c)})).sort((a,b)=>b.score-a.score||a.i-b.i);
+  const selected:Chunk[]=[];let used=0;
+  // Reserve coverage for each selected document before filling by relevance.
+@@ -65,6 +73,7 @@ export async function generateAI(body:unknown,key:string,fetcher:typeof fetch=fe
+   let response:Response;
+   try{response=await fetcher('https://api.groq.com/openai/v1/chat/completions',{method:'POST',headers:{'Authorization':`Bearer ${key}`,'Content-Type':'application/json'},body:JSON.stringify({model:'openai/gpt-oss-120b',temperature:.2,reasoning_effort:input.mode==='quiz'?'medium':'low',max_completion_tokens:input.mode==='ask'?2400:5500,response_format:{type:'json_object'},messages:[{role:'system',content:system+repair},...input.history,{role:'user',content:JSON.stringify({subject:input.subject,request:input.question,referenceMaterial:context})}]}),signal:AbortSignal.timeout(Math.max(1000,deadline-Date.now()))});}catch{throw new AIError('AI 연결 시간이 초과되었거나 네트워크에 연결할 수 없습니다. 잠시 후 다시 시도해 주세요.',504);}
+   if(!response.ok){if(response.status===429)throw new AIError('무료 AI 사용 한도에 도달했어요. 잠시 후 다시 시도해 주세요. 유료 모델로 전환하지 않습니다.',429);if([401,403].includes(response.status))throw new AIError('AI 키를 사용할 수 없습니다. 운영자가 키와 무료 플랜 상태를 확인해 주세요.',503);throw new AIError('AI 제공 서버가 응답하지 못했습니다. 잠시 후 다시 시도해 주세요.',502);}
++  let reviewing=false;
+   try{
+    const raw=await response.json() as {choices:{message:{content:string};finish_reason:string}[]};if(raw.choices[0]?.finish_reason==='length')throw new AIError('AI 답변이 길어 끝까지 생성되지 않았습니다. 문제 수를 줄여 주세요.',502);
+    let output:Record<string,unknown>;try{output=JSON.parse(raw.choices[0]?.message?.content);}catch{throw new AIError('AI 답변 형식을 읽지 못했습니다. 다시 요청해 주세요.',502);}
+@@ -87,9 +96,12 @@ export async function generateAI(body:unknown,key:string,fetcher:typeof fetch=fe
+     if(input.quizMode==='exam'&&!citations.some(c=>input.materials.some(m=>m.id===c.materialId&&m.kind==='lesson')))throw new AIError('예상 문제를 이번 수업 자료의 범위와 연결하지 못했습니다.',502);
+     return {question:q.question.slice(0,6000),answer:q.answer.slice(0,4000),explanation:q.explanation.slice(0,6000),type:typeof q.type==='string'?q.type:'서술형',citations};
+    });
++   // Only repair generation/schema errors. Review failures (including quota,
++   // transport, and answer conflicts) must not trigger another generation.
++   reviewing=true;
+    const reviewed=await reviewQuestions(questions,input.subject,key,deadline,fetcher);
+    return {title:typeof output.title==='string'?output.title:`${input.subject} ${input.quizMode==='exam'?'예상':'연습'} 문제`,analysis:output.analysis.slice(0,12000),analysisCitations,patterns,limitations:[typeof output.limitations==='string'?output.limitations:'',input.quizMode==='exam'?'선택한 기출에서 관찰한 특징과 수업 자료 일부를 참고한 연습용 예상 문제입니다. 실제 출제를 보장하지 않습니다.':'공부를 위한 일반 연습 문제이며 선생님별 출제를 예측하지 않습니다.','문제만 보고 다시 푸는 AI 검산을 거쳤지만 오류가 있을 수 있습니다. 출처 연결은 원문 블록의 존재를 확인한 것이며 공식 정답 검증을 대신하지 않습니다.'].filter(Boolean).join(' '),questions:reviewed};
+-  }catch(e){if(attempt===0&&deadline-Date.now()>5000)continue;throw e instanceof AIError?e:new AIError(e instanceof Error?e.message:'AI 결과를 읽지 못했습니다.',502);}
++  }catch(e){if(!reviewing&&attempt===0&&deadline-Date.now()>5000)continue;throw e instanceof AIError?e:new AIError(e instanceof Error?e.message:'AI 결과를 읽지 못했습니다.',502);}
+  }
+  throw new AIError('문제를 만들지 못했습니다. 다시 요청해 주세요.',502);
+ }
+diff --git a/lib/quiz-review.ts b/lib/quiz-review.ts
+index b45bc89..5b43cf2 100644
+--- a/lib/quiz-review.ts
++++ b/lib/quiz-review.ts
+@@ -8,6 +8,6 @@ export async function reviewQuestions(questions:QuizQuestion[],subject:string,ke
+  const remaining=deadline-Date.now();if(remaining<5000)throw new AIError('정답 검산 시간이 부족합니다. 문제 수를 줄여 다시 요청해 주세요.',504);
+  let response:Response;
+  try{response=await fetcher('https://api.groq.com/openai/v1/chat/completions',{method:'POST',headers:{Authorization:`Bearer ${key}`,'Content-Type':'application/json'},body:JSON.stringify({model:'openai/gpt-oss-120b',temperature:0,reasoning_effort:'medium',max_completion_tokens:5500,response_format:{type:'json_object'},messages:[{role:'system',content:`${QUIZ_REVIEW_MARKER}. 고등학교 학습 문제를 처음부터 직접 푸세요. 이전에 제시된 답이나 원문 선택지에 맞추려고 계산 결과를 바꾸지 마세요. 각 문항은 제공된 question의 조건만 사용합니다. 풀이 중 수치 계산, 대입 검산, 정의역과 부호를 확인하세요. 해가 없거나 조건이 부족하면 억지로 정답을 만들지 말고 error에 사유를 적으세요. 문항 수와 순서를 유지한 JSON {solutions:[{answer:string,explanation:string,error?:string}]}만 반환하세요. 수식은 올바른 LaTeX를 $...$ 또는 $$...$$로 감싸고 역슬래시는 JSON에 맞게 이스케이프하세요. explanation의 결론은 answer와 반드시 같아야 합니다.`},{role:'user',content:JSON.stringify({subject,questions:questions.map(q=>({question:q.question,type:q.type}))})}]}),signal:AbortSignal.timeout(remaining)});}catch{throw new AIError('정답 검산 연결 시간이 초과됐습니다. 문제 수를 줄여 다시 요청해 주세요.',504);}
+- if(!response.ok)throw new AIError(response.status===429?'정답 검산 중 무료 AI 한도에 도달했습니다. 잠시 후 다시 시도해 주세요.':'정답 검산을 완료하지 못해 문제를 저장하지 않았습니다. 다시 시도해 주세요.',response.status===429?429:502);
++ if(!response.ok)throw new AIError(response.status===429?'정답 검산 중 무료 AI 한도에 도달했습니다. 잠시 후 다시 시도해 주세요.':[401,403].includes(response.status)?'AI 키를 사용할 수 없어 정답 검산을 완료하지 못했습니다. 운영자가 연결 상태를 확인해 주세요.':'정답 검산을 완료하지 못해 문제를 저장하지 않았습니다. 다시 시도해 주세요.',response.status===429?429:[401,403].includes(response.status)?503:502);
+  try{const raw=await response.json() as {choices:{finish_reason:string;message:{content:string}}[]};if(raw.choices?.[0]?.finish_reason==='length')throw Error('검산 결과가 너무 깁니다. 문제 수를 줄여 주세요.');const result=JSON.parse(raw.choices[0].message.content) as {solutions:unknown[]};if(!Array.isArray(result.solutions)||result.solutions.length!==questions.length)throw Error('정답 검산 결과의 문항 수가 일치하지 않습니다.');return questions.map((q,i)=>{const s=result.solutions[i] as {answer?:unknown;explanation?:unknown;error?:unknown};if(!s||s.error||typeof s.answer!=='string'||!s.answer.trim()||typeof s.explanation!=='string'||!s.explanation.trim()||s.answer.length>4000||s.explanation.length>6000)throw Error('조건이 부족하거나 검산하지 못한 문항이 있어 다시 생성해야 합니다.');return {...q,answer:s.answer,explanation:s.explanation};});}catch(e){throw new AIError(e instanceof Error?e.message:'검산 결과를 읽지 못했습니다.',502);}
+ }
+diff --git a/lib/research.ts b/lib/research.ts
+index 4f526ff..460ce0a 100644
+--- a/lib/research.ts
++++ b/lib/research.ts
+@@ -1,11 +1,24 @@
+ import type { Source } from './study.ts';
+ export function textOnly(input:unknown,max=4000){return typeof input==='string'?input.replace(/<[^>]*>/g,' ').replace(/\s+/g,' ').replace(/&amp;/g,'&').replace(/&lt;/g,'<').replace(/&gt;/g,'>').trim().slice(0,max):'';}
+ type CrossrefWork={DOI?:string;title?:string[];author?:{given?:string;family?:string}[];published?:{'date-parts'?:number[][]};abstract?:string;type?:string};
+-export function crossrefSources(works:CrossrefWork[]):Source[]{return works.filter(w=>w.DOI&&/^10\.\d{4,9}\//.test(w.DOI)&&w.title?.[0]).map(w=>({id:w.DOI!,title:textOnly(w.title![0],400),url:`https://doi.org/${encodeURI(w.DOI!)}`,authors:(w.author||[]).slice(0,4).map(a=>[a.given,a.family].filter(Boolean).join(' ')).join(', ')||'저자 정보 없음',year:String(w.published?.['date-parts']?.[0]?.[0]||'연도 미확인'),abstract:textOnly(w.abstract),provider:'Crossref'}));}
++// A DOI suffix is an opaque identifier. Encode each path segment so ? and #
++// remain part of that identifier rather than changing the resolver URL.
++export function crossrefSources(works:CrossrefWork[]):Source[]{
++ if(!Array.isArray(works))throw new Error('학술 검색 결과의 형식을 읽지 못했습니다. 잠시 후 다시 시도해 주세요.');
++ return works.flatMap(w=>{
++  if(!w||typeof w.DOI!=='string'||!/^10\.\d{4,9}\/.+/u.test(w.DOI)||!Array.isArray(w.title)||typeof w.title[0]!=='string')return [];
++  const title=textOnly(w.title[0],400);if(!title)return [];
++  const authors=(Array.isArray(w.author)?w.author:[]).slice(0,4).filter(a=>a&&typeof a==='object').map(a=>[a.given,a.family].filter(p=>typeof p==='string'&&p.trim()).join(' ')).filter(Boolean).join(', ')||'저자 정보 없음';
++  return [{id:w.DOI,title,url:`https://doi.org/${w.DOI.split('/').map(part=>encodeURIComponent(part)).join('/')}`,authors,year:String(w.published?.['date-parts']?.[0]?.[0]||'연도 미확인'),abstract:textOnly(w.abstract),provider:'Crossref'}];
++ });
++}
+ export async function searchResearch(query:string,fetcher:typeof fetch=fetch):Promise<Source[]>{
+  if(query.trim().length<2||query.length>200)throw new Error('검색어를 2~200자로 입력해 주세요.');
+  const url=new URL('https://api.crossref.org/works');url.searchParams.set('query.bibliographic',query.trim());url.searchParams.set('rows','7');url.searchParams.set('select','DOI,title,author,published,abstract,type');
+  const response=await fetcher(url,{headers:{'User-Agent':'PaceStudyResearch/1.0','Accept':'application/json'},signal:AbortSignal.timeout(20000)});
+  if(!response.ok)throw new Error(response.status===429?'학술 검색 요청이 많습니다. 잠시 후 다시 시도해 주세요.':'학술 검색 서버에 연결하지 못했습니다.');
+- const data=await response.json() as {message:{items:CrossrefWork[]}};return crossrefSources(data.message.items);
++ let data:{message?:{items?:CrossrefWork[]}}|null;
++ try{data=await response.json() as typeof data;}catch{throw new Error('학술 검색 결과의 형식을 읽지 못했습니다. 잠시 후 다시 시도해 주세요.');}
++ if(!Array.isArray(data?.message?.items))throw new Error('학술 검색 결과의 형식을 읽지 못했습니다. 잠시 후 다시 시도해 주세요.');
++ return crossrefSources(data.message.items);
+ }
+diff --git a/lib/topics.ts b/lib/topics.ts
+index 0f0149b..9078904 100644
+--- a/lib/topics.ts
++++ b/lib/topics.ts
+@@ -7,6 +7,8 @@ export function validTopicIdea(value:unknown):value is TopicIdea{
+ }
+ export function readTopicIdeas(output:Record<string,unknown>):TopicIdea[]{
+  if(!Array.isArray(output.ideas)||output.ideas.length!==3||!output.ideas.every(validTopicIdea))throw new Error('탐구 후보의 형식이 불완전합니다. 조건을 조금 더 적고 다시 요청해 주세요.');
++ const questions=output.ideas.map(idea=>idea.question.trim().replace(/\s+/g,' '));
++ if(new Set(questions).size!==questions.length)throw new Error('탐구 후보의 중심 질문이 중복됩니다. 서로 다른 질문 3개로 다시 제안해야 합니다.');
+  return output.ideas;
+ }
+ export function topicNote(idea:TopicIdea){return `## 탐구 질문\n${idea.question}\n\n## 주제를 고른 이유\n${idea.why}\n\n## 탐구 방법 초안\n${idea.method}\n\n## 준비물 · 데이터\n${idea.supplies}\n\n## 확인할 점\n${idea.cautions}\n\nAI가 제안한 탐구 초안입니다. 실제 실행 가능성과 평가 기준은 선생님과 확인하고, 가설과 해석은 내 생각으로 정리하세요.`;}
+diff --git a/tests/ai.test.mjs b/tests/ai.test.mjs
+index 9555bfe..d1b4aa9 100644
+--- a/tests/ai.test.mjs
++++ b/tests/ai.test.mjs
+@@ -22,3 +22,51 @@ test('teacher analysis cites past exams while each new question cites lesson con
+ test('one automatic repair recovers omitted references without accepting fabricated evidence',async()=>{let attempts=0;const fetcher=async(_url,request)=>{if(JSON.parse(request.body).messages[0].content.startsWith('독립 풀이 검토'))return response({})(_url,request);attempts++;const sent=JSON.parse(request.body),ctx=JSON.parse(sent.messages.at(-1).content).referenceMaterial;return response({analysis:'연습',questions:[{question:'극한 조건?',answer:'좌우극한 일치',explanation:'원문 조건 확인',referenceIds:attempts===1?['unknown']: [ctx[0].referenceId]}]})();};const result=await generateAI({...ask,mode:'quiz',quizMode:'practice',count:1},'fake',fetcher);assert.equal(attempts,2);assert.equal(result.questions[0].citations[0].materialId,'m1');});
+ test('Crossref sources preserve real DOI links and strip markup',()=>{const s=crossrefSources([{DOI:'10.1234/example',title:['<b>Photosynthesis</b>'],author:[{given:'A',family:'Kim'}],published:{'date-parts':[[2024]]},abstract:'<jats:p>Light matters.</jats:p>'},{DOI:'javascript:bad',title:['bad']}]);assert.equal(s.length,1);assert.equal(s[0].url,'https://doi.org/10.1234/example');assert.equal(s[0].title,'Photosynthesis');assert.equal(s[0].abstract,'Light matters.');});
+ test('research search uses fixed official API, not user-supplied URLs',async()=>{let actual;const result=await searchResearch('photosynthesis',async(url)=>{actual=String(url);return Response.json({message:{items:[]}});});assert(actual.startsWith('https://api.crossref.org/works?'));assert.deepEqual(result,[]);await assert.rejects(searchResearch('x'));});
++
++for(const status of [429,401,403,500])test(`review HTTP ${status} preserves status without restarting generation`,async()=>{
++ let generations=0,reviews=0;
++ const fetcher=async(_url,request)=>{
++  if(JSON.parse(request.body).messages[0].content.startsWith('독립 풀이 검토')){reviews++;return new Response('{}',{status});}
++  generations++;
++  return response({analysis:'일차식 연습',questions:[{question:'x+1=2에서 x는?',answer:'1',explanation:'양변에서 1을 뺀다.'}]})(_url,request);
++ };
++ await assert.rejects(generateAI({...ask,mode:'quiz',quizMode:'practice',materials:[],count:1},'synthetic-only',fetcher),e=>e.status===(status===429?429:[401,403].includes(status)?503:502));
++ assert.equal(generations,1);assert.equal(reviews,1);
++});
++for(const failure of ['network','truncated','invalid-json','unsolved'])test(`review ${failure} failure is not retried as generation`,async()=>{
++ let calls=0;
++ const fetcher=async(_url,request)=>{
++  calls++;
++  if(JSON.parse(request.body).messages[0].content.startsWith('독립 풀이 검토')){
++   if(failure==='network')throw Error('synthetic network failure');
++   return Response.json({choices:[{finish_reason:failure==='truncated'?'length':'stop',message:{content:failure==='invalid-json'?'{':JSON.stringify({solutions:[{answer:'',explanation:'',error:'조건 부족'}]})}}]});
++  }
++  return response({analysis:'일차식 연습',questions:[{question:'x+1=2에서 x는?',answer:'1',explanation:'1을 뺀다.'}]})(_url,request);
++ };
++ await assert.rejects(generateAI({...ask,mode:'quiz',materials:[],count:1},'synthetic-only',fetcher),e=>e.status===(failure==='network'?504:502));
++ assert.equal(calls,2);
++});
++
++for(const [term,particle] of [['미분계수','는'],['극한','의'],['운동량','을'],['세포호흡','에서'],['산화환원','으로'],['수요공급','에는']])test(`context retrieves the concept despite a Korean particle: ${term}${particle}`,()=>{
++ const filler='관측 기록의 날짜와 누락된 값을 확인하는 절차를 정리한다.';
++ const target=`${term} 개념과 적용 조건을 이 페이지에서 설명한다.`;
++ const doc={...material,sections:[{page:1,text:filler},{page:2,text:target}]};
++ const context=selectContext([doc],`${term}${particle} 설명해줘`,Math.max(filler.length,target.length));
++ assert.equal(context.length,1);assert.equal(context[0].page,2);assert.equal(context[0].text,target);
++});
++test('context particle expansion keeps exact terms and numeric tokens intact',()=>{
++ const doc={...material,sections:[{page:1,text:'운동 개념의 소개만 있다.'},{page:2,text:'운동량과 2026 실험 조건을 설명한다.'}]};
++ const context=selectContext([doc],'운동량 2026',30);
++ assert.equal(context[0].page,2);
++});
++
++for(const [term,particle] of [['등비수열','에서는'],['중화반응','이'],['삼투압','으로는']])test(`new retrieval case keeps the relevant page: ${term}${particle}`,()=>{
++ const filler='관측 기록의 날짜와 누락된 값을 확인하는 절차를 정리한다.';
++ const target=`${term}의 적용 조건과 개념을 이 페이지에서 설명한다.`;
++ const context=selectContext([{...material,sections:[{page:1,text:filler},{page:2,text:target}]}],`${term}${particle} 설명해줘`,Math.max(filler.length,target.length));
++ assert.equal(context.length,1);assert.equal(context[0].page,2);
++});
++for(const term of ['사과','효과'])test(`short exact noun is preserved in retrieval: ${term}`,()=>{
++ const doc={...material,sections:[{page:1,text:'전혀 다른 관측과 기록만 담은 페이지이다.'},{page:2,text:`${term}의 개념을 설명하는 페이지이다.`}]};
++ assert.equal(selectContext([doc],term,30)[0].page,2);
++});
+diff --git a/tests/quiz-review.test.mjs b/tests/quiz-review.test.mjs
+index 52533f6..ba6108c 100644
+--- a/tests/quiz-review.test.mjs
++++ b/tests/quiz-review.test.mjs
+@@ -12,3 +12,14 @@ test('incomplete or unsolved review is never accepted as a checked quiz',async()
+ test('review quota failure is surfaced without saving unreviewed draft answers',async()=>{
+  await assert.rejects(reviewQuestions(questions,'수학','test',Date.now()+20000,async()=>new Response('{}',{status:429})),e=>e.status===429);
+ });
++
++for(const c of [
++ {id:'algebra-equivalent',subject:'수학',question:'x를 두 번 더한 식은?',draft:'2x',review:'x+x'},
++ {id:'water-paraphrase',subject:'생명과학',question:'광합성에서 방출되는 산소가 유래하는 반응물은?',draft:'물',review:'물(H₂O)'},
++ {id:'water-formula',subject:'생명과학',question:'광합성에서 방출되는 산소가 유래하는 반응물은?',draft:'물',review:'H₂O'},
++ {id:'unit-spacing',subject:'물리학',question:'2 kg 물체가 3 m/s²로 가속할 때 알짜힘은?',draft:'6 N',review:'6N'}
++])test(`equivalent answer remains accepted: ${c.id}`,async()=>{
++ const draft={...questions[0],question:c.question,answer:c.draft};
++ const result=await reviewQuestions([draft],c.subject,'synthetic-only',Date.now()+20000,async()=>Response.json({choices:[{finish_reason:'stop',message:{content:JSON.stringify({solutions:[{answer:c.review,explanation:'자작 모의 동치 답'}]})}}]}));
++ assert.equal(result[0].answer,c.review);assert.deepEqual(result[0].citations,draft.citations);assert.equal(draft.answer,c.draft);
++});
+diff --git a/tests/research-quality.test.mjs b/tests/research-quality.test.mjs
+new file mode 100644
+index 0000000..c40b4ef
+--- /dev/null
++++ b/tests/research-quality.test.mjs
+@@ -0,0 +1,41 @@
++import test from 'node:test';
++import assert from 'node:assert/strict';
++import {crossrefSources} from '../lib/research.ts';
++
++for(const doi of ['10.1234/plain','10.1234/a?b','10.1234/a#b','10.1234/a?b#c','10.1234/part/with spaces']){
++ test(`DOI resolver preserves the full identifier: ${doi}`,()=>{
++  const [source]=crossrefSources([{DOI:doi,title:['Synthetic study']}]);
++  const url=new URL(source.url);
++  assert.equal(url.origin,'https://doi.org');
++  assert.equal(url.search,'');assert.equal(url.hash,'');
++  assert.equal(decodeURIComponent(url.pathname.slice(1)),doi);
++  assert.equal(source.id,doi);
++ });
++}
++
++import {searchResearch} from '../lib/research.ts';
++const validWork={DOI:'10.1234/valid',title:['Valid synthetic study']};
++test('one malformed search row does not discard a valid scholarly source',()=>{
++ const sources=crossrefSources([null,{DOI:'10.1234/wrong-title',title:'not-an-array'},{DOI:'10.1234/empty',title:['<b> </b>']},validWork]);
++ assert.equal(sources.length,1);assert.equal(sources[0].id,validWork.DOI);assert.equal(sources[0].title,validWork.title[0]);
++});
++test('malformed optional authors do not break a valid source or invent names',()=>{
++ for(const author of [{given:'wrong container'},[null,{}, {given:42,family:'Kim'}]]){
++  const sources=crossrefSources([{...validWork,author}]);
++  assert.equal(sources.length,1);assert.equal(sources[0].authors,Array.isArray(author)?'Kim':'저자 정보 없음');
++ }
++});
++test('an empty DOI suffix cannot become a scholarly resolver link',()=>{
++ assert.deepEqual(crossrefSources([{DOI:'10.1234/',title:['Empty DOI']}]),[]);
++});
++test('malformed search envelope is a readable failure rather than a successful empty result',async()=>{
++ let calls=0;
++ for(const body of [null,{}, {message:{}},{message:{items:null}},{message:{items:{}}}]){
++  await assert.rejects(searchResearch('synthetic study',async()=>{calls++;return Response.json(body);}),e=>e instanceof Error&&/형식/.test(e.message));
++ }
++ assert.equal(calls,5);
++});
++
++test('a non-JSON upstream response reports the search result format failure',async()=>{
++ await assert.rejects(searchResearch('synthetic study',async()=>new Response('<html>upstream failure</html>',{headers:{'Content-Type':'text/html'}})),e=>e instanceof Error&&/형식/.test(e.message));
++});
+diff --git a/tests/topics.test.mjs b/tests/topics.test.mjs
+index 14f8684..4723789 100644
+--- a/tests/topics.test.mjs
++++ b/tests/topics.test.mjs
+@@ -3,8 +3,33 @@ import {readTopicIdeas,topicNote} from '../lib/topics.ts';
+ import {generateAI,validateAIInput} from '../lib/ai.ts';
+ import {initialState,validateState} from '../lib/study.ts';
+ const idea={title:'교실 소음과 시간대 비교',question:'교실 소음은 시간대별로 어떻게 다른가?',why:'학교 생활과 물리의 파동 개념을 연결한다.',method:'같은 기기와 위치로 하루 세 번 측정하고 날짜별로 비교한다.',supplies:'휴대폰 소음 측정 앱. 절대 소음 수치보다 상대 변화로 비교한다.',firstSteps:['측정할 장소 정하기','같은 조건 정리하기','선생님과 계획 확인하기'],cautions:'대화를 녹음하지 않고 다른 사람의 개인정보를 수집하지 않는다.'};
+-test('topic exploration does not require an activity or uploaded material',()=>{const input=validateAIInput({mode:'topics',subject:'물리학',question:'학교 소음, 7일, 휴대폰 사용',materials:[]});assert.equal(input.mode,'topics');assert.equal(input.materials.length,0);assert.equal(readTopicIdeas({ideas:[idea,idea,idea]}).length,3);});
++const distinctIdeas=[idea,{...idea,title:'장소별 소음 비교',question:'교실 소음은 장소별로 어떻게 다른가?'},{...idea,title:'요일별 소음 비교',question:'교실 소음은 요일별로 어떻게 다른가?'}];
++test('topic exploration does not require an activity or uploaded material',()=>{const input=validateAIInput({mode:'topics',subject:'물리학',question:'학교 소음, 7일, 휴대폰 사용',materials:[]});assert.equal(input.mode,'topics');assert.equal(input.materials.length,0);assert.equal(readTopicIdeas({ideas:distinctIdeas}).length,3);});
+ test('malformed or empty candidates never become saved activities',()=>{for(const output of [{ideas:[]},{ideas:[idea]},{ideas:[idea,idea,{...idea,firstSteps:['하나']}]},{ideas:[idea,idea,{...idea,question:''}]}])assert.throws(()=>readTopicIdeas(output));});
+ test('topic drafts and candidates survive a validated backup before any activity exists',()=>{const state=initialState();state.topicLab={interest:'소음',subject:'물리학',constraints:'휴대폰',days:7,refinement:'측정 중심',ideas:[idea,idea,idea],updatedAt:new Date().toISOString()};assert(validateState(JSON.parse(JSON.stringify(state))));assert.equal(state.assessments.length,0);state.topicLab.days=0;assert(!validateState(state));state.topicLab.days=7;state.topicLab.ideas=[{...idea,firstSteps:null}];assert(!validateState(state));});
+ test('selected topic preserves method and limits for the research workspace',()=>{const note=topicNote(idea);assert(note.includes(idea.question));assert(note.includes(idea.method));assert(note.includes(idea.cautions));assert(note.includes('AI가 제안한 탐구 초안'));});
+-test('AI topic request uses exploratory schema and validates its actual response',async()=>{let sent;const fetcher=async(_url,request)=>{sent=JSON.parse(request.body);return Response.json({choices:[{finish_reason:'stop',message:{content:JSON.stringify({ideas:[idea,idea,idea]})}}]});};const result=await generateAI({mode:'topics',subject:'물리학',question:'소음 주제 7일 탐구',materials:[]},'test-only',fetcher);assert.equal(result.ideas.length,3);assert(sent.messages[0].content.includes('정확히 3개'));assert(!sent.messages[0].content.includes('문제집 제목'));assert(sent.messages[0].content.includes('실제 검색 결과를 확인한 척하지'));});
++test('AI topic request uses exploratory schema and validates its actual response',async()=>{let sent;const fetcher=async(_url,request)=>{sent=JSON.parse(request.body);return Response.json({choices:[{finish_reason:'stop',message:{content:JSON.stringify({ideas:distinctIdeas})}}]});};const result=await generateAI({mode:'topics',subject:'물리학',question:'소음 주제 7일 탐구',materials:[]},'test-only',fetcher);assert.equal(result.ideas.length,3);assert(sent.messages[0].content.includes('정확히 3개'));assert(!sent.messages[0].content.includes('문제집 제목'));assert(sent.messages[0].content.includes('실제 검색 결과를 확인한 척하지'));});
++
++test('topic parser rejects duplicate central questions rather than returning three copies',()=>{
++ assert.throws(()=>readTopicIdeas({ideas:[idea,idea,idea]}),/중복|서로 다른/);
++ assert.throws(()=>readTopicIdeas({ideas:[idea,{...idea,title:'다른 제목',question:'  '+idea.question+'  '},{...idea,question:'교실 소음은 요일별로 어떻게 다른가?'}]}),/중복|서로 다른/);
++});
++test('topic parser does not infer duplicates from shared titles or methods alone',()=>{
++ const ideas=[idea,{...idea,question:'교실 소음은 장소별로 어떻게 다른가?'},{...idea,question:'교실 소음은 요일별로 어떻게 다른가?'}];
++ assert.deepEqual(readTopicIdeas({ideas}),ideas);
++});
++
++test('duplicate topic questions trigger one bounded repair before a distinct result is returned',async()=>{
++ let calls=0;
++ const result=await generateAI({mode:'topics',subject:'물리학',question:'학교 소음, 7일, 휴대폰 사용',materials:[]},'synthetic-only',async()=>{
++  calls++;return Response.json({choices:[{finish_reason:'stop',message:{content:JSON.stringify({ideas:calls===1?[idea,idea,idea]:distinctIdeas})}}]});
++ });
++ assert.equal(calls,2);assert.deepEqual(result.ideas,distinctIdeas);
++});
++test('persistent duplicate topic questions fail after two calls instead of becoming saved candidates',async()=>{
++ let calls=0;
++ await assert.rejects(generateAI({mode:'topics',subject:'물리학',question:'학교 소음, 7일, 휴대폰 사용',materials:[]},'synthetic-only',async()=>{
++  calls++;return Response.json({choices:[{finish_reason:'stop',message:{content:JSON.stringify({ideas:[idea,idea,idea]})}}]});
++ }),e=>e.status===502&&/중복/.test(e.message));
++ assert.equal(calls,2);
++});
