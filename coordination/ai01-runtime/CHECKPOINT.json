@@ -1,6 +1,6 @@
 {
-  "invocationSource": "manual",
-  "observedAt": "2026-10-26T12:50:30.389098+00:00",
+  "invocationSource": "scheduler",
+  "observedAt": "2026-10-26T12:57:14.553Z",
   "lastProcessedMainMessageId": "PACE-RECOVERY-READY-20261026-001",
   "originalCheckpointSha256": "36fefdd3b6ad75a08d3386ec1ad958bc465a3abdc0a49d5f60d0be52ccbe6a9f",
   "restoration": {
@@ -15,7 +15,14 @@
     "probePassed": true,
     "scheduledResumeVerified": false
   },
-  "nextAction": "Actual scheduled source probe, then continue saved 008 completion-state draft",
+  "nextAction": "Reproduce saved 008 failures, inspect completion-state handling in allowed lib/ai.ts and lib/quiz-review.ts, then implement one small fix.",
   "originalSubmissionId": "AI-01-20261019-iteration-007",
-  "draftFixed": false
+  "draftFixed": false,
+  "scheduledResumeVerified": true,
+  "probe": {
+    "command": "node --test --test-name-pattern='duplicate material IDs|distinct IDs' tests/ai.test.mjs",
+    "exitCode": 0,
+    "passed": 3,
+    "failed": 0
+  }
 }
