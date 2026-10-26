@@ -1,8 +1,14 @@
 {
   "invocationSource": "scheduler",
-  "observedAt": "2026-10-26T14:46:47.907928+00:00",
-  "lastProcessedMainMessageId": "PACE-RECOVERY-READY-20261026-001",
+  "observedAt": "2026-10-26T23:40:27.762Z",
+  "lastProcessedMainMessageId": "PACE-API-COMPAT-20261027-001",
   "submissionId": "AI-01-20261026-iteration-008",
-  "status": "ready_for_integration",
-  "nextAction": "Wait for main review; do not resubmit unchanged result."
+  "status": "008_metadata_supplement_submitted_main20_qa_pending",
+  "nextAction": "Independent MAIN20 availability QA in isolated synthetic browser storage; never use original008 source as MAIN20 implementation.",
+  "processedMainMessageIds": [
+    "PACE-ACK008-20261027-001",
+    "PACE-MAIN20-20261027-001",
+    "PACE-QA-MAIN20-20261027-001",
+    "PACE-API-COMPAT-20261027-001"
+  ]
 }
