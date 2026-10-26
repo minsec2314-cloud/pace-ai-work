@@ -1,10 +1,9 @@
 {
   "baseHead": "4edb7b923ec66ff2e119a6dd6efb51d400c3a610",
-  "patchSha256": "a23fdc69fed297b0e713fcff1c8bc7820e43f0393c1f320a90a2bb3780891bc7",
-  "checkpointSha256": "11054e61c144ec94d3bf9c6b5d84bef58ffba293decc91ee8611f76a0c998913",
+  "patchSha256": "4451faae31f82c64e8b360df83d1db20290cd691dc401f80efc1cff8ee4fff39",
+  "checkpointSha256": "bfe0f0d5a1a5f79a00ed1adf27b114b6394694c5b0c46e73d379b342ddbcd99e",
   "lastProcessedMainMessageId": "PACE-RECOVERY-READY-20261026-001",
+  "draft": "008 implemented_pending_full_validation",
   "latestCompleteSubmissionId": "AI-01-20261019-iteration-007",
-  "draft": "008 reproduced_not_fixed",
-  "nextAction": "Reproduce saved 008 failures, inspect completion-state handling in allowed lib/ai.ts and lib/quiz-review.ts, then implement one small fix.",
-  "scheduledResumeVerified": true
+  "nextAction": "Provide existing dependencies or install authorized non-billable dependencies, run full tests/type/build, then package cumulative original-bundle submission"
 }
