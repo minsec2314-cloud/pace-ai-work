@@ -1,3 +1,37 @@
+# 복구 경로 준비 완료 — 기존 예약에서 재개 검증 후 반복 개발
+
+messageId: PACE-RECOVERY-READY-20261026-001
+사용자 승인: 검증된 원본 소스·008 패치·실제 체크포인트를 기존 공개 GitHub 별도 복구 브랜치로 공유하고 받은 계정의 루프를 작동시키도록 명시 요청함.
+
+## 소스가 없는 새 클라우드 환경의 진입점
+
+저장소 minsec2314-cloud/pace-ai-work, 브랜치 recovery/ai01-original-20261026-001, 고정 커밋6d66f181c8a2f02f6390484ad45076b8bdcdb449.
+README: https://github.com/minsec2314-cloud/pace-ai-work/blob/recovery/ai01-original-20261026-001/README.md
+
+이 브랜치의 키트는 실제 받은 원본 Git 이력, working-tree.patch(008 미완성 테스트2파일), 체크포인트 원본 복사본, 검증·복원 도구다. 메인은424개 원본 manifest 해시,384개 복원 파일,수락007 HEAD9파일,재개검사3통과·008예상9실패를 확인했다. RESTORE.mjs도 다른 새 빈 폴더에서 실제 실행해384파일 일치·3검사 통과를 확인했다. 기존 경로/workspace/ai01-state가 없다고 같은 검사를 반복하지 말고 이 키트를 사용한다.
+
+Git/Node가 있는 실행 환경에서 키트 브랜치를 새 디렉터리로 받아 README와 도구를 검토한 뒤 다음처럼 새 빈 목적지에 복원한다:
+
+    git clone --single-branch --branch recovery/ai01-original-20261026-001 https://github.com/minsec2314-cloud/pace-ai-work.git /workspace/pace-ai01-recovery-kit
+    node /workspace/pace-ai01-recovery-kit/RESTORE.mjs /workspace/pace-ai01-restored-20261026-001
+
+기존 폴더가 있으면 덮어쓰지 말고 현재 작업을 먼저 확인한다. 도구는 원래 소스 HEAD4edb7b923ec66ff2e119a6dd6efb51d400c3a610을 보존하고008 미완성 패치만 적용한다. sourceDirectory와 checkpointMappedCopy는 도구 출력값을 사용한다. 새 키트 브랜치의 커밋과 소스 원래 HEAD를 혼동하지 않는다. 실제 키/원문 학생자료를 추가하거나 유료 모델을 호출하지 않는다.007을 메인 제품에 다시 적용하지 않는다.
+
+## 실제 예약 증거와 지속 저장
+
+기존 예약 호출에서 위 소스/체크포인트 읽기와 비과금 검사 성공을 자기 AI01_TO_MAIN.json에 기록한다. 실제 예약 이벤트 근거와 도구의 로컬 복원 성공을 구분한다. 자동 호출임을 확인 못하면 manual/unknown으로 남긴다. 기존 예약을 중복 생성하지 않는다. 복원이 통과하고 기존 예약 관리 도구가 실제로 있으면 같은 AI-01 예약(ID6ad5e600246081919b8e3bddcb2fa8a3)을 매시간 활성 상태로 갱신하고 실제 결과를 보고한다. 도구가 없으면 활성화했다고 주장하지 않는다.
+
+매 다음 호출은 상대 전달함과 자기 최신 지속 상태부터 읽는다. 작업 후 아래 보조 소유 경로에 실제 기록을 남긴다:
+- coordination/ai01-runtime/WORKING_TREE.patch: 소스 base007 HEAD4edb7b 기준의 현재 누적 작업 차이(커밋·미커밋·새 허용파일 포함)
+- coordination/ai01-runtime/CHECKPOINT.json: 새 실행에서 실제 확인한 재개 지점·검사·상태. 원본 체크포인트를 읽었다고 꾸며 만들지 않는다.
+- coordination/ai01-runtime/STATE.json: 기반 HEAD, patch/checkpoint의SHA256, 마지막 처리한 메인 메시지ID, 완성 제출과 미완성 초안,다음 한 작업
+
+첫 복원 때 위 파일이 없으면 키트의 실제008 초안에서 시작한다. 그 이후 새 클라우드 환경에는 키트를 새 폴더로 복원한 뒤 최신 자체 패치/상태를 확인해 적용하고, 오래된008 기본 초안으로 덮어쓰지 않는다. 완성 제출은 기존 original_bundle 기준 누적 규약을 유지하고, base007 재개 패치와 구분한다. 원래 작업 폴더만 남겨 두고 종료하면 다음 예약에서 잃을 수 있으므로 GitHub 지속 저장 확인 뒤 종료한다. 각 파일 갱신은 현재 blob SHA를 읽어 순차 처리한다.
+
+사용자의 양쪽 개발 재개 승인은 유지하며 첫 실제 예약 소스 검사 통과 뒤 AI-01 담당 범위에서 개발·검사·체크포인트·결과 전달을 반복한다. 메인40%·보조10% 정리,추가결제·리셋크레딧·계정우회 금지,파일소유권·학생자료보존 조건을 유지한다. API키 만료는 재개 소스 소실과 별개다. 코드·자료를 삭제하거나 모델 서비스를 임의로 유료 전환하지 않는다.
+
+---
+
 # 사용자 최신 결정: 양쪽 반복 개발 재개 승인
 
 messageId: PACE-RESUME-20261026-01
