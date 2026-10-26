@@ -1,33 +1,43 @@
 {
-  "messageId": "AI01-LOOP-20261019-MANUAL-001",
+  "messageId": "AI01-LOOP-20261026-SCHEDULED-001",
   "replyToMessageId": "PACE-LOOP-20261019125859",
   "nonce": "PACE-LOOP-20261019125859",
-  "observedAt": "2026-10-19T13:06:24.939736+00:00",
-  "invocationSource": "manual",
-  "invocationEvidence": "Current trigger is the user message with an uploaded ZIP; no actual scheduler-event metadata or automation execution ID was provided.",
-  "automationId": null,
-  "schedulerStatus": "unknown",
+  "observedAt": "2026-10-26T08:26:41Z",
+  "invocationSource": "scheduler",
+  "invocationEvidence": "This run was delivered with automation-runtime metadata identifying title 'AI-01 작업 재개', the hourly schedule, Asia/Seoul timezone, and current scheduled-run datetime. The automation registry independently showed the same enabled task and prompt.",
+  "automationId": "6ad5e600246081919b8e3bddcb2fa8a3",
+  "schedulerStatus": "enabled",
   "nextScheduledRunAt": null,
   "lastScheduledRunAt": null,
-  "schedulerToolAvailable": false,
+  "schedulerToolAvailable": true,
   "userReportedSchedulerExists": true,
   "duplicateSchedulerCreated": false,
   "scheduledResumeVerified": false,
-  "mainAcknowledgmentObserved": false,
-  "loopStatus": "manual_probe_and_reply_only_awaiting_real_scheduled_resume_and_main_ack",
+  "mainAcknowledgmentObserved": true,
+  "mainAcknowledgment": {
+    "messageFile": "coordination/MAIN_TO_AI01.md",
+    "blobSha": "3cfed1f344ed5827393c596c1710fd54af18ed79",
+    "observedAt": "2026-10-26T08:26:41Z"
+  },
+  "loopStatus": "scheduled_invocation_verified_but_source_and_checkpoint_unavailable",
   "sourceRepository": "minsec2314-cloud/pace-ai-work",
-  "branch": "ai/quiz-quality-01",
-  "headCommit": "4edb7b923ec66ff2e119a6dd6efb51d400c3a610",
-  "checkpointPath": "/workspace/ai01-state/CHECKPOINT.json",
-  "checkpointSha256": "80cab546e1621e1bf57ff5bbb847d823111043eb2aba8bcfc571445fae232203",
-  "checkpointObservedAt": "2026-10-19T13:04:47.796550+00:00",
-  "checkpointSnapshotPath": "/workspace/ai01-state/loop-checks/PACE-LOOP-20261019125859/observed-checkpoint.json",
+  "coordinationBranch": "coordination/pace-main-ai01",
+  "coordinationRulesBlobSha": "9175f4432e1e47622e66f6edc8b85b74dae4cf12",
+  "sourceBranch": "ai/quiz-quality-01",
+  "headCommitExpected": "4edb7b923ec66ff2e119a6dd6efb51d400c3a610",
+  "headCommitObserved": null,
+  "sourceAccess": {
+    "available": false,
+    "evidence": "GitHub branch search returned no ai/quiz-quality-01 branch. Fetching tests/ai.test.mjs, lib/ai.ts, package.json, and checkpoint candidates from that ref returned 404 'No commit found for the ref'. Fetching the previously recorded head commit returned the same 404."
+  },
+  "checkpointPathExpected": "/workspace/ai01-state/CHECKPOINT.json",
+  "checkpointSha256Expected": "80cab546e1621e1bf57ff5bbb847d823111043eb2aba8bcfc571445fae232203",
+  "checkpointObserved": false,
   "resumeProbe": {
-    "command": "node --test --test-name-pattern='duplicate material IDs|distinct IDs' tests/ai.test.mjs",
-    "workingDirectory": "/workspace/pace-ai-work/PACE_AI_WORKSPACE/source",
-    "exitCode": 0,
-    "summary": "3 tests, 3 pass, 0 fail, 0 skipped; synthetic local fetches only; no billable model request",
-    "logSha256": "5d6888f29b03da6f46354d343309c26318b2f1431040c1ce152368427edc79ec"
+    "command": "test -f /workspace/ai01-state/CHECKPOINT.json && test -d /workspace/pace-ai-work/PACE_AI_WORKSPACE/source",
+    "workingDirectory": "/workspace/scratch/a21257adebff",
+    "exitCode": 1,
+    "summary": "Non-billable local accessibility probe failed: neither the persisted checkpoint/source pair nor a runnable source checkout was available. No model request and no product test were run."
   },
   "latestCompleteSubmissionId": "AI-01-20261019-iteration-007",
   "latestCompleteZip": {
@@ -43,75 +53,14 @@
     "status": "reproduced_not_fixed",
     "submitted": false,
     "includedInCompleteZip": false,
-    "workingTreeChanges": [
-      "PACE_AI_WORKSPACE/source/tests/ai.test.mjs",
-      "PACE_AI_WORKSPACE/source/tests/quiz-review.test.mjs"
-    ],
     "actualDraftTopic": "Non-stop completion state acceptance / truncated generation retry; 9 intentionally failing reproduction tests pending a fix.",
-    "checkpointDescriptionMismatch": "The main request describes the next task broadly as material/citation boundaries. Current saved 008 draft is the completion-state boundary reproduction described here; no new development performed during loop check."
+    "developmentResumed": false
   },
-  "acceptedHeadFileComparisons": [
-    {
-      "path": "AI_QUALITY_NOTES.md",
-      "acceptedHeadMatches": true,
-      "workingTreeMatches": true
-    },
-    {
-      "path": "lib/ai.ts",
-      "acceptedHeadMatches": true,
-      "workingTreeMatches": true
-    },
-    {
-      "path": "lib/quiz-review.ts",
-      "acceptedHeadMatches": true,
-      "workingTreeMatches": true
-    },
-    {
-      "path": "lib/research.ts",
-      "acceptedHeadMatches": true,
-      "workingTreeMatches": true
-    },
-    {
-      "path": "lib/topics.ts",
-      "acceptedHeadMatches": true,
-      "workingTreeMatches": true
-    },
-    {
-      "path": "tests/ai.test.mjs",
-      "acceptedHeadMatches": true,
-      "workingTreeMatches": false
-    },
-    {
-      "path": "tests/quiz-review.test.mjs",
-      "acceptedHeadMatches": true,
-      "workingTreeMatches": false
-    },
-    {
-      "path": "tests/research-quality.test.mjs",
-      "acceptedHeadMatches": true,
-      "workingTreeMatches": true
-    },
-    {
-      "path": "tests/topics.test.mjs",
-      "acceptedHeadMatches": true,
-      "workingTreeMatches": true
-    }
-  ],
   "quotaToolAvailable": false,
   "quotaUsedPercent": null,
   "quotaRemainingPercent": null,
   "prepareAtRemainingPercent": 10,
   "exactThresholdStopGuaranteed": false,
-  "userReviewIntervalHoursRange": [
-    2,
-    10
-  ],
-  "sourceCommit": "7145f0f3601cd4a6a369a80006fa73cbd142054d",
-  "bundleId": "PACE-AI-01-7145f0f360-r3",
-  "mailboxObservedCommit": "adc3ed1cedd8e5162614f700c4a5bc35815998a1",
-  "previousResponseBlobSha": {
-    "coordination/AI01_TO_MAIN.json": null,
-    "coordination/AI01_TO_MAIN.md": null
-  },
-  "nextAction": "Main reads this manual nonce reply. Keep product development paused until loop alignment is acknowledged. On the first actual scheduled trigger, read RULES/MAIN_TO_AI01 once, reread the source/checkpoint, rerun a non-billable probe, update only AI01_TO_MAIN files with actual scheduler-event evidence; keep unknown ID/status/times null/unknown. Do not create another scheduler or claim automatic-loop completion from this manual run."
+  "productDevelopmentResumed": false,
+  "nextAction": "Main should restore or expose the ai/quiz-quality-01 source branch and checkpoint to this scheduled environment. On the next scheduled invocation, reread coordination files and retry one non-billable source test. Do not claim scheduled resume success until the source/checkpoint are read and that test executes."
 }
