@@ -6,10 +6,7 @@
   "submissionId": "AI-01-20261019-iteration-007",
   "iteration": 7,
   "parentSubmissionId": "AI-01-20261019-iteration-006",
-  "patchBase": "original_bundle",
-  "cumulative": true,
-  "status": "ready_for_integration",
-  "summary": "검산 실패 후 재호출 방지·오류 상태 분류만 유지. 엄격한 답 일치 규칙과 관련 도우미 철회. DOI suffix의 ?/#가 URL query/fragment로 바뀌는 출처 링크 결함 수정. 동일 중심 질문의 탐구 후보 중복을 거절하고 기존 1회 복구 상한을 검증. 한국어 조사형 검색어의 관련 문단 누락을 낮은 가중치의 제한적 조사 제거형으로 보완. 잘못된 학술 검색 항목에서 정상 출처를 보존하고 깨진 응답 형식을 오류로 구분. 중복 자료ID의 기출/수업 근거 역할 우회를 모델 호출 전 차단.",
+  "localBaseCommit": "a5693e9a01b27027b65351773940c10dee2df95c",
   "changedFiles": [
     {
       "path": "AI_QUALITY_NOTES.md",
@@ -205,23 +202,6 @@
       "evidence": "exit 0; 비차단 client chunk 경고"
     }
   ],
-  "limitations": [
-    "실제 Groq 모델 정확도·거절률·토큰·지연 미측정. 모두 합성/모의 검사다.",
-    "원본의 검산 답 반환 계약을 복원했으므로 실제 답 충돌 자동 판정 및 잘못된 답 교체 문제는 미해결이다.",
-    "실제 예약·자동 실행·사용 한도 조회 도구가 없어 자동 재개 불가; 한도 잔량은 알 수 없다.",
-    "PR API 조회 Forbidden 이력; 새 인증·제품 소스 브랜치 푸시·PR·배포 없음. 결과 전달용 별도 브랜치로 ZIP을 제공하며 채팅 첨부 업로드 도구는 없다.",
-    "실제 모델·브라우저 E2E·새 작업 복원·제품 통합은 미실행이다.",
-    "실제 Crossref/DOI 네트워크 응답과 논문 존재·의미적 관련성은 미검증이다.",
-    "탐구 후보의 실제 의미적 중복·실행 가능성·실제 모델 응답 품질은 미측정이다.",
-    "조사 제거형은 제한적 어휘 보강이며 모호한 명사·혼합 영문/수식·동의어·실제 PDF 및 모델 정확도는 미검증이다."
-  ],
-  "nextAction": "메인은 iteration2만 또는 최신 iteration7 누적 변경을 검토한다. AI-01 재개 위치: lib/ai.ts의 자료 식별·인용 경계에 대한 추가 실패 사례 조사. 실제 예약·사용 한도 조회 도구 없음; 수동 재개가 필요하다.",
-  "localBaseCommit": "a5693e9a01b27027b65351773940c10dee2df95c",
-  "resultCommit": "4edb7b923ec66ff2e119a6dd6efb51d400c3a610",
-  "branch": "ai/quiz-quality-01",
-  "repository": "minsec2314-cloud/pace-ai-work",
-  "pr": null,
-  "createdAt": "2026-10-19T09:00:39.979708+00:00",
   "metrics": {
     "reviewFailures": {
       "cases": 8,
@@ -266,9 +246,142 @@
       "duplicateRequestModelCallsAfter": 0
     }
   },
-  "withdrawnIteration1Paths": [
-    "lib/ai-quality.ts",
-    "tests/ai-quality.test.mjs",
-    "tests/fixtures/ai-quality-cases.json"
-  ]
+  "nextAction": "제품 개발 보류. 메인의 수동 nonce 응답 확인과 첫 실제 예약 실행을 기다린다. 실제 예약 호출에서 GitHub 전달함·소스·이 체크포인트를 읽고 비과금 검사 후 own 응답만 갱신한다. 007 재생성/재적용 금지,008 미완성 초안 유지.",
+  "currentCommit": "4edb7b923ec66ff2e119a6dd6efb51d400c3a610",
+  "branch": "ai/quiz-quality-01",
+  "status": "ready_for_integration",
+  "latestUserDecision": "iteration2는 재호출 방지·오류 상태 분류만; 후속 개선은 별도 iteration. 엄격한 일치 규칙 철회. 메인 화면·일정·저장·의존성 변경 금지. 결제·크레딧·우회 금지.",
+  "scheduler": {
+    "configured": null,
+    "availableToAgent": false,
+    "userReportedConfigured": true,
+    "agentVerified": false,
+    "id": null,
+    "active": null,
+    "nextRun": null,
+    "lastRun": null,
+    "reason": "사용자가 현재 예약을 직접 설정했다고 알림. 에이전트 도구에는 예약 조회 기능이 없어 성공·활성·자동 재개 여부를 아직 확인할 수 없음.",
+    "previousRecord": {
+      "configured": false,
+      "reason": "실제 예약 도구 없음"
+    },
+    "actualScheduledResumeVerified": false
+  },
+  "quota": {
+    "status": "unknown",
+    "paidFallback": false,
+    "prepareAtRemainingPercent": 10,
+    "exactThresholdStopGuaranteed": false
+  },
+  "updatedAt": "2026-10-19T13:07:14.267076+00:00",
+  "delivery": {
+    "branch": "ai/ai-01-results-20261019",
+    "commit": "b9290f29706d426f2b1610772a5420a36ab60eb7",
+    "verifiedDownloads": [
+      {
+        "iteration": 2,
+        "url": "https://github.com/minsec2314-cloud/pace-ai-work/raw/refs/heads/ai/ai-01-results-20261019/iteration-002/PACE_AI_01_result.zip",
+        "httpStatus": 200,
+        "bytes": 30102,
+        "sha256": "8112d71a7327475076075d7eb9a9265389b860fb5eff204a17b9c6ff1a3a8ca9"
+      },
+      {
+        "iteration": 6,
+        "url": "https://github.com/minsec2314-cloud/pace-ai-work/raw/refs/heads/ai/ai-01-results-20261019/iteration-006/PACE_AI_01_result.zip",
+        "httpStatus": 200,
+        "bytes": 52807,
+        "sha256": "57e85d72408e41b6baa0141b8fa5aa040fc1b6c763c42f67e4875c43d6ca6b96"
+      },
+      {
+        "iteration": 7,
+        "url": "https://github.com/minsec2314-cloud/pace-ai-work/raw/refs/heads/ai/ai-01-results-20261019/iteration-007/PACE_AI_01_result.zip",
+        "httpStatus": 200,
+        "bytes": 56138,
+        "sha256": "ce6bda65a188fb13e765a0b0a2db373cb91c8041bde7df3cfc71d16844d8f275"
+      }
+    ],
+    "mainAutomaticallyNotified": false
+  },
+  "latestFeedback": {
+    "type": "actual_manual_feedback_and_mailbox_receipt",
+    "messageId": "MAIN-AI01-20261019130153",
+    "replyToMessageId": "PACE-LOOP-20261019125859",
+    "receivedAt": "2026-10-19T13:06:24.939736+00:00",
+    "readStartHere": true,
+    "readFirstResumeCheck": true,
+    "hashManifestVerified": true,
+    "sourceOverwritten": false,
+    "productDevelopmentPaused": true,
+    "latestCompleteSubmission": "AI-01-20261019-iteration-007",
+    "mainReportedAcceptance": "accepted_and_publicly_integrated",
+    "mainPublicVersionReported": 19,
+    "mainPublicCommitReported": "07a2cb6e4cc55e24f69a7f82525f95479989e682",
+    "mainProductCommitIndependentlyVerified": false,
+    "mailboxWriteReceipt": {
+      "replyCommit": "c300899a0363e8f6de21f07817a7c49f8817d7f4",
+      "parentCommit": "adc3ed1cedd8e5162614f700c4a5bc35815998a1",
+      "nonce": "PACE-LOOP-20261019125859",
+      "changedFiles": [
+        "coordination/AI01_TO_MAIN.json",
+        "coordination/AI01_TO_MAIN.md"
+      ],
+      "responseBlobs": {
+        "coordination/AI01_TO_MAIN.json": "fb86c3895fe0114b13c1ec8b249952b3ca1bbb06",
+        "coordination/AI01_TO_MAIN.md": "0fe7c6fc469048ec2b68bf2daaa7033bd355903b"
+      },
+      "remoteHeadConfirmed": true,
+      "mainOwnedFilesUnchanged": true,
+      "invocationSource": "manual",
+      "scheduledResumeVerified": false
+    },
+    "invocationSource": "manual",
+    "schedulerToolAvailable": false,
+    "scheduledResumeVerified": false,
+    "userReviewHoursRange": [
+      2,
+      10
+    ],
+    "prepareAtRemainingPercent": 10,
+    "quotaToolAvailable": false,
+    "exactThresholdStopGuaranteed": false
+  },
+  "userReviewHoursRange": [
+    2,
+    10
+  ],
+  "inProgressDraft": {
+    "status": "reproduced_not_fixed",
+    "intendedIteration": 8,
+    "baseResultCommit": "4edb7b923ec66ff2e119a6dd6efb51d400c3a610",
+    "submitted": false,
+    "resultZipUnchanged": "AI-01-20261019-iteration-007",
+    "reproduction": "Non-stop completion accepted as final or truncated generation repeated; new9 tests fail as expected before implementation.",
+    "nextAction": "Implement completion-state checks in allowed lib/ai.ts and lib/quiz-review.ts, preserve equivalent-answer acceptance, rerun targeted tests then required checks. Do not mix this unfinished draft into iteration007."
+  },
+  "mainAcceptance": {
+    "submissionId": "AI-01-20261019-iteration-007",
+    "reportedAccepted": true,
+    "doNotReapply": true,
+    "acceptedHashesPath": "/workspace/ai01-state/received/MAIN-AI01-20261019130153/ACCEPTED_PEER_FILES.json"
+  },
+  "loopCoordination": {
+    "repository": "minsec2314-cloud/pace-ai-work",
+    "branch": "coordination/pace-main-ai01",
+    "lastProcessedMessageId": "PACE-LOOP-20261019125859",
+    "lastProcessedNonce": "PACE-LOOP-20261019125859",
+    "lastRequestCommit": "adc3ed1cedd8e5162614f700c4a5bc35815998a1",
+    "lastReplyCommit": "c300899a0363e8f6de21f07817a7c49f8817d7f4",
+    "lastInvocationSource": "manual",
+    "observedCheckpointSha256": "80cab546e1621e1bf57ff5bbb847d823111043eb2aba8bcfc571445fae232203",
+    "observedCheckpointSnapshot": "/workspace/ai01-state/loop-checks/PACE-LOOP-20261019125859/observed-checkpoint.json",
+    "manualResumeProbePassed": true,
+    "awaitingMainAcknowledgment": true,
+    "awaitingActualScheduledResume": true,
+    "productDevelopmentPaused": true,
+    "responseJsonPath": "coordination/AI01_TO_MAIN.json",
+    "responseMarkdownPath": "coordination/AI01_TO_MAIN.md",
+    "nextScheduledRunAction": "Read remote RULES.md and MAIN_TO_AI01.md once. If this is the first actual scheduler-triggered run, update own response with fresh source/checkpoint/probe and actual event evidence even if nonce is unchanged. Otherwise do not reprocess an unchanged request. Never infer scheduler origin from a manual user message.",
+    "replyReadBackVerified": true,
+    "replyReadBackUrl": "https://github.com/minsec2314-cloud/pace-ai-work/raw/c300899a0363e8f6de21f07817a7c49f8817d7f4/coordination/AI01_TO_MAIN.json"
+  }
 }

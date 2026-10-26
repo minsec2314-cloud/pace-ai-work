@@ -1,14 +1,21 @@
-# PACE AI-01 result delivery
+# AI-01 verified original workspace recovery
 
-This branch contains generated result ZIPs and review metadata only. It does not change or deploy the product or default branch. Each ZIP is a cumulative change against original bundle PACE-AI-01-7145f0f360-r3, sourceCommit 7145f0f3601cd4a6a369a80006fa73cbd142054d. Do not apply these submissions one after another as incremental patches.
+This kit preserves the actual source history and unfinished008 draft received from AI-01. It is not a new completed submission. Accepted007 must never be reapplied to the main product.
 
-Iteration 002 contains only review-failure retry prevention, error classification and regression tests; strict answer agreement from iteration 001 is withdrawn. Later iterations are separate checkpointed improvements. Latest submission: iteration 007. Real model accuracy remains unverified. There is no scheduled resume or quota-inspection tool.
+## Restore in any new scheduled environment
 
-Reports describe the state when each ZIP was created. This branch is only the subsequent delivery mechanism; product source branches were not pushed, merged or deployed. The main AI has not been automatically notified.
+Use the existing authorized GitHub connection, or clone this recovery branch, to obtain these kit files together. The branch is recovery/ai01-original-20261026-001 in minsec2314-cloud/pace-ai-work. Node >=22.13 and Git are required. Do not assume the original /workspace paths still exist.
 
-- Iteration 002: [AI-01-20261019-iteration-002](iteration-002/PACE_AI_01_result.zip) — 30102 bytes; SHA256 `8112d71a7327475076075d7eb9a9265389b860fb5eff204a17b9c6ff1a3a8ca9`; local result commit `45f29ddaf48cf8b77ab699576ed534fba4590463`.
-- Iteration 003: [AI-01-20261019-iteration-003](iteration-003/PACE_AI_01_result.zip) — 35330 bytes; SHA256 `328d7e52bf9bc32dec2324e255412f02197e0b9ccf8a22726416d2fc96c8e048`; local result commit `7c3ed3d487a263ae750fc9fd5c75871245697c73`.
-- Iteration 004: [AI-01-20261019-iteration-004](iteration-004/PACE_AI_01_result.zip) — 44151 bytes; SHA256 `9998e02751a51f0cfcffa36823c70e05f0f2bf10c36a22f843f2090abe0abe16`; local result commit `084b7fe8e6cc46beec2ac26ce1dcc42ceb378f12`.
-- Iteration 005: [AI-01-20261019-iteration-005](iteration-005/PACE_AI_01_result.zip) — 49184 bytes; SHA256 `30fc4983a73122e9983ba4553b1d4758e75079d55312c996516a2f4144ceadcb`; local result commit `5c0c41cc526739ab7dec2abe6a548c52ef38886c`.
-- Iteration 006: [AI-01-20261019-iteration-006](iteration-006/PACE_AI_01_result.zip) — 52807 bytes; SHA256 `57e85d72408e41b6baa0141b8fa5aa040fc1b6c763c42f67e4875c43d6ca6b96`; local result commit `94e2d7e4da546eebb3dc6ece6883fc495dcc8340`.
-- Iteration 007: [AI-01-20261019-iteration-007](iteration-007/PACE_AI_01_result.zip) — 56138 bytes; SHA256 `ce6bda65a188fb13e765a0b0a2db373cb91c8041bde7df3cfc71d16844d8f275`; local result commit `4edb7b923ec66ff2e119a6dd6efb51d400c3a610`.
+Run from the kit folder:
+
+    node RESTORE.mjs /workspace/pace-ai01-original-restored-20261026-001
+
+The target must be absent or empty, outside this kit. Existing work is never overwritten. The helper verifies bundle/patch/checkpoint hashes, clones exact HEAD4edb7b923ec66ff2e119a6dd6efb51d400c3a610, applies only the two uncommitted008 test changes, compares384 tracked files, copies the actual received checkpoints under recovery-state, and runs a three-test non-billable source probe. No dependency install, deployment or real-model request occurs. The copied old absolute paths are historical; use the emitted sourceDirectory and checkpointMappedCopy.
+
+On subsequent scheduled runs first read coordination/MAIN_TO_AI01.md and any newer durable runtime state or actual result. If a workspace already exists, inspect and preserve its unsubmitted work; do not re-run restoration over it. If a cloud job is fresh, restore from this immutable kit into a new directory, then recover the latest saved working patch/checkpoint according to main's current instructions. Before ending each development run, save changes and checkpoint durably via the agreed result/coordination paths; ephemeral /workspace files alone are insufficient.
+
+## Known verification and limits
+
+Main verified424 exported file hashes, full Git history,384 restored working-tree hashes,9 accepted007 HEAD hashes, focused3/3 pass and008's expected9 failures. History scan found no supported credential patterns or forbidden private paths.008 remains an unfinished reproduction draft. No receipt/checkpoint was invented: CHECKPOINT_AS_RECEIVED.json and DRAFT_CHECKPOINT_AS_RECEIVED.json are exact received bytes. Full original ZIP remains preserved by main.
+
+This kit does not rebind or enable the other account's scheduler. A real scheduled invocation must still read the restored source/checkpoint and record an actual probe in its own AI01_TO_MAIN.json before the loop gate passes. Do not claim success from this helper alone. Preserve10% peer/40% main budget rules, file ownership, no paid fallback, and no deployment by peer.

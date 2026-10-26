@@ -1,0 +1,26 @@
+diff --git a/PACE_AI_WORKSPACE/source/tests/ai.test.mjs b/PACE_AI_WORKSPACE/source/tests/ai.test.mjs
+index fae09d4..e54f9ca 100644
+--- a/PACE_AI_WORKSPACE/source/tests/ai.test.mjs
++++ b/PACE_AI_WORKSPACE/source/tests/ai.test.mjs
+@@ -88,3 +88,9 @@ test('duplicate material IDs are rejected in ask mode before consuming model quo
+ test('distinct IDs remain valid even when lesson and exam excerpts happen to match',()=>{
+  assert.equal(validateAIInput({...teacherQuiz,materials:[material,{...past,sections:material.sections}]}).materials.length,2);
+ });
++
++for(const reason of ['length','content_filter','tool_calls',null,undefined])test(`non-completed generation is never accepted or automatically repeated: ${String(reason)}`,async()=>{
++ let calls=0;
++ await assert.rejects(generateAI(ask,'synthetic-only',async()=>{calls++;return Response.json({choices:[{finish_reason:reason,message:{content:JSON.stringify({text:'표면상 완성된 설명',referenceIds:[]})}}]});}),e=>e.status===502);
++ assert.equal(calls,1);
++});
+diff --git a/PACE_AI_WORKSPACE/source/tests/quiz-review.test.mjs b/PACE_AI_WORKSPACE/source/tests/quiz-review.test.mjs
+index ba6108c..a02f0e8 100644
+--- a/PACE_AI_WORKSPACE/source/tests/quiz-review.test.mjs
++++ b/PACE_AI_WORKSPACE/source/tests/quiz-review.test.mjs
+@@ -23,3 +23,7 @@ for(const c of [
+  const result=await reviewQuestions([draft],c.subject,'synthetic-only',Date.now()+20000,async()=>Response.json({choices:[{finish_reason:'stop',message:{content:JSON.stringify({solutions:[{answer:c.review,explanation:'자작 모의 동치 답'}]})}}]}));
+  assert.equal(result[0].answer,c.review);assert.deepEqual(result[0].citations,draft.citations);assert.equal(draft.answer,c.draft);
+ });
++
++for(const reason of ['content_filter','tool_calls',null,undefined])test(`non-completed review is not a checked quiz: ${String(reason)}`,async()=>{
++ await assert.rejects(reviewQuestions(questions,'수학','synthetic-only',Date.now()+20000,async()=>Response.json({choices:[{finish_reason:reason,message:{content:JSON.stringify({solutions:[{answer:'5',explanation:'표면상 완성된 풀이'}]})}}]})),e=>e.status===502);
++});

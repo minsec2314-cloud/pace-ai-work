@@ -1,0 +1,9 @@
+{
+  "status": "reproduced_not_fixed",
+  "intendedIteration": 8,
+  "baseResultCommit": "4edb7b923ec66ff2e119a6dd6efb51d400c3a610",
+  "submitted": false,
+  "resultZipUnchanged": "AI-01-20261019-iteration-007",
+  "reproduction": "Non-stop completion accepted as final or truncated generation repeated; new9 tests fail as expected before implementation.",
+  "nextAction": "Implement completion-state checks in allowed lib/ai.ts and lib/quiz-review.ts, preserve equivalent-answer acceptance, rerun targeted tests then required checks. Do not mix this unfinished draft into iteration007."
+}
