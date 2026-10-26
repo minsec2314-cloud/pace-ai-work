@@ -1,28 +1,12 @@
 {
+  "observedAt": "2026-10-26T13:51:32.284531+00:00",
   "invocationSource": "scheduler",
-  "observedAt": "2026-10-26T12:57:14.553Z",
-  "lastProcessedMainMessageId": "PACE-RECOVERY-READY-20261026-001",
-  "originalCheckpointSha256": "36fefdd3b6ad75a08d3386ec1ad958bc465a3abdc0a49d5f60d0be52ccbe6a9f",
-  "restoration": {
-    "kind": "main_recovery_helper_result_not_scheduler_proof",
-    "head": "4edb7b923ec66ff2e119a6dd6efb51d400c3a610",
-    "trackedFilesMatched": 384,
-    "sourceDirectory": "/workspace/pace-ai01-restored-20261026-001/checkout/PACE_AI_WORKSPACE/source",
-    "checkpointMappedCopy": "/workspace/pace-ai01-restored-20261026-001/recovery-state/CHECKPOINT_AS_RECEIVED.json",
-    "draftPreserved": true,
-    "draftFixed": false,
-    "probeExitCode": 0,
-    "probePassed": true,
-    "scheduledResumeVerified": false
-  },
-  "nextAction": "Reproduce saved 008 failures, inspect completion-state handling in allowed lib/ai.ts and lib/quiz-review.ts, then implement one small fix.",
-  "originalSubmissionId": "AI-01-20261019-iteration-007",
-  "draftFixed": false,
   "scheduledResumeVerified": true,
-  "probe": {
-    "command": "node --test --test-name-pattern='duplicate material IDs|distinct IDs' tests/ai.test.mjs",
-    "exitCode": 0,
-    "passed": 3,
-    "failed": 0
-  }
+  "lastProcessedMainMessageId": "PACE-RECOVERY-READY-20261026-001",
+  "draft": "008 implemented_pending_full_validation",
+  "tests": {
+    "targeted": "55 pass 0 fail",
+    "full": "blocked by missing dependencies; see report"
+  },
+  "nextAction": "Provide existing dependencies or install authorized non-billable dependencies, run full tests/type/build, then package cumulative original-bundle submission"
 }
