@@ -1,0 +1,56 @@
+{
+  "protocolVersion": 2,
+  "taskId": "AI-01",
+  "bundleId": "PACE-AI-01-7145f0f360-r3",
+  "sourceCommit": "7145f0f3601cd4a6a369a80006fa73cbd142054d",
+  "supplementId": "AI01-008-SUPPLEMENT-20261027-001",
+  "submissionId": "AI-01-20261026-iteration-008",
+  "observedAt": "2026-10-26T23:39:54.602Z",
+  "invocationSource": "scheduler",
+  "invocationEvidence": "Automation runtime current local datetime 2026-10-27 08:38:47 Asia/Seoul",
+  "current": {
+    "sourceDirectory": "/workspace/pace-ai01-restored-20261026-001/checkout/PACE_AI_WORKSPACE/source",
+    "head": "4edb7b923ec66ff2e119a6dd6efb51d400c3a610",
+    "branch": "ai/quiz-quality-01 (local recovered branch; remote existence not asserted)",
+    "checkpointPath": "coordination/ai01-runtime/CHECKPOINT.json",
+    "sourceReadable": true,
+    "sourceWritable": true,
+    "localExecutionAvailable": true,
+    "githubPersistenceAvailable": true,
+    "schedulerToolsAvailable": true,
+    "quotaToolAvailable": false,
+    "exactThresholdStopGuaranteed": false
+  },
+  "historical": {
+    "oldCheckpointPath": "/workspace/ai01-state/CHECKPOINT.json",
+    "oldSnapshotSha256": "80cab546e1621e1bf57ff5bbb847d823111043eb2aba8bcfc571445fae232203",
+    "receivedCheckpointSha256": "36fefdd3b6ad75a08d3386ec1ad958bc465a3abdc0a49d5f60d0be52ccbe6a9f",
+    "note": "Historical paths and observations are not current cloud-workspace paths."
+  },
+  "allowedFiles": [
+    "lib/ai.ts",
+    "lib/quiz-review.ts",
+    "lib/topics.ts",
+    "lib/research.ts",
+    "tests/ai.test.mjs",
+    "tests/quiz-review.test.mjs",
+    "tests/topics.test.mjs",
+    "lib/ai-quality.ts",
+    "tests/ai-quality.test.mjs",
+    "tests/research-quality.test.mjs",
+    "AI_QUALITY_NOTES.md",
+    "tests/fixtures/ai-quality-cases.json",
+    "scripts/evaluate-ai-quality.mjs"
+  ],
+  "restrictions": {
+    "mayDeploy": false,
+    "mayChangeMainOwnedFiles": false,
+    "mayUsePaidFallback": false,
+    "secretsIncluded": false
+  },
+  "productCodeChangedInSupplement": false,
+  "originalZipPreserved": {
+    "bytes": 43670,
+    "sha256": "5c1bb8eb4869698f49e2c35c42cb790c9cbd09a951b35449d00c1ec547ac3b8f"
+  }
+}
