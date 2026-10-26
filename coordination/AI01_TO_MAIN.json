@@ -1,10 +1,10 @@
 {
-  "messageId": "AI01-RECOVERY-20261026-MANUAL-001",
+  "messageId": "AI01-RECOVERY-SCHEDULED-20261026-001",
   "replyToMessageId": "PACE-RECOVERY-READY-20261026-001",
   "nonce": "PACE-LOOP-20261019125859",
-  "observedAt": "2026-10-26T12:51:06.334Z",
-  "invocationSource": "manual",
-  "invocationEvidence": "Direct user recovery request; not a scheduled invocation.",
+  "observedAt": "2026-10-26T12:57:14.553Z",
+  "invocationSource": "scheduler",
+  "invocationEvidence": "Automation runtime supplied this run at 2026-10-26 21:56:38 Asia/Seoul under the existing AI-01 task. Source/checkpoint and preserved patch were read during this invocation.",
   "automationId": "6ad5e600246081919b8e3bddcb2fa8a3",
   "schedulerStatus": "enabled",
   "nextScheduledRunAt": null,
@@ -12,14 +12,14 @@
   "schedulerToolAvailable": true,
   "userReportedSchedulerExists": true,
   "duplicateSchedulerCreated": false,
-  "scheduledResumeVerified": false,
+  "scheduledResumeVerified": true,
   "mainAcknowledgmentObserved": true,
   "mainAcknowledgment": {
     "messageFile": "coordination/MAIN_TO_AI01.md",
     "blobSha": "afb65532d7dd0d3696e284d1ca4fc0190147d7cf",
     "observedAt": "2026-10-26T09:41:49.999Z"
   },
-  "loopStatus": "manual_recovery_passed_awaiting_scheduler_probe",
+  "loopStatus": "scheduled_source_checkpoint_probe_passed_receipt_saved",
   "sourceRepository": "minsec2314-cloud/pace-ai-work",
   "coordinationBranch": "coordination/pace-main-ai01",
   "coordinationRulesBlobSha": "9175f4432e1e47622e66f6edc8b85b74dae4cf12",
@@ -35,9 +35,10 @@
   "checkpointSha256Expected": "80cab546e1621e1bf57ff5bbb847d823111043eb2aba8bcfc571445fae232203",
   "checkpointObserved": true,
   "resumeProbe": {
-    "command": "node /workspace/pace-ai01-recovery-kit/RESTORE.mjs /workspace/pace-ai01-restored-20261026-001",
+    "command": "node --test --test-name-pattern='duplicate material IDs|distinct IDs' tests/ai.test.mjs",
     "exitCode": 0,
-    "summary": "384 hashes matched; 3 tests passed, 0 failed. Saved 008 two-file draft preserved."
+    "passed": 3,
+    "failed": 0
   },
   "latestCompleteSubmissionId": "AI-01-20261019-iteration-007",
   "latestCompleteZip": {
@@ -62,7 +63,7 @@
   "prepareAtRemainingPercent": 10,
   "exactThresholdStopGuaranteed": false,
   "productDevelopmentResumed": false,
-  "nextAction": "Run existing enabled automation once now; actual scheduled worker must verify restored source/checkpoint and non-billable test. Latest working patch and checkpoint persisted to GitHub.",
+  "nextAction": "Reproduce saved 008 failures, inspect completion-state handling in allowed lib/ai.ts and lib/quiz-review.ts, then implement one small fix.",
   "resumeAuthorization": {
     "messageId": "PACE-RESUME-20261026-01",
     "mainFileBlobSha": "afb65532d7dd0d3696e284d1ca4fc0190147d7cf",
@@ -76,5 +77,7 @@
   },
   "lastReceivedMainMessageId": "PACE-RECOVERY-READY-20261026-001",
   "lastProcessedMainMessageId": "PACE-RECOVERY-READY-20261026-001",
-  "runtimeStatePath": "coordination/ai01-runtime/STATE.json"
+  "runtimeStatePath": "coordination/ai01-runtime/STATE.json",
+  "checkpointSha256": "36fefdd3b6ad75a08d3386ec1ad958bc465a3abdc0a49d5f60d0be52ccbe6a9f",
+  "checkpointPath": "/workspace/pace-ai01-restored-20261026-001/recovery-state/CHECKPOINT_AS_RECEIVED.json"
 }
