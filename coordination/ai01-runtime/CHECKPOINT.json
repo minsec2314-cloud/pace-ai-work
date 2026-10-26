@@ -1,0 +1,21 @@
+{
+  "invocationSource": "manual",
+  "observedAt": "2026-10-26T12:50:30.389098+00:00",
+  "lastProcessedMainMessageId": "PACE-RECOVERY-READY-20261026-001",
+  "originalCheckpointSha256": "36fefdd3b6ad75a08d3386ec1ad958bc465a3abdc0a49d5f60d0be52ccbe6a9f",
+  "restoration": {
+    "kind": "main_recovery_helper_result_not_scheduler_proof",
+    "head": "4edb7b923ec66ff2e119a6dd6efb51d400c3a610",
+    "trackedFilesMatched": 384,
+    "sourceDirectory": "/workspace/pace-ai01-restored-20261026-001/checkout/PACE_AI_WORKSPACE/source",
+    "checkpointMappedCopy": "/workspace/pace-ai01-restored-20261026-001/recovery-state/CHECKPOINT_AS_RECEIVED.json",
+    "draftPreserved": true,
+    "draftFixed": false,
+    "probeExitCode": 0,
+    "probePassed": true,
+    "scheduledResumeVerified": false
+  },
+  "nextAction": "Actual scheduled source probe, then continue saved 008 completion-state draft",
+  "originalSubmissionId": "AI-01-20261019-iteration-007",
+  "draftFixed": false
+}
