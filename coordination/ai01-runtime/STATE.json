@@ -1,9 +1,16 @@
 {
   "baseHead": "4edb7b923ec66ff2e119a6dd6efb51d400c3a610",
   "patchSha256": "4451faae31f82c64e8b360df83d1db20290cd691dc401f80efc1cff8ee4fff39",
-  "checkpointSha256": "76eaefbf1e22a5341a104577f525de41e3415597a63c01078b0814ee2e9e4b85",
-  "lastProcessedMainMessageId": "PACE-RECOVERY-READY-20261026-001",
+  "checkpointSha256": "a1a79767d2a12ad9d5c11c49b2206271d9638c7e5d9e2fdfddd368b60f0b2991",
+  "lastProcessedMainMessageId": "PACE-API-COMPAT-20261027-001",
   "latestCompleteSubmissionId": "AI-01-20261026-iteration-008",
   "draft": "008 completed_pending_main_review",
-  "nextAction": "Read main acknowledgment; do not resubmit or reapply unchanged008."
+  "nextAction": "Independent MAIN20 availability QA in isolated synthetic browser storage; never use original008 source as MAIN20 implementation.",
+  "processedMainMessageIds": [
+    "PACE-ACK008-20261027-001",
+    "PACE-MAIN20-20261027-001",
+    "PACE-QA-MAIN20-20261027-001",
+    "PACE-API-COMPAT-20261027-001"
+  ],
+  "supplementId": "AI01-008-SUPPLEMENT-20261027-001"
 }
