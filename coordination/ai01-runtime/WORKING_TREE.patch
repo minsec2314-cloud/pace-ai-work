@@ -1,3 +1,39 @@
+diff --git a/PACE_AI_WORKSPACE/source/lib/ai.ts b/PACE_AI_WORKSPACE/source/lib/ai.ts
+index b09a0e8..b6033e7 100644
+--- a/PACE_AI_WORKSPACE/source/lib/ai.ts
++++ b/PACE_AI_WORKSPACE/source/lib/ai.ts
+@@ -73,9 +73,9 @@ export async function generateAI(body:unknown,key:string,fetcher:typeof fetch=fe
+   let response:Response;
+   try{response=await fetcher('https://api.groq.com/openai/v1/chat/completions',{method:'POST',headers:{'Authorization':`Bearer ${key}`,'Content-Type':'application/json'},body:JSON.stringify({model:'openai/gpt-oss-120b',temperature:.2,reasoning_effort:input.mode==='quiz'?'medium':'low',max_completion_tokens:input.mode==='ask'?2400:5500,response_format:{type:'json_object'},messages:[{role:'system',content:system+repair},...input.history,{role:'user',content:JSON.stringify({subject:input.subject,request:input.question,referenceMaterial:context})}]}),signal:AbortSignal.timeout(Math.max(1000,deadline-Date.now()))});}catch{throw new AIError('AI 연결 시간이 초과되었거나 네트워크에 연결할 수 없습니다. 잠시 후 다시 시도해 주세요.',504);}
+   if(!response.ok){if(response.status===429)throw new AIError('무료 AI 사용 한도에 도달했어요. 잠시 후 다시 시도해 주세요. 유료 모델로 전환하지 않습니다.',429);if([401,403].includes(response.status))throw new AIError('AI 키를 사용할 수 없습니다. 운영자가 키와 무료 플랜 상태를 확인해 주세요.',503);throw new AIError('AI 제공 서버가 응답하지 못했습니다. 잠시 후 다시 시도해 주세요.',502);}
+-  let reviewing=false;
++  let reviewing=false, incomplete=false;
+   try{
+-   const raw=await response.json() as {choices:{message:{content:string};finish_reason:string}[]};if(raw.choices[0]?.finish_reason==='length')throw new AIError('AI 답변이 길어 끝까지 생성되지 않았습니다. 문제 수를 줄여 주세요.',502);
++   const raw=await response.json() as {choices:{message:{content:string};finish_reason:string}[]};if(raw.choices?.[0]?.finish_reason!=='stop'){incomplete=true;throw new AIError('AI 답변이 길어 끝까지 생성되지 않았습니다. 문제 수를 줄여 주세요.',502);}
+    let output:Record<string,unknown>;try{output=JSON.parse(raw.choices[0]?.message?.content);}catch{throw new AIError('AI 답변 형식을 읽지 못했습니다. 다시 요청해 주세요.',502);}
+    if(input.mode==='topics')return {ideas:readTopicIdeas(output)};
+    const citationsFor=(value:Record<string,unknown>)=>{const refs=resolveReferences(value.referenceIds,context);return refs.length?refs:verifyCitations(value.citations,context);};
+@@ -101,7 +101,7 @@ export async function generateAI(body:unknown,key:string,fetcher:typeof fetch=fe
+    reviewing=true;
+    const reviewed=await reviewQuestions(questions,input.subject,key,deadline,fetcher);
+    return {title:typeof output.title==='string'?output.title:`${input.subject} ${input.quizMode==='exam'?'예상':'연습'} 문제`,analysis:output.analysis.slice(0,12000),analysisCitations,patterns,limitations:[typeof output.limitations==='string'?output.limitations:'',input.quizMode==='exam'?'선택한 기출에서 관찰한 특징과 수업 자료 일부를 참고한 연습용 예상 문제입니다. 실제 출제를 보장하지 않습니다.':'공부를 위한 일반 연습 문제이며 선생님별 출제를 예측하지 않습니다.','문제만 보고 다시 푸는 AI 검산을 거쳤지만 오류가 있을 수 있습니다. 출처 연결은 원문 블록의 존재를 확인한 것이며 공식 정답 검증을 대신하지 않습니다.'].filter(Boolean).join(' '),questions:reviewed};
+-  }catch(e){if(!reviewing&&attempt===0&&deadline-Date.now()>5000)continue;throw e instanceof AIError?e:new AIError(e instanceof Error?e.message:'AI 결과를 읽지 못했습니다.',502);}
++  }catch(e){if(!reviewing&&!incomplete&&attempt===0&&deadline-Date.now()>5000)continue;throw e instanceof AIError?e:new AIError(e instanceof Error?e.message:'AI 결과를 읽지 못했습니다.',502);}
+  }
+  throw new AIError('문제를 만들지 못했습니다. 다시 요청해 주세요.',502);
+ }
+diff --git a/PACE_AI_WORKSPACE/source/lib/quiz-review.ts b/PACE_AI_WORKSPACE/source/lib/quiz-review.ts
+index 5b43cf2..078e491 100644
+--- a/PACE_AI_WORKSPACE/source/lib/quiz-review.ts
++++ b/PACE_AI_WORKSPACE/source/lib/quiz-review.ts
+@@ -9,5 +9,5 @@ export async function reviewQuestions(questions:QuizQuestion[],subject:string,ke
+  let response:Response;
+  try{response=await fetcher('https://api.groq.com/openai/v1/chat/completions',{method:'POST',headers:{Authorization:`Bearer ${key}`,'Content-Type':'application/json'},body:JSON.stringify({model:'openai/gpt-oss-120b',temperature:0,reasoning_effort:'medium',max_completion_tokens:5500,response_format:{type:'json_object'},messages:[{role:'system',content:`${QUIZ_REVIEW_MARKER}. 고등학교 학습 문제를 처음부터 직접 푸세요. 이전에 제시된 답이나 원문 선택지에 맞추려고 계산 결과를 바꾸지 마세요. 각 문항은 제공된 question의 조건만 사용합니다. 풀이 중 수치 계산, 대입 검산, 정의역과 부호를 확인하세요. 해가 없거나 조건이 부족하면 억지로 정답을 만들지 말고 error에 사유를 적으세요. 문항 수와 순서를 유지한 JSON {solutions:[{answer:string,explanation:string,error?:string}]}만 반환하세요. 수식은 올바른 LaTeX를 $...$ 또는 $$...$$로 감싸고 역슬래시는 JSON에 맞게 이스케이프하세요. explanation의 결론은 answer와 반드시 같아야 합니다.`},{role:'user',content:JSON.stringify({subject,questions:questions.map(q=>({question:q.question,type:q.type}))})}]}),signal:AbortSignal.timeout(remaining)});}catch{throw new AIError('정답 검산 연결 시간이 초과됐습니다. 문제 수를 줄여 다시 요청해 주세요.',504);}
+  if(!response.ok)throw new AIError(response.status===429?'정답 검산 중 무료 AI 한도에 도달했습니다. 잠시 후 다시 시도해 주세요.':[401,403].includes(response.status)?'AI 키를 사용할 수 없어 정답 검산을 완료하지 못했습니다. 운영자가 연결 상태를 확인해 주세요.':'정답 검산을 완료하지 못해 문제를 저장하지 않았습니다. 다시 시도해 주세요.',response.status===429?429:[401,403].includes(response.status)?503:502);
+- try{const raw=await response.json() as {choices:{finish_reason:string;message:{content:string}}[]};if(raw.choices?.[0]?.finish_reason==='length')throw Error('검산 결과가 너무 깁니다. 문제 수를 줄여 주세요.');const result=JSON.parse(raw.choices[0].message.content) as {solutions:unknown[]};if(!Array.isArray(result.solutions)||result.solutions.length!==questions.length)throw Error('정답 검산 결과의 문항 수가 일치하지 않습니다.');return questions.map((q,i)=>{const s=result.solutions[i] as {answer?:unknown;explanation?:unknown;error?:unknown};if(!s||s.error||typeof s.answer!=='string'||!s.answer.trim()||typeof s.explanation!=='string'||!s.explanation.trim()||s.answer.length>4000||s.explanation.length>6000)throw Error('조건이 부족하거나 검산하지 못한 문항이 있어 다시 생성해야 합니다.');return {...q,answer:s.answer,explanation:s.explanation};});}catch(e){throw new AIError(e instanceof Error?e.message:'검산 결과를 읽지 못했습니다.',502);}
++ try{const raw=await response.json() as {choices:{finish_reason:string;message:{content:string}}[]};if(raw.choices?.[0]?.finish_reason!=='stop')throw Error('검산 결과가 너무 깁니다. 문제 수를 줄여 주세요.');const result=JSON.parse(raw.choices[0].message.content) as {solutions:unknown[]};if(!Array.isArray(result.solutions)||result.solutions.length!==questions.length)throw Error('정답 검산 결과의 문항 수가 일치하지 않습니다.');return questions.map((q,i)=>{const s=result.solutions[i] as {answer?:unknown;explanation?:unknown;error?:unknown};if(!s||s.error||typeof s.answer!=='string'||!s.answer.trim()||typeof s.explanation!=='string'||!s.explanation.trim()||s.answer.length>4000||s.explanation.length>6000)throw Error('조건이 부족하거나 검산하지 못한 문항이 있어 다시 생성해야 합니다.');return {...q,answer:s.answer,explanation:s.explanation};});}catch(e){throw new AIError(e instanceof Error?e.message:'검산 결과를 읽지 못했습니다.',502);}
+ }
 diff --git a/PACE_AI_WORKSPACE/source/tests/ai.test.mjs b/PACE_AI_WORKSPACE/source/tests/ai.test.mjs
 index fae09d4..e54f9ca 100644
 --- a/PACE_AI_WORKSPACE/source/tests/ai.test.mjs
