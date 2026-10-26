@@ -1,0 +1,26 @@
+{
+  "kind": "offline_restoration_probe",
+  "observedAt": "2026-10-26T11:55:11.060470+00:00",
+  "bundleVerify": "pass_complete_history",
+  "restoredHead": "4edb7b923ec66ff2e119a6dd6efb51d400c3a610",
+  "restoredBranch": "ai/quiz-quality-01",
+  "draftPatchApplyCheck": true,
+  "draftPatchApplied": true,
+  "workingTreeFilesMatched": 384,
+  "checkpointSha256Matched": "36fefdd3b6ad75a08d3386ec1ad958bc465a3abdc0a49d5f60d0be52ccbe6a9f",
+  "draftPatchMatchesSaved008": true,
+  "probe": {
+    "command": "node --test --test-name-pattern='duplicate material IDs|distinct IDs' PACE_AI_WORKSPACE/source/tests/ai.test.mjs",
+    "exitCode": 0,
+    "passed": 3,
+    "failed": 0,
+    "skipped": 0,
+    "billableModelCalls": 0,
+    "logSha256": "2453cedf99a5cc23366b606b762d8088f1ee693d05ca6605e2eb2bbbbebe4420"
+  },
+  "dependenciesRestored": false,
+  "privateEnvironmentFilesIncluded": false,
+  "fullAppBuildRerun": false,
+  "schedulerRebound": false,
+  "scheduledRunVerified": false
+}
