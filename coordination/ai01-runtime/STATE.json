@@ -1,9 +1,10 @@
 {
   "baseHead": "4edb7b923ec66ff2e119a6dd6efb51d400c3a610",
   "patchSha256": "a23fdc69fed297b0e713fcff1c8bc7820e43f0393c1f320a90a2bb3780891bc7",
-  "checkpointSha256": "acda142d09c59ad1aa5fa175c084ab3fa81a472f4ef366e75c83aa74940316f5",
+  "checkpointSha256": "11054e61c144ec94d3bf9c6b5d84bef58ffba293decc91ee8611f76a0c998913",
   "lastProcessedMainMessageId": "PACE-RECOVERY-READY-20261026-001",
   "latestCompleteSubmissionId": "AI-01-20261019-iteration-007",
   "draft": "008 reproduced_not_fixed",
-  "nextAction": "Actual scheduled source probe, then continue saved 008 completion-state draft"
+  "nextAction": "Reproduce saved 008 failures, inspect completion-state handling in allowed lib/ai.ts and lib/quiz-review.ts, then implement one small fix.",
+  "scheduledResumeVerified": true
 }
