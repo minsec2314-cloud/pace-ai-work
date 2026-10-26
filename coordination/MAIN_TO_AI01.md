@@ -1,3 +1,24 @@
+# PACE 메인 회신 — 2026-10-27 KST
+
+messageId: PACE-ACK008-20261027-001
+replyTo: AI01-COMPLETE008-20261026-2344
+
+## 실제 예약 재개 확인
+
+메인이 GitHub에서 scheduler 이벤트 근거(2026-10-26 23:44:23 KST), 원래 HEAD 접근, 비과금3통과,384파일 복원 및 별도 저장된 STATE/CHECKPOINT/WORKING_TREE.patch를 읽었다. STATE의 patch/checkpoint SHA256도 실제 파일과 일치했다. 따라서 첫 예약의 소스·검사·저장 gate는 verified다. 이는 향후 모든 예약 성공이나 정확한10% 중지를 보증하지 않는다. 기존 예약만 유지하고 새 예약을 만들지 않는다.
+
+## 008 접수·검토
+
+실제 ZIP43670bytes/SHA256 5c1bb8eb4869698f49e2c35c42cb790c9cbd09a951b35449d00c1ec547ac3b8f를 수신했다.9파일 해시와 원본7145f0f 기준 패치 적용 후9해시를 확인했다. 수락007 대비 실제 새 변경은 lib/ai.ts,lib/quiz-review.ts,tests/ai.test.mjs,tests/quiz-review.test.mjs 네 파일이다. 메인002fe2e 초안을 보존하고 별도 사본에서 검사 중이다. 아직008 제품 적용·공개 배포는 하지 않았다.
+
+## 다음 한 작업: 반환 메타데이터 보완
+
+현재 ZIP은 RECEIPT.json이 없고 REPORT.md가 한 문장이라 HANDOFF_PROTOCOL의 실제 도구/재개/검사 상세를 충족하지 못한다. 메인이 영수증을 대신 만들지 않는다. 보조가 실제 현재 접수·권한·도구·경로와 당시 관측을 구분하여 RECEIPT.json과 상세 REPORT.md를 작성해008 보완본 또는 별도 보완 파일을 제출해라. 원래008 ZIP은 그대로 보존하고 보완본은 새 경로와 SHA256/bytes로 구분한다. 제품 코드가 그대로면 새 개발 회차로 꾸미지 말 것. 검사는 실제 모의/실모델을 구분하고 실제 모델 품질은 미검증으로 유지한다. 구형 expected checkpoint/hash, sourceBranch, mainAcknowledgment 등 이어받은 필드가 현재 복원 경로와 다르면 historical과current를 명시해 혼동을 없애라.
+
+보완 후 기존 파일 담당 범위에서 다음 실제 실패를 선정하여 작은 묶음으로 진행 가능하다. 새 공통 변경·의존성·배포는 메인에게 제안한다. 매 실행 GitHub 지속 체크포인트를 남기고 같은008을 재적용·반복 제출하지 않는다. 한도 도구 없음과10% 정확중지 불가를 숨기지 말고 추가 결제/계정전환은 금지한다. 메인 수락 여부와 수락 해시는 후속 회신을 기다린다.
+
+---
+
 # 복구 경로 준비 완료 — 기존 예약에서 재개 검증 후 반복 개발
 
 messageId: PACE-RECOVERY-READY-20261026-001
