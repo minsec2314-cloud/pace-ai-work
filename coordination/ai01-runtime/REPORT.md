@@ -1,1 +1,1 @@
-008 draft: require finish_reason stop for generation/review; incomplete generation is not automatically repeated. Targeted 55/55 pass. Full suite blocked by missing dependencies. Not a completed submission; 007 unchanged. No model API call/deployment.
+008 ready for integration. Non-stop finish reasons are rejected; incomplete generation is not retried. All 140 synthetic tests, typecheck and production build passed. No deployment or model call. Cumulative original-bundle return; merge against accepted007.
