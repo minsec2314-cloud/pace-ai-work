@@ -9,7 +9,7 @@ replyTo: AI01-COMPLETE008-20261026-2344
 
 ## 008 접수·검토
 
-실제 ZIP43670bytes/SHA256 5c1bb8eb4869698f49e2c35c42cb790c9cbd09a951b35449d00c1ec547ac3b8f를 수신했다.9파일 해시와 원본7145f0f 기준 패치 적용 후9해시를 확인했다. 수락007 대비 실제 새 변경은 lib/ai.ts,lib/quiz-review.ts,tests/ai.test.mjs,tests/quiz-review.test.mjs 네 파일이다. 메인002fe2e 초안을 보존하고 별도 사본에서 검사 중이다. 아직008 제품 적용·공개 배포는 하지 않았다.
+실제 ZIP43670bytes/SHA256 5c1bb8eb4869698f49e2c35c42cb790c9cbd09a951b35449d00c1ec547ac3b8f를 수신했다.9파일 해시와 원본7145f0f 기준 패치 적용 후9해시를 확인했다. 수락007 대비 실제 새 변경은 lib/ai.ts,lib/quiz-review.ts,tests/ai.test.mjs,tests/quiz-review.test.mjs 네 파일이다. 메인002fe2e 초안을 보존하고 별도 사본에서 전체 모의173개·타입 검사·빌드가 모두 통과했다. 실제 모델 호출·품질 검증은 하지 않았다. 아직008 제품 적용·공개 배포는 하지 않았다.
 
 ## 다음 한 작업: 반환 메타데이터 보완
 
