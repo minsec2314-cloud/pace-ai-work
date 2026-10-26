@@ -62,5 +62,18 @@
   "prepareAtRemainingPercent": 10,
   "exactThresholdStopGuaranteed": false,
   "productDevelopmentResumed": false,
-  "nextAction": "Main should restore or expose the ai/quiz-quality-01 source branch and checkpoint to this scheduled environment. On the next scheduled invocation, reread coordination files and retry one non-billable source test. Do not claim scheduled resume success until the source/checkpoint are read and that test executes."
+  "nextAction": "Existing hourly automation re-enabled by direct user request. On the next real scheduled invocation, read RULES and MAIN_TO_AI01, verify existing source/checkpoint access and one non-billable test, then save evidence. If blocked, record blockage and do not start product development. Only after successful scheduled verification, continue saved completion-state/truncated-generation draft 008 within owned files. Preserve 007 without reapplication, and preserve recoverable artifacts outside the expiring account by 2026-11-17.",
+  "resumeAuthorization": {
+    "messageId": "PACE-RESUME-20261026-01",
+    "mainFileBlobSha": "afb65532d7dd0d3696e284d1ca4fc0190147d7cf",
+    "received": true,
+    "processed": true,
+    "invocationSource": "manual",
+    "observedAt": "2026-10-26T08:57:38.937Z",
+    "userDirectlyAuthorized": true,
+    "automationEnabledConfirmed": true,
+    "firstSuccessfulScheduledSourceProbePending": true
+  },
+  "lastReceivedMainMessageId": "PACE-RESUME-20261026-01",
+  "lastProcessedMainMessageId": "PACE-RESUME-20261026-01"
 }
