@@ -1,10 +1,10 @@
 {
-  "messageId": "AI01-009-DRAFT-QUALITY-20261027",
+  "messageId": "AI01-CHAT-UI-RETURN-20261027-001",
   "replyToMessageId": "PACE-DELEGATE-20261027-002",
   "nonce": "PACE-LOOP-20261019125859",
-  "observedAt": "2026-10-27T03:01:03.147Z",
+  "observedAt": "2026-10-27T03:29:04.455Z",
   "invocationSource": "manual",
-  "invocationEvidence": "Direct user request to continue work now",
+  "invocationEvidence": "Direct user request to finish listed outstanding work",
   "automationId": "6ad5e600246081919b8e3bddcb2fa8a3",
   "schedulerStatus": "enabled",
   "nextScheduledRunAt": null,
@@ -87,7 +87,7 @@
   "prepareAtRemainingPercent": 10,
   "exactThresholdStopGuaranteed": false,
   "productDevelopmentResumed": true,
-  "nextAction": "Strengthen grounded literary claims and search relevance fixtures;thenCHAT/UI in separate verified main22 copy",
+  "nextAction": "P0: strengthen009 literary grounding and search filtering;UI candidate needs reachable preview and interaction/mobile checks;main reviews returned separate main22 patch. No deployment.",
   "resumeAuthorization": {
     "messageId": "PACE-RESUME-20261026-01",
     "mainFileBlobSha": "afb65532d7dd0d3696e284d1ca4fc0190147d7cf",
@@ -102,7 +102,7 @@
   "lastReceivedMainMessageId": "PACE-DELEGATE-20261027-002",
   "lastProcessedMainMessageId": "PACE-DELEGATE-20261027-002",
   "runtimeStatePath": "coordination/ai01-runtime/STATE.json",
-  "checkpointSha256": "efae1f0a317cee43313c5204234094d80e8057511df01b6945604852b8a149a9",
+  "checkpointSha256": "fcc75341614105770db54cc66cd91f54eeb0c3902ea398455e43760d70c31c2b",
   "checkpointPath": "coordination/ai01-runtime/CHECKPOINT.json",
   "validation": {
     "npmCi": "pass; lockfile unchanged; ignore-scripts",
@@ -277,6 +277,11 @@
           "evidence": "Browser AX settings text directly observed."
         }
       ]
+    },
+    "sourceRegression": {
+      "baseline": "9469f395ec4b597e4606bc4991ca4db7230f744d",
+      "result": "184 full local tests pass including original laptop forbidden/unknown vs paper,midnight deadline,byte-preserved completion and actual availability backup roundtrip. New chat backup roundtrip passed.",
+      "scope": "source/mock checks;does not replace UI case statuses"
     }
   },
   "mainAcceptance": {
@@ -300,5 +305,95 @@
     "finding": "Static inspection: ask output path accepts model text with empty citations when no context; generic warning does not validate claimed literary work/quotation. User-reported Sokmiingok model failure not independently reproduced.",
     "nextDesign": "Add mocked fabricated-quotation regression before bounded grounding guard; retain factual explanation and explicit creative requests; no extra model calls. Restore main22 into separate checkout before UI work.",
     "sourceKitFilesMatched": 377
+  },
+  "uiSubmission": {
+    "submissionId": "AI01-MAIN22-CHAT-UI-20261027-001",
+    "status": "review_candidate_ui_interaction_unverified",
+    "baseline": "9469f395ec4b597e4606bc4991ca4db7230f744d",
+    "sourceFilesVerified": 377,
+    "implemented": [
+      "topic-separated threads within subject/activity;legacy answers preserved",
+      "new thread starts with no history/materials/consent;per-thread in-component draft preservation",
+      "response captures original thread;immediate duplicate submit guard",
+      "rename/archive without deletion;no100-answer truncation;10000 answer cap refuses new sends",
+      "optional backup fields and actual backup roundtrip",
+      "12 feature guides with limits and guide entry",
+      "material details collapsed;subject remains directly visible;advanced server notifications collapsed;validation opens details",
+      "research summaries retain submitted query when search input changes;duplicate search guard"
+    ],
+    "validation": {
+      "tests": "184 pass,0 fail",
+      "typecheck": "pass",
+      "build": "pass",
+      "realModelCalls": 0,
+      "uiBrowserInteraction": "not_run:local candidate not published;no claim of live UI pass"
+    },
+    "limitations": [
+      "UI keyboard/mobile/switch-in-flight interaction still needs browser validation",
+      "Legacy backends and older app versions cannot load new backups above100 answers;new validator permits10000",
+      "Question draft persists on in-component switching,not browser reload",
+      "Literary/research quality work remains separate incomplete009;not included here",
+      "No authentication/permission/deployment changes"
+    ],
+    "files": [
+      {
+        "path": "app/study-app.tsx",
+        "bytes": 114828,
+        "sha256": "a4298bdd6ef3b88d0870eabe8567a15c1e8dacc739205cf924a474fffe247b1e"
+      },
+      {
+        "path": "app/globals.css",
+        "bytes": 87035,
+        "sha256": "1b009f6281ce723e3fa1848d09b9fd03500bd2e2e9c5c6f5f7b3c1fcf888e6d0"
+      },
+      {
+        "path": "lib/study.ts",
+        "bytes": 20094,
+        "sha256": "438b421853f9da24d952e90b3f69cde0c265a91a55e3069daf7bb03e051c2abc"
+      },
+      {
+        "path": "lib/chat-sessions.ts",
+        "bytes": 740,
+        "sha256": "b52e7726747d1b866c94c582c2b5f3d5d59dda9e086b8cd009ff1809c463ae3e"
+      },
+      {
+        "path": "lib/help-content.ts",
+        "bytes": 4321,
+        "sha256": "651756369023ebc5ac6eefb96b7b50936c2dc59e70bc6e380effa8f762c37e57"
+      },
+      {
+        "path": "components/user-guide.tsx",
+        "bytes": 591,
+        "sha256": "684764837888bb79d39931a4fc2e05a2b15a467bd4a2d02017fd6424a118baf4"
+      },
+      {
+        "path": "components/advanced-options.tsx",
+        "bytes": 368,
+        "sha256": "f7809bb3c81727a0b604871e1237d3f9d6128e198059ce3fb22e2b1cfa58f70a"
+      },
+      {
+        "path": "app/guide/page.tsx",
+        "bytes": 79,
+        "sha256": "ffceafd492f514a843ee43653210be671938f56a45f215dd1fda961b01d50c10"
+      },
+      {
+        "path": "tests/chat-sessions.test.mjs",
+        "bytes": 2564,
+        "sha256": "2d7ad4679ecc6582d0d0ad17d396ffbe2ca27e7285d9b751e71cebb08b6a4b06"
+      }
+    ],
+    "authReport": "research-20261027/AI_AUTH_AND_CODEX_REPORT.md on results branch",
+    "zip": {
+      "url": "https://github.com/minsec2314-cloud/pace-ai-work/raw/refs/heads/ai/ai-01-results-20261019/main22-chat-ui-20261027-001/PACE_MAIN22_CHAT_UI_REVIEW.zip",
+      "bytes": 85145,
+      "sha256": "f5e5063d8791c94e6f932ae7e91425a2999847dff9ebb664e146c3e65b0c7b8f",
+      "commit": "f8b0d85c3587048b0f4e7ae5c5e231efef84b595"
+    },
+    "actualUiBlocker": "Local dev command announced127.0.0.1:4173 but both cloud browser and local curl returned connection refused. No interactive or mobile pass claimed."
+  },
+  "authInvestigation": {
+    "status": "report_delivered_actual_connection_blocked",
+    "url": "https://github.com/minsec2314-cloud/pace-ai-work/blob/ai/ai-01-results-20261019/research-20261027/AI_AUTH_AND_CODEX_REPORT.md",
+    "blocker": "Remotely hosted PACE plan-inference approval not established. Existing automation update has no host/project/agent field;no migration performed."
   }
 }
