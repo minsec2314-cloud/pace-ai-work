@@ -1,0 +1,48 @@
+{
+  "submissionId": "AI01-LITERARY-CITATION-DRAFT-20261027-003",
+  "status": "incomplete_literary_review_candidate_not_general_identity_validation",
+  "replyTo": "PACE-DELEGATE-20261027-007",
+  "baselineMainCommit": "9469f395ec4b597e4606bc4991ca4db7230f744d",
+  "baselineSubmissionId": "AI-01-20261026-iteration-008",
+  "files": [
+    {
+      "path": "lib/ai.ts",
+      "base008Sha256": "4d5f58fcc2c4bbe5da4403451f453d8c0dec5828300e9060cad64935f04d71cf",
+      "bytes": 18723,
+      "sha256": "d09c6ed8de047a3bd3994aeb0e6b081a7e0171d85edbd5e497d82aef73d72a57"
+    },
+    {
+      "path": "lib/answer-grounding.ts",
+      "base008Sha256": null,
+      "bytes": 1857,
+      "sha256": "3860e06644deb929669849a67f437c716ec5f42df47374672b81e387e32aee2e"
+    },
+    {
+      "path": "tests/answer-grounding.test.mjs",
+      "base008Sha256": null,
+      "bytes": 10340,
+      "sha256": "c466060ac6e5a8e3855ee697bab51a7bd8a352083c7c63e824aadb1bc9a18baf"
+    }
+  ],
+  "patchKind": "additional_only_vs008;REPLACES_literary001_and002;apply_only003;separate_from_research002_and_UI003",
+  "replacesCandidate": "AI01-LITERARY-CITATION-DRAFT-20261027-002",
+  "reproduction": "7new failing cases before fix:5quote styles above500chars,actual ask unsupported long quote with unrelated valid citation,unquoted original line with verified500char prefix and fabricated suffix.3positive controls remain valid.",
+  "change": "Read full quoted spans and full explicitly labelled original line instead of skipping quoted content above500chars or clipping labelled content at500chars. Prior actual-citation and multiline guards retained.",
+  "validation": {
+    "groundingTests": "43pass0fail",
+    "fullIsolatedTests": "183pass0fail",
+    "typecheck": "pass",
+    "build": "pass",
+    "patchAppliedExactBytes": true,
+    "modelCalls": 0
+  },
+  "preserved": "008 strict finish_reason/retry behavior;all inherited tests;007 and prior009draft archives unchanged",
+  "limitations": [
+    "Exact text matching and explicitly bracketed title association only;not semantic/bibliographic verification",
+    "No independent author/work/catalog identity validation;AKS key unavailable",
+    "Unquoted multiline blocks and unmarked work/author claims remain incomplete",
+    "Evidence must contain complete normalized excerpt in one cited source;long text spanning separate cited chunks is not reconstructed and may be withheld",
+    "Synthetic materials only;no actual student or model quality evaluation"
+  ],
+  "nextAction": "Main may review003 replacing earlier literary candidates relative accepted008. Continue unquoted multiline original and ambiguous/unlabelled work assertions;official identity dependency remains main-owned."
+}
