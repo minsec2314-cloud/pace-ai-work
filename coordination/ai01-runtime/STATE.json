@@ -1,8 +1,8 @@
 {
   "baseHead": "4edb7b923ec66ff2e119a6dd6efb51d400c3a610",
-  "patchSha256": "b342810777b957f1b84d5810fefb6860b183b127eae728014734ee74ec663513",
-  "checkpointSha256": "a4ddfae450f4d590cc1adebf2fbe0f1aacf5820f77a62b6291b128ecfc1ee795",
-  "lastProcessedMainMessageId": "PACE-DELEGATE-20261027-004",
+  "patchSha256": "cdaba1b129d7c775be652972724a3f1bbf5c1ecd2d79e8c16d194db930421923",
+  "checkpointSha256": "e969c4ad712f6db8a5ecb51a32de18b2f310a92db2330b738358c71b6d9128ae",
+  "lastProcessedMainMessageId": "PACE-DELEGATE-20261027-005",
   "latestCompleteSubmissionId": "AI-01-20261026-iteration-008",
   "draft": {
     "status": "incomplete009_r6_not_for_integration",
@@ -36,7 +36,7 @@
       "nextAction": "Finish literary identity evidence policy;main review of normalized-query disclosure and type labels. Keep UI002 preserved."
     }
   },
-  "nextAction": "Strengthen actual selected-material claim/citation agreement while main reviews official literary lookup dependency;do not repeat missing credential or localhost probes.",
+  "nextAction": "Main reviews research-only001 additional patch vs accepted008.Continue literary draft on actual selected citation/source agreement;do not mix research001 orUI002 into new cumulative application.",
   "processedMainMessageIds": [
     "PACE-ACK008-20261027-001",
     "PACE-MAIN20-20261027-001",
@@ -46,7 +46,8 @@
     "PACE-QA-MAIN21-20261027-001",
     "PACE-DELEGATE-20261027-002",
     "PACE-DELEGATE-20261027-003",
-    "PACE-DELEGATE-20261027-004"
+    "PACE-DELEGATE-20261027-004",
+    "PACE-DELEGATE-20261027-005"
   ],
   "supplementId": "AI01-008-SUPPLEMENT-20261027-001",
   "mainQAProgress": "Public22:T03/T04/T05/T06/W01/W02/W04 pass;T07 exam completion partial;W03,T08,T09 remaining",
@@ -65,5 +66,19 @@
     "blocker": "Official API requires issuedX-API-Key;no authorized configured connection supplied.Operational credentials/API remain main-owned. No registration or bypass attempted.",
     "productCodeChanged": false,
     "regression": "17 grounding mocks pass inoriginalAIcheckout"
+  },
+  "independentResearchSubmission": {
+    "url": "https://github.com/minsec2314-cloud/pace-ai-work/raw/refs/heads/ai/ai-01-results-20261019/research-quality-001-20261027/PACE_RESEARCH_QUALITY_001.zip",
+    "bytes": 13869,
+    "sha256": "4b229cdd7db602015ffd2b766dcc12e6b3df1557355704eea68b35c71b8c7cf6",
+    "commit": "e9cb003f752a92e3ca51f6821c09d27b6ef03736"
+  },
+  "currentWorktreeCorrection": {
+    "restoredInheritedResearchTests": 10,
+    "reason": "Earlier009 drafts accidentally replaced original research-quality test content. Original008 cases now retained before new cases. Earlier test totals described then-current reduced suite,not full inherited coverage.",
+    "fullCurrentMixedDraftTests": "178pass0fail",
+    "isolatedResearchOnlyTests": "161pass0fail",
+    "recoveryPatchSha256": "cdaba1b129d7c775be652972724a3f1bbf5c1ecd2d79e8c16d194db930421923",
+    "previous009ZipPreserved": true
   }
 }
