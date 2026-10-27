@@ -249,11 +249,24 @@ index c40b4ef..282b0f4 100644
 +test('single Latin condition is not inferred from inside another word',()=>assert.equal(researchMatches('battery X',syntheticSource('Battery oxide materials')),false));
 diff --git a/lib/answer-grounding.ts b/lib/answer-grounding.ts
 new file mode 100644
-index 0000000..4dfbb8e
+index 0000000..aa08124
 --- /dev/null
 +++ b/lib/answer-grounding.ts
-@@ -0,0 +1,47 @@
+@@ -0,0 +1,62 @@
 +type LiterarySource=string|{text:string;name?:string};
++type QuotedExcerpt={text:string;index:number};
++function quotedExcerpts(text:string){
++ const pairs:Record<string,string>={'"':'"','“':'”','‘':'’','「':'」','『':'』'};
++ const quotes:QuotedExcerpt[]=[],stack:string[]=[];let start=-1;
++ for(let i=0;i<text.length;i++){
++  const ch=text[i];
++  if(stack.length&&ch===stack.at(-1)){
++   stack.pop();
++   if(!stack.length){if(i-start-1>=4)quotes.push({text:text.slice(start+1,i),index:start});start=-1;}
++  }else if(pairs[ch]){if(!stack.length)start=i;stack.push(pairs[ch]);}
++ }
++ return {quotes,unclosed:start>=0&&text.slice(start+1).trim().length>=4};
++}
 +// Explicit title association is a metadata check, not independent bibliographic verification.
 +export function unsupportedLiteraryQuote(question:string,text:string,sources:LiterarySource[]):boolean {
 + const markedText=text.replace(/\r\n?/g,'\n').replace(/^([ \t]*)(\*\*|__)(원문|시구|구절)[:：]?\2[ \t]*[:：]?/gm,'$1$3:').replace(/^([ \t]*)(원문|시구|구절)[ \t]*$/gm,'$1$2:');
@@ -266,7 +279,9 @@ index 0000000..4dfbb8e
 + // Line breaks and long excerpts must not skip evidence checks.
 + // Inspect the complete quoted span/labelled line rather than silently ignoring or clipping it.
 + const attributions=[...markedText.matchAll(/[「『《〈]([^」』》〉\n]{1,80})[」』》〉](?=\s*의\s*(?:원문|시구|구절))/g)].map(m=>({title:m[1].trim(),index:m.index!}));
-+ const quotes=[...markedText.matchAll(/["“‘「『]([^"”’」』]{4,})["”’」』]/g)].filter(m=>!attributions.some(a=>a.index===m.index)).map(m=>({text:m[1],index:m.index!}));
++ const scanned=quotedExcerpts(markedText);
++ if(scanned.unclosed)return true; // An open outer quotation must not leave an unchecked suffix.
++ const quotes=scanned.quotes.filter(q=>!attributions.some(a=>a.index===q.index));
 + // Explicit unquoted original blocks continue until a blank line or a labelled explanation.
 + // Do not validate only the first line while returning an unchecked continuation.
 + for(const m of markedText.matchAll(/(?:원문|시구|구절)[ \t]*[:：][ \t]*/g)){
@@ -302,10 +317,10 @@ index 0000000..4dfbb8e
 +}
 diff --git a/tests/answer-grounding.test.mjs b/tests/answer-grounding.test.mjs
 new file mode 100644
-index 0000000..c21f2ce
+index 0000000..2ce74cf
 --- /dev/null
 +++ b/tests/answer-grounding.test.mjs
-@@ -0,0 +1,65 @@
+@@ -0,0 +1,73 @@
 +import test from 'node:test';
 +import assert from 'node:assert/strict';
 +import {generateAI} from '../lib/ai.ts';
@@ -371,3 +386,11 @@ index 0000000..c21f2ce
 +test('requested title quoted as actual original text still requires evidence',()=>assert.equal(guard('「다섯글자작품」 원문을 설명해줘','원문은 「다섯글자작품」입니다.',[{name:'다섯글자작품.pdf',text:'다른 모의 구절입니다'}]),true));
 +test('each explicitly attributed original block uses its own work source',()=>assert.equal(guard('「작품가」와 「작품나」 원문을 비교해줘','「작품가」의 원문:\n'+attributionLine+'\n\n「작품나」의 원문:\n작품나에서만 확인할 수 있는 모의 구절입니다',[{name:'작품가.pdf',text:attributionLine},{name:'작품나.pdf',text:'작품나에서만 확인할 수 있는 모의 구절입니다'}]),false));
 +for(const target of ['작품가','작품나'])test(`ask checks claimed work against actual returned citation:${target}`,async()=>{let calls=0;const materials=[{id:'attribution-a',subjectId:'s',kind:'lesson',name:'작품가.pdf',sections:[{page:1,text:attributionLine}]},{id:'attribution-b',subjectId:'s',kind:'lesson',name:'작품나.pdf',sections:[{page:1,text:'작품나에서만 확인할 수 있는 별도의 모의 구절입니다'}]}];const result=await generateAI({mode:'ask',subject:'국어',question:'「작품가」와 「작품나」 원문을 비교해줘',materials},'synthetic-only',async()=>{calls++;return Response.json({choices:[{finish_reason:'stop',message:{content:JSON.stringify({text:`「${target}」의 원문은 “${attributionLine}”입니다.`,referenceIds:['R1']})}}]});});assert.equal(calls,1);assert.equal(result.text.includes('의 원문은'),target==='작품가');if(target!=='작품가')assert.equal(result.citations.length,0);});
++for(const [open,close] of [['‘','’'],['「','」'],['『','』']]){
++ const source=`확인된 앞부분 ${open}확인된 안쪽 구절${close} 실제 원문의 뒷부분`;
++ test(`nested quote cannot hide fabricated outer continuation:${open}`,()=>assert.equal(guard('작품 원문을 설명해줘',`원문은 “확인된 앞부분 ${open}확인된 안쪽 구절${close} 자료에 없는 허구의 뒷부분”입니다.`,[source]),true));
++ test(`verified complete nested quote remains supported:${open}`,()=>assert.equal(guard('작품 원문을 설명해줘',`원문은 “${source}”입니다.`,[source]),false));
++}
++for(const ending of ['', '」'])test(`unclosed or mismatched outer quote cannot hide unsupported suffix:${ending}`,()=>assert.equal(guard('작품 원문을 설명해줘',`원문은 “확인된 앞부분 ‘확인된 안쪽 구절’ 자료에 없는 허구의 뒷부분${ending}`,['확인된 앞부분 ‘확인된 안쪽 구절’ 실제 원문의 뒷부분']),true));
++test('verified straight quote nested inside curly quote remains supported',()=>{const source='확인된 앞부분 "확인된 안쪽 구절" 실제 원문의 뒷부분';assert.equal(guard('작품 원문을 설명해줘',`원문은 “${source}”입니다.`,[source]),false);});
++for(const correct of [false,true])test(`ask checks complete outer quotation around nested text:${correct}`,async()=>{let calls=0;const source='확인된 앞부분 ‘확인된 안쪽 구절’ 실제 원문의 뒷부분';const returned=correct?source:'확인된 앞부분 ‘확인된 안쪽 구절’ 자료에 없는 허구의 뒷부분';const result=await generateAI({mode:'ask',subject:'국어',question:'「작품가」 원문을 설명해줘',materials:[{id:'nested-source',subjectId:'s',kind:'lesson',name:'작품가.pdf',sections:[{page:1,text:source}]}]},'synthetic-only',async()=>{calls++;return Response.json({choices:[{finish_reason:'stop',message:{content:JSON.stringify({text:`원문은 “${returned}”입니다.`,referenceIds:['R1']})}}]});});assert.equal(calls,1);assert.equal(result.text.includes('원문은'),correct);if(!correct)assert.equal(result.citations.length,0);});
