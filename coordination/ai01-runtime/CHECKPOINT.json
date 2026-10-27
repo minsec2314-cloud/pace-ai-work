@@ -1,14 +1,101 @@
 {
   "invocationSource": "scheduler",
-  "observedAt": "2026-10-26T23:40:27.762Z",
+  "observedAt": "2026-10-27T00:40:25.616Z",
   "lastProcessedMainMessageId": "PACE-API-COMPAT-20261027-001",
   "submissionId": "AI-01-20261026-iteration-008",
   "status": "008_metadata_supplement_submitted_main20_qa_pending",
-  "nextAction": "Independent MAIN20 availability QA in isolated synthetic browser storage; never use original008 source as MAIN20 implementation.",
+  "nextAction": "Continue T03 invalid input and T04 date boundary QA with synthetic records; T05–T09 pending. Preserve saved synthetic row or recreate only in fresh empty example storage.",
   "processedMainMessageIds": [
     "PACE-ACK008-20261027-001",
     "PACE-MAIN20-20261027-001",
     "PACE-QA-MAIN20-20261027-001",
     "PACE-API-COMPAT-20261027-001"
-  ]
+  ],
+  "mainQA": {
+    "taskId": "MAIN20-AVAILABILITY-QA",
+    "replyToMessageId": "PACE-QA-MAIN20-20261027-001",
+    "targetVersion": 20,
+    "targetCommit": "09ca52b170f220562daf59faa1b15175ec5d671f",
+    "versionEvidence": "Target version/commit supplied by main; live UI does not expose build identifier",
+    "observedURL": "https://pace-study-ralph-20261018.minsec2314.chatgpt.site/",
+    "checkedAt": "2026-10-27T00:40:25.616Z",
+    "invocationSource": "scheduler",
+    "toolsUsed": [
+      "cua_repl cloud browser: AX-based form interaction, save/reload"
+    ],
+    "testData": "New empty browser page showed welcome onboarding; selected built-in example mode. Only synthetic AI01 QA row added. No real student data, model calls, notifications, or server schedules.",
+    "cases": [
+      {
+        "id": "T01",
+        "result": "pass",
+        "expected": "Entered weekday/time/place/laptop/sleep setting persists after save/reload",
+        "actual": "Tuesday next-day00:00–00:50 dormitory/laptop unavailable/end-only sleep remained after reload.",
+        "evidence": "Browser AX before/after reload: saved row and preview; save/cancel disabled after save."
+      },
+      {
+        "id": "T02",
+        "result": "pass",
+        "expected": "Study date2026-10-27 maps next-day00:00–00:50 to2026-10-28,50minutes,laptop0",
+        "actual": "Preview2026-10-28 00:00–00:50; total50minutes; laptop0minutes.",
+        "evidence": "Browser AX settings text directly observed."
+      },
+      {
+        "id": "T03",
+        "result": "not_run",
+        "expected": "As assigned in PACE-QA-MAIN20-20261027-001",
+        "actual": "Pending next bounded QA work unit; no pass claimed",
+        "evidence": "No executed case yet"
+      },
+      {
+        "id": "T04",
+        "result": "not_run",
+        "expected": "As assigned in PACE-QA-MAIN20-20261027-001",
+        "actual": "Pending next bounded QA work unit; no pass claimed",
+        "evidence": "No executed case yet"
+      },
+      {
+        "id": "T05",
+        "result": "not_run",
+        "expected": "As assigned in PACE-QA-MAIN20-20261027-001",
+        "actual": "Pending next bounded QA work unit; no pass claimed",
+        "evidence": "No executed case yet"
+      },
+      {
+        "id": "T06",
+        "result": "not_run",
+        "expected": "As assigned in PACE-QA-MAIN20-20261027-001",
+        "actual": "Pending next bounded QA work unit; no pass claimed",
+        "evidence": "No executed case yet"
+      },
+      {
+        "id": "T07",
+        "result": "not_run",
+        "expected": "As assigned in PACE-QA-MAIN20-20261027-001",
+        "actual": "Pending next bounded QA work unit; no pass claimed",
+        "evidence": "No executed case yet"
+      },
+      {
+        "id": "T08",
+        "result": "not_run",
+        "expected": "As assigned in PACE-QA-MAIN20-20261027-001",
+        "actual": "Pending next bounded QA work unit; no pass claimed",
+        "evidence": "No executed case yet"
+      },
+      {
+        "id": "T09",
+        "result": "not_run",
+        "expected": "As assigned in PACE-QA-MAIN20-20261027-001",
+        "actual": "Pending next bounded QA work unit; no pass claimed",
+        "evidence": "No executed case yet"
+      }
+    ],
+    "findings": [],
+    "blockers": [],
+    "limitations": [
+      "T07 full record equality not verified; visible weekday120/weekend180 remained unchanged.",
+      "Automatic assignment still uses weekday/weekend totals, as live UI explicitly explains.",
+      "No mobile viewport or backup compatibility checks yet."
+    ],
+    "nextAction": "Continue T03 invalid input and T04 date boundary QA with synthetic records; T05–T09 pending. Preserve saved synthetic row or recreate only in fresh empty example storage."
+  }
 }
