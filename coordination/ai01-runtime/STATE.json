@@ -1,7 +1,7 @@
 {
   "baseHead": "4edb7b923ec66ff2e119a6dd6efb51d400c3a610",
   "patchSha256": "085d7753e5639795beb03c786cabc32a16508ebc57f8eae24a6f0a7146a4be1f",
-  "checkpointSha256": "a144946cf215c16006fb33a08f549296e2da74cf2a0db62c6518efffa3d5c823",
+  "checkpointSha256": "d3622c788e16704255340d8dc524dd1c22aaf6668cb7c4b0c2055c1c7ba52b78",
   "lastProcessedMainMessageId": "PACE-DELEGATE-20261027-007",
   "latestCompleteSubmissionId": "AI-01-20261026-iteration-008",
   "draft": {
@@ -36,7 +36,7 @@
       "nextAction": "Finish literary identity evidence policy;main review of normalized-query disclosure and type labels. Keep UI002 preserved."
     }
   },
-  "nextAction": "Main reviews literary008 replacing literary001through007 relative accepted generation008;these are different submissionIDs,apply only literary008 additional patch and do not reapply accepted generation008.Continue only concrete ambiguity/unmarked-claim reproductions in isolated checkout:/workspace/pace-ai01-literary-nested-20261028.Nested differing quote pairs now checked as full outer excerpt;unclosed substantive quote withheld.General author/work identity unresolved;official API/key unavailable/main-owned.UI003/research002 preserved,no deployment.",
+  "nextAction": "Main reviews literary009 replacing literary001through008 relative accepted generation008;apply only literary009 additional patch,not historical cumulative generation009 drafts.Continue only concrete ambiguous/unmarked-original reproductions in isolated checkout:/workspace/pace-ai01-literary-shortquote-20261028.Short explicitly framed/standalone original quotes and short explicit original blocks now require evidence;conceptual terms/title headings controls retained.General author/work authenticity unresolved;official API/key unavailable/main-owned.UI003/research002 preserved,no deployment.",
   "processedMainMessageIds": [
     "PACE-ACK008-20261027-001",
     "PACE-MAIN20-20261027-001",
@@ -195,9 +195,9 @@
     "recoveryPatchSha256": "085d7753e5639795beb03c786cabc32a16508ebc57f8eae24a6f0a7146a4be1f",
     "previous009ZipPreserved": true
   },
-  "observedAt": "2026-10-27T19:44:55.665Z",
+  "observedAt": "2026-10-27T20:48:13.311Z",
   "invocationSource": "scheduler",
-  "invocationEvidence": "Actual automation runtime supplied scheduled event2026-10-28T04:37:39+09:00;source/checkpoint read and nonbillable tests executed in this invocation.",
+  "invocationEvidence": "Actual automation runtime supplied scheduled event2026-10-28T05:42:41+09:00;source/checkpoint read and nonbillable tests executed in this invocation.",
   "automationId": "6ad5e600246081919b8e3bddcb2fa8a3",
   "schedulerStatus": {
     "eventObserved": true,
@@ -211,6 +211,64 @@
   "quotaStatement": "No quota query tool;exact remaining10percent stop cannot be guaranteed.Each unit persisted.",
   "lastReceivedMainMessageId": "PACE-DELEGATE-20261027-007",
   "literaryCitationDraft": {
+    "submissionId": "AI01-LITERARY-CITATION-DRAFT-20261028-009",
+    "status": "incomplete_literary_review_candidate_not_general_identity_validation",
+    "replyTo": "PACE-DELEGATE-20261027-007",
+    "baselineMainCommit": "9469f395ec4b597e4606bc4991ca4db7230f744d",
+    "baselineSubmissionId": "AI-01-20261026-iteration-008",
+    "files": [
+      {
+        "path": "lib/ai.ts",
+        "base008Sha256": "4d5f58fcc2c4bbe5da4403451f453d8c0dec5828300e9060cad64935f04d71cf",
+        "bytes": 19959,
+        "sha256": "3997a1628fc6eaa6f8858421425a266e298be6f9f6aeed5edc94b2e3b3fa2333"
+      },
+      {
+        "path": "lib/answer-grounding.ts",
+        "base008Sha256": null,
+        "bytes": 4672,
+        "sha256": "654570455d5c6a6c6098b3bce37a824c6dd641def0a228911c877b624f57eda7"
+      },
+      {
+        "path": "tests/answer-grounding.test.mjs",
+        "base008Sha256": null,
+        "bytes": 25284,
+        "sha256": "03655fbc9fd0e5c0c7a9877edc8907a0e94ea6116d5cd67d6d72cfe0e71a3d06"
+      }
+    ],
+    "patchKind": "additional_only_vs_accepted_generation008;REPLACES_literary001through008;apply_only_literary009;separate_from_research002_and_UI003",
+    "replacesCandidate": "AI01-LITERARY-CITATION-DRAFT-20261028-008",
+    "reproduction": "9new failures before fix:1/2/3character explicitly quoted or labelled original text bypassed evidence,standalone short original quote and open short quote bypassed evidence,and actual ask returned unsupported2character original.9positive/control cases retained.",
+    "change": "Collect nonempty quote spans but check short spans only when explicitly framed as original text or standalone quoted response.Explicit original blocks now require evidence even below4characters.Open substantive quotations remain withheld.Preserve short conceptual terms and title headings rather than blanket-filtering all short quoted words.",
+    "validation": {
+      "groundingTests": "114pass0fail",
+      "fullIsolatedTests": "254pass0fail",
+      "typecheck": "pass",
+      "build": "pass",
+      "patchAppliedExactBytes": true,
+      "modelCalls": 0
+    },
+    "preserved": "008 strict finish_reason/retry behavior;all inherited tests;007 and prior009draft archives unchanged",
+    "limitations": [
+      "Short quote checks are explicit framing/standalone only;unmarked original claims remain incomplete",
+      "Open substantive quotations may be conservatively withheld even if some text appears in source",
+      "Explicit response-work attribution is bounded syntax;unmarked topic changes and author/work claims unresolved",
+      "Exact excerpt and title-to-provided-material matching is not independent authenticity verification;AKS key unavailable",
+      "Not a general Markdown/HTML or semantic quote parser;ambiguous same-delimiter/escaped conventions remain limited",
+      "Synthetic materials only;zero actual model calls;no real student data"
+    ],
+    "nextAction": "Main reviews literary009 replacing earlier literary candidates relative accepted generation008.Continue only concrete ambiguous or unmarked-original claim reproductions;official catalog connection remains main-owned dependency.",
+    "zip": {
+      "bytes": 40867,
+      "sha256": "15c9946b55e33d3d4ba1a7db57d1b3cc82bb7dc1253e3c110cd2ee58718d50cb",
+      "url": "https://github.com/minsec2314-cloud/pace-ai-work/raw/refs/heads/ai/ai-01-results-20261019/literary-citation-draft-009-20261028/PACE_LITERARY_CITATION_DRAFT.zip",
+      "commit": "296f853a37681e66cc815396c1c85984cdc16cb3"
+    }
+  },
+  "status": "literary009_short_explicit_original_checked_delivered_pending_main_review",
+  "workingTreePatchSha256": "4190439b07b2ff4f028515f6a47173afbad86400eeef2571dd921f70aea8a52e",
+  "workingTreePatchBytes": 62925,
+  "previousLiteraryCitationDraft": {
     "submissionId": "AI01-LITERARY-CITATION-DRAFT-20261028-008",
     "status": "incomplete_literary_review_candidate_not_general_identity_validation",
     "replyTo": "PACE-DELEGATE-20261027-007",
@@ -265,75 +323,17 @@
       "commit": "189b42e09b23f2a86e9b19618691313819c12ed9"
     }
   },
-  "status": "literary008_nested_outer_quotation_checked_delivered_pending_main_review",
-  "workingTreePatchSha256": "acf7e6aff31d96be3044e0e816d21efa41b980da17cea19610f2c315eab2b94a",
-  "workingTreePatchBytes": 60404,
-  "previousLiteraryCitationDraft": {
-    "submissionId": "AI01-LITERARY-CITATION-DRAFT-20261028-007",
-    "status": "incomplete_literary_review_candidate_not_general_identity_validation",
-    "replyTo": "PACE-DELEGATE-20261027-007",
-    "baselineMainCommit": "9469f395ec4b597e4606bc4991ca4db7230f744d",
-    "baselineSubmissionId": "AI-01-20261026-iteration-008",
-    "files": [
-      {
-        "path": "lib/ai.ts",
-        "base008Sha256": "4d5f58fcc2c4bbe5da4403451f453d8c0dec5828300e9060cad64935f04d71cf",
-        "bytes": 19959,
-        "sha256": "3997a1628fc6eaa6f8858421425a266e298be6f9f6aeed5edc94b2e3b3fa2333"
-      },
-      {
-        "path": "lib/answer-grounding.ts",
-        "base008Sha256": null,
-        "bytes": 3571,
-        "sha256": "65da07548cb4720830c20db5a9be9292f8b2f56c0c73123b792c827ecb67c9db"
-      },
-      {
-        "path": "tests/answer-grounding.test.mjs",
-        "base008Sha256": null,
-        "bytes": 21076,
-        "sha256": "b49c42c7b83b39c19294ea3597959ed0f0eb6ed4d5568a07a5007a5249b3c44e"
-      }
-    ],
-    "patchKind": "additional_only_vs008;REPLACES_literary001through006;apply_only007;separate_from_research002_and_UI003",
-    "replacesCandidate": "AI01-LITERARY-CITATION-DRAFT-20261028-006",
-    "reproduction": "5new failing cases before fix:multi-work/single-work request let an excerpt be explicitly attributed to another work,actual ask returned wrong-work quotation,and two long title markers were misread as original excerpts.5other controls retained.",
-    "change": "Track excerpt positions and explicit response work markers of form bracketed-title plus 의 원문/시구/구절.Scope each following original excerpt to that claimed work instead of any requested work.Treat such work-title markers as metadata,while title quoted as actual original still requires evidence.No external work/author identity claim.",
-    "validation": {
-      "groundingTests": "85pass0fail",
-      "fullIsolatedTests": "225pass0fail",
-      "typecheck": "pass",
-      "build": "pass",
-      "patchAppliedExactBytes": true,
-      "modelCalls": 0
-    },
-    "preserved": "008 strict finish_reason/retry behavior;all inherited tests;007 and prior009draft archives unchanged",
-    "limitations": [
-      "Explicit bracketed-title plus 의 원문/시구/구절 attribution pattern only;not general named-entity or semantic attribution parsing",
-      "Nearest explicit response attribution scopes subsequent excerpts;unmarked topic switches/ambiguous multi-work answers remain incomplete",
-      "Exact excerpt and title-to-provided-material checks do not establish independent author/work authenticity;AKS key unavailable",
-      "Nested quoted spans and general Markdown/HTML formats remain incomplete",
-      "Actual contiguous reference-ID chunks only;separate pages/materials/sections and legacy excerpts not concatenated",
-      "Synthetic materials only;zero actual model calls;no real student data"
-    ],
-    "nextAction": "Main reviews007 replacing earlier literary candidates relative accepted008.Continue ambiguous/unmarked work/author assertions and nested quotation cases if authorized;official catalog connection remains main-owned dependency.",
-    "zip": {
-      "bytes": 37804,
-      "sha256": "9454aceb3b8deade02be80a239d80bd62d857d1ca241db617d0b81fcb4d07873",
-      "url": "https://github.com/minsec2314-cloud/pace-ai-work/raw/refs/heads/ai/ai-01-results-20261019/literary-citation-draft-007-20261028/PACE_LITERARY_CITATION_DRAFT.zip",
-      "commit": "0e09c2f618fe7e632984ae67d369d59ff4fc15c9"
-    }
-  },
   "checkpointPath": "coordination/ai01-runtime/CHECKPOINT.json",
   "exactThresholdStopGuaranteed": false,
   "quotaUsedPercent": null,
   "quotaRemainingPercent": null,
   "validation": {
-    "groundingTests": "96pass0fail",
-    "fullIsolatedTests": "236pass0fail",
-    "mixedRecoveryTests": "266pass0fail",
+    "groundingTests": "114pass0fail",
+    "fullIsolatedTests": "254pass0fail",
+    "mixedRecoveryTests": "284pass0fail",
     "typecheck": "pass",
     "build": "pass",
-    "newBeforeFixFailures": 6,
+    "newBeforeFixFailures": 9,
     "modelCalls": 0
   }
 }
