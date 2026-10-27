@@ -1,10 +1,10 @@
 {
-  "messageId": "AI01-LITERARY-CITATION-DRAFT-20261027-002",
+  "messageId": "AI01-LITERARY-CITATION-DRAFT-20261027-003",
   "replyToMessageId": "PACE-DELEGATE-20261027-007",
   "nonce": "PACE-LOOP-20261019125859",
-  "observedAt": "2026-10-27T13:47:53.226Z",
+  "observedAt": "2026-10-27T14:41:01.319Z",
   "invocationSource": "scheduler",
-  "invocationEvidence": "Actual automation runtime provided this scheduled run at2026-10-27T22:44:09+09:00;not inferred from manual user text.",
+  "invocationEvidence": "Actual automation runtime supplied scheduled event2026-10-27T23:37:19+09:00;source/checkpoint read and nonbillable tests executed this invocation.",
   "automationId": "6ad5e600246081919b8e3bddcb2fa8a3",
   "schedulerStatus": {
     "eventObserved": true,
@@ -12,7 +12,6 @@
     "checkpointAccess": true,
     "nonBillableCheckPassed": true,
     "resultGitHubSaved": true,
-    "automationId": "6ad5e600246081919b8e3bddcb2fa8a3",
     "newAutomationCreated": false
   },
   "nextScheduledRunAt": null,
@@ -40,7 +39,7 @@
   "resumeProbe": {
     "command": "git rev-parse HEAD;git status --short;node --test tests/answer-grounding.test.mjs;npm test;npx tsc --noEmit;npm run build",
     "exitCode": 0,
-    "result": "Source/checkpoint readable;7 failures reproduced;isolated173pass,grounding33pass,type/buildpass;GitHub result ZIP persisted.203mixed tests pass."
+    "result": "Source/checkpoint readable.7new failures before fix;43grounding/183isolated/213mixed tests pass,type/build pass,zero model calls,resultGitHubSaved."
   },
   "latestCompleteSubmissionId": "AI-01-20261026-iteration-008",
   "latestCompleteZip": {
@@ -88,7 +87,7 @@
   "prepareAtRemainingPercent": 10,
   "exactThresholdStopGuaranteed": false,
   "productDevelopmentResumed": true,
-  "nextAction": "Review literary002 REPLACING001 relative accepted008;never apply001then002.Continue unquoted/over500char original quotation boundaries and ambiguous/unlabelled work assertions in isolated literary checkout:/workspace/pace-ai01-literary-multiline-20261027.Official identity API unavailable;do not edit API/env. UI003/research002 preserved pending main integration.",
+  "nextAction": "Main reviews literary003 replacing001/002 relative accepted008;apply only003.Continue unquoted multiline original blocks and ambiguous/unlabelled work/author claims in isolated checkout:/workspace/pace-ai01-literary-longquote-20261027.Consider complete evidence spanning multiple cited chunks;current exact-one-source guard may withhold.Official identity API/key remains unavailable/main-owned.UI003/research002 preserved,no deployment.",
   "resumeAuthorization": {
     "messageId": "PACE-RESUME-20261026-01",
     "mainFileBlobSha": "afb65532d7dd0d3696e284d1ca4fc0190147d7cf",
@@ -103,17 +102,16 @@
   "lastReceivedMainMessageId": "PACE-DELEGATE-20261027-007",
   "lastProcessedMainMessageId": "PACE-DELEGATE-20261027-007",
   "runtimeStatePath": "coordination/ai01-runtime/STATE.json",
-  "checkpointSha256": "ae4427fe86f47b8f9b5abda3086d31484c4d382d9ecf73cba20f0345200ba06f",
+  "checkpointSha256": "34aad05f7bfec5435c5f45dd53c7bdcdc96e7078dd0e24e1b024c25259874238",
   "checkpointPath": "coordination/ai01-runtime/CHECKPOINT.json",
   "validation": {
-    "literaryIsolatedTests": "173pass0fail",
-    "groundingTests": "33pass0fail",
-    "mixedRecoveryWorktreeTests": "203pass0fail",
+    "groundingTests": "43pass0fail",
+    "fullIsolatedTests": "183pass0fail",
+    "mixedRecoveryTests": "213pass0fail",
     "typecheck": "pass",
     "build": "pass",
-    "modelCalls": 0,
-    "beforeFixReproductions": 7,
-    "ui003": "preserved_no_new_browser_claim"
+    "newBeforeFixFailures": 7,
+    "modelCalls": 0
   },
   "processedMainMessageIds": [
     "PACE-ACK008-20261027-001",
@@ -687,6 +685,63 @@
   },
   "quotaStatement": "No quota query tool;exact remaining10percent stop cannot be guaranteed.Each unit persisted.",
   "literaryCitationDraft": {
+    "submissionId": "AI01-LITERARY-CITATION-DRAFT-20261027-003",
+    "status": "incomplete_literary_review_candidate_not_general_identity_validation",
+    "replyTo": "PACE-DELEGATE-20261027-007",
+    "baselineMainCommit": "9469f395ec4b597e4606bc4991ca4db7230f744d",
+    "baselineSubmissionId": "AI-01-20261026-iteration-008",
+    "files": [
+      {
+        "path": "lib/ai.ts",
+        "base008Sha256": "4d5f58fcc2c4bbe5da4403451f453d8c0dec5828300e9060cad64935f04d71cf",
+        "bytes": 18723,
+        "sha256": "d09c6ed8de047a3bd3994aeb0e6b081a7e0171d85edbd5e497d82aef73d72a57"
+      },
+      {
+        "path": "lib/answer-grounding.ts",
+        "base008Sha256": null,
+        "bytes": 1857,
+        "sha256": "3860e06644deb929669849a67f437c716ec5f42df47374672b81e387e32aee2e"
+      },
+      {
+        "path": "tests/answer-grounding.test.mjs",
+        "base008Sha256": null,
+        "bytes": 10340,
+        "sha256": "c466060ac6e5a8e3855ee697bab51a7bd8a352083c7c63e824aadb1bc9a18baf"
+      }
+    ],
+    "patchKind": "additional_only_vs008;REPLACES_literary001_and002;apply_only003;separate_from_research002_and_UI003",
+    "replacesCandidate": "AI01-LITERARY-CITATION-DRAFT-20261027-002",
+    "reproduction": "7new failing cases before fix:5quote styles above500chars,actual ask unsupported long quote with unrelated valid citation,unquoted original line with verified500char prefix and fabricated suffix.3positive controls remain valid.",
+    "change": "Read full quoted spans and full explicitly labelled original line instead of skipping quoted content above500chars or clipping labelled content at500chars. Prior actual-citation and multiline guards retained.",
+    "validation": {
+      "groundingTests": "43pass0fail",
+      "fullIsolatedTests": "183pass0fail",
+      "typecheck": "pass",
+      "build": "pass",
+      "patchAppliedExactBytes": true,
+      "modelCalls": 0
+    },
+    "preserved": "008 strict finish_reason/retry behavior;all inherited tests;007 and prior009draft archives unchanged",
+    "limitations": [
+      "Exact text matching and explicitly bracketed title association only;not semantic/bibliographic verification",
+      "No independent author/work/catalog identity validation;AKS key unavailable",
+      "Unquoted multiline blocks and unmarked work/author claims remain incomplete",
+      "Evidence must contain complete normalized excerpt in one cited source;long text spanning separate cited chunks is not reconstructed and may be withheld",
+      "Synthetic materials only;no actual student or model quality evaluation"
+    ],
+    "nextAction": "Main may review003 replacing earlier literary candidates relative accepted008. Continue unquoted multiline original and ambiguous/unlabelled work assertions;official identity dependency remains main-owned.",
+    "zip": {
+      "bytes": 27335,
+      "sha256": "3cba5b377372464b239855544bedb84b49940121a865ba1a2f55b6ba499451b8",
+      "url": "https://github.com/minsec2314-cloud/pace-ai-work/raw/refs/heads/ai/ai-01-results-20261019/literary-citation-draft-003-20261027/PACE_LITERARY_CITATION_DRAFT.zip",
+      "commit": "7130792957afe03c6a78f99cfa4b0dd48a61f8a5"
+    }
+  },
+  "status": "literary003_longquote_checked_delivered_pending_main_review",
+  "workingTreePatchSha256": "18ff4ec41fa317dd97b808c751b7d25e106a75a3f63cd294aff44151610c3dc6",
+  "workingTreePatchBytes": 39311,
+  "previousLiteraryCitationDraft": {
     "submissionId": "AI01-LITERARY-CITATION-DRAFT-20261027-002",
     "status": "incomplete_literary_review_candidate_not_general_identity_validation",
     "replyTo": "PACE-DELEGATE-20261027-007",
@@ -737,62 +792,6 @@
       "sha256": "2bd05bcdd86033990b1472983803e21f46694b127a101e1915a04306298cbc13",
       "url": "https://github.com/minsec2314-cloud/pace-ai-work/raw/refs/heads/ai/ai-01-results-20261019/literary-citation-draft-002-20261027/PACE_LITERARY_CITATION_DRAFT.zip",
       "commit": "9f9a2c801806d4f330c5ac3f07fc2879238930b1"
-    }
-  },
-  "status": "literary002_multiline_guard_checked_delivered",
-  "workingTreePatchSha256": "420e396edd4575df2cde9d26d4d6c72a858d0bdc5dcb400bf1daba890272f503",
-  "workingTreePatchBytes": 37294,
-  "previousLiteraryCitationDraft": {
-    "submissionId": "AI01-LITERARY-CITATION-DRAFT-20261027-001",
-    "status": "incomplete_literary_review_candidate_not_general_identity_validation",
-    "replyTo": "PACE-DELEGATE-20261027-007",
-    "baselineMainCommit": "9469f395ec4b597e4606bc4991ca4db7230f744d",
-    "baselineSubmissionId": "AI-01-20261026-iteration-008",
-    "files": [
-      {
-        "path": "lib/ai.ts",
-        "base008Sha256": "4d5f58fcc2c4bbe5da4403451f453d8c0dec5828300e9060cad64935f04d71cf",
-        "bytes": 18723,
-        "sha256": "d09c6ed8de047a3bd3994aeb0e6b081a7e0171d85edbd5e497d82aef73d72a57"
-      },
-      {
-        "path": "lib/answer-grounding.ts",
-        "base008Sha256": null,
-        "bytes": 1703,
-        "sha256": "acb26d437486e01ff86c583ccde8da70180fbcd3ec4bb8e054bca4bcb80cee05"
-      },
-      {
-        "path": "tests/answer-grounding.test.mjs",
-        "base008Sha256": null,
-        "bytes": 6521,
-        "sha256": "5132a5c365355fc94d1f66e45df745194fb71f8815c1a7b100f39c1329b7aa5e"
-      }
-    ],
-    "patchKind": "additional_only_vs008;separate_from_research002_and_UI003",
-    "reproduction": "2new integration failures before fix:quote exists in another selected block but returned referenceIds R2 or [] let unsupported citation through. CorrectR1 control passes.",
-    "change": "Resolve returned citations first;guard checks only exact restored/verified citation excerpts with associated material names,not uncited selected context. Legacy citations checked within returned quote;normal explanations unaffected.",
-    "validation": {
-      "groundingTests": "23pass0fail",
-      "fullIsolatedTests": "163pass0fail",
-      "fullMixedDevelopmentTests": "193pass0fail",
-      "typecheck": "pass",
-      "build": "pass",
-      "patchAppliedExactBytes": true,
-      "modelCalls": 0
-    },
-    "preserved": "008 strict finish_reason/retry behavior;all inherited tests;007 and prior009draft archives unchanged",
-    "limitations": [
-      "Exact quotation matching and explicitly bracketed title association only",
-      "No independent author/work/catalog identity validation;AKS key unavailable",
-      "Incomplete quote extraction and ambiguous/unmarked work claims remain review concerns",
-      "Synthetic materials only,not actual students/model quality evaluation"
-    ],
-    "nextAction": "Main may review bounded citation guard independently. Continue multiline/unquoted quote extraction and ambiguous work association in separate draft;official identity dependency remains main-owned.",
-    "zip": {
-      "bytes": 15655,
-      "sha256": "f279d2caf0745add91a62b2124a859e2e6666862502baf182fd03262ab489aa5",
-      "url": "https://github.com/minsec2314-cloud/pace-ai-work/raw/refs/heads/ai/ai-01-results-20261019/literary-citation-draft-001-20261027/PACE_LITERARY_CITATION_DRAFT.zip",
-      "commit": "699a6d75b6bed91986cdc7cc63d246d2ecc14f61"
     }
   }
 }
