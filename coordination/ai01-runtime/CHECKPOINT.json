@@ -1,35 +1,35 @@
 {
-  "observedAt": "2026-10-27T03:42:10.511Z",
+  "observedAt": "2026-10-27T04:41:52.565Z",
   "invocationSource": "scheduler",
-  "status": "009_r2_incomplete",
-  "lastProcessedMainMessageId": "PACE-DELEGATE-20261027-002",
+  "status": "009_r3_incomplete",
+  "lastProcessedMainMessageId": "PACE-DELEGATE-20261027-003",
   "latestCompleteSubmissionId": "AI-01-20261026-iteration-008",
   "draftSubmission": {
-    "status": "incomplete009_r2_not_for_integration",
+    "status": "incomplete009_r3_not_for_integration",
     "parentSubmissionId": "AI-01-20261026-iteration-008",
-    "url": "https://github.com/minsec2314-cloud/pace-ai-work/raw/refs/heads/ai/ai-01-results-20261019/iteration-009-draft-r2-20261027/PACE_AI01_009_DRAFT_R2.zip",
-    "bytes": 19974,
-    "sha256": "cf96bb576695929e44012c62d1ab16c98c88bde78a94a49e0ba67c6286f30c70",
-    "commit": "f37c35c059e80b89befe8739fb31ad22e5257f62",
+    "url": "https://github.com/minsec2314-cloud/pace-ai-work/raw/refs/heads/ai/ai-01-results-20261019/iteration-009-draft-r3-20261027/PACE_AI01_009_DRAFT_R3.zip",
+    "bytes": 20956,
+    "sha256": "d5a94aec3cb79b0b2e455b5acf2f275af2a58046ddefb934f06b32013c434760",
+    "commit": "ae169b2d711efad7dd3cd1c9e8c160add9cfcc39",
     "report": {
-      "status": "incomplete009_r2",
+      "status": "incomplete009_r3_not_for_integration",
       "baseHead": "4edb7b923ec66ff2e119a6dd6efb51d400c3a610",
       "parentSubmissionId": "AI-01-20261026-iteration-008",
       "changedThisRun": [
-        "lib/research.ts",
-        "tests/research-quality.test.mjs"
+        "lib/answer-grounding.ts",
+        "tests/answer-grounding.test.mjs"
       ],
-      "reproduction": "2 new regression failures before fix: battery safety and solid-state physics constraints ignored",
-      "validation": "143 full local tests pass;tsc exit0;zero model calls",
+      "reproduction": "4 mocked failures before fix: ordinary explanation overblocked;ASCII quotes,single curly quotes,unquoted original-label passage missed",
+      "validation": "149 full local tests pass;tsc exit0;zero real-model calls",
       "remaining": [
-        "literary unquoted/identity grounding unresolved",
-        "lexical search may omit synonyms;no semantic relevance guarantee",
-        "UI candidate still separate pending live validation"
+        "Work/author identity and source/work matching unverified",
+        "Unlabelled or paraphrased fabricated passages may still pass",
+        "Lexical search synonym coverage incomplete"
       ],
-      "nextAction": "Expand literary original-quotation and identity evidence policy;preserve independent main22 UI submission"
+      "nextAction": "Literary identity/source-to-work matching policy;separateUI delayed-response component test requested byMAIN003"
     }
   },
-  "nextAction": "Expand literary original-quotation and identity evidence policy;preserve independent main22 UI submission",
+  "nextAction": "Literary identity/source-to-work matching policy;separateUI delayed-response component test requested byMAIN003",
   "main22Checkout": "/workspace/pace-main22-ui-checkout-20261027",
   "mainQA": {
     "taskId": "MAIN20-AVAILABILITY-QA",
@@ -234,7 +234,19 @@
       "sha256": "f5e5063d8791c94e6f932ae7e91425a2999847dff9ebb664e146c3e65b0c7b8f",
       "commit": "f8b0d85c3587048b0f4e7ae5c5e231efef84b595"
     },
-    "actualUiBlocker": "Local dev command announced127.0.0.1:4173 but both cloud browser and local curl returned connection refused. No interactive or mobile pass claimed."
+    "actualUiBlocker": "Local dev command announced127.0.0.1:4173 but both cloud browser and local curl returned connection refused. No interactive or mobile pass claimed.",
+    "mainReview": {
+      "messageId": "PACE-DELEGATE-20261027-003",
+      "mainReportedValidation": "hashes,patch,184tests,typecheck,build and basic desktop UI checked by main;not independent peer rerun",
+      "published": false,
+      "pending": [
+        "delayed mock response after thread switch",
+        "new draft preservation",
+        "mobile keyboard",
+        "reconnect persistence",
+        "subject label association"
+      ]
+    }
   },
   "authInvestigation": {
     "status": "report_delivered_actual_connection_blocked",
