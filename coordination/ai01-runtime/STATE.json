@@ -1,44 +1,35 @@
 {
   "baseHead": "4edb7b923ec66ff2e119a6dd6efb51d400c3a610",
-  "patchSha256": "67aabef58156d8443d84966bcad41d8c54e5c0e440d462479ef934efa3735979",
-  "checkpointSha256": "fcc75341614105770db54cc66cd91f54eeb0c3902ea398455e43760d70c31c2b",
+  "patchSha256": "693c5bbd7c3a59cf2ed8718ae2e2b1504567bd3feb7eb5973e42c744ffcfe4ae",
+  "checkpointSha256": "55dd0055b767e4854817a1bf3aa837e94921f08914e357aab89a372d79134081",
   "lastProcessedMainMessageId": "PACE-DELEGATE-20261027-002",
   "latestCompleteSubmissionId": "AI-01-20261026-iteration-008",
   "draft": {
-    "status": "incomplete009_not_for_integration",
+    "status": "incomplete009_r2_not_for_integration",
     "parentSubmissionId": "AI-01-20261026-iteration-008",
-    "url": "https://github.com/minsec2314-cloud/pace-ai-work/raw/refs/heads/ai/ai-01-results-20261019/iteration-009-draft-20261027/PACE_AI01_009_DRAFT.zip",
-    "bytes": 19353,
-    "sha256": "38e72e2227c46472f915fee7857e9a2620f3a285f7851387b8a9c3d21cbd03e5",
-    "commit": "076dc770c895fab0b57535784e3c415bbdec0740",
+    "url": "https://github.com/minsec2314-cloud/pace-ai-work/raw/refs/heads/ai/ai-01-results-20261019/iteration-009-draft-r2-20261027/PACE_AI01_009_DRAFT_R2.zip",
+    "bytes": 19974,
+    "sha256": "cf96bb576695929e44012c62d1ab16c98c88bde78a94a49e0ba67c6286f30c70",
+    "commit": "f37c35c059e80b89befe8739fb31ad22e5257f62",
     "report": {
-      "status": "incomplete009_not_for_integration",
-      "parent": "AI-01-20261026-iteration-008",
-      "runtimeBase": "4edb7b923ec66ff2e119a6dd6efb51d400c3a610",
-      "tests": {
-        "before": "literary1 failure;research3 failures",
-        "after": "139 tests pass;tsc exit0"
-      },
-      "actualResearch": {
-        "before": "차세대 화학전지:7 results including musicology and unrelated fields",
-        "after": "same query0 results;English next generation batteries7 title-relevant results",
-        "limitations": "metadata only;not full-text relevance or scholarly quality validation;generic lexical filter may omit synonyms or ignore extra battery query constraints"
-      },
-      "literatureLimitations": [
-        "keyword/curly-quote guard only",
-        "unquoted fiction and identity claims unresolved",
-        "possible over-rejection;not complete"
+      "status": "incomplete009_r2",
+      "baseHead": "4edb7b923ec66ff2e119a6dd6efb51d400c3a610",
+      "parentSubmissionId": "AI-01-20261026-iteration-008",
+      "changedThisRun": [
+        "lib/research.ts",
+        "tests/research-quality.test.mjs"
       ],
-      "main22Restoration": {
-        "filesMatched": 377,
-        "commit": "9469f395ec4b597e4606bc4991ca4db7230f744d",
-        "zipSha256": "f2c0f4ca020bae55ee1d0480ca6f8188bc35cdfd50bb423bed916ecd10087840"
-      },
-      "next": "Strengthen grounded literary claims and search relevance fixtures;thenCHAT/UI in separate verified main22 copy",
-      "realModelRun": false
+      "reproduction": "2 new regression failures before fix: battery safety and solid-state physics constraints ignored",
+      "validation": "143 full local tests pass;tsc exit0;zero model calls",
+      "remaining": [
+        "literary unquoted/identity grounding unresolved",
+        "lexical search may omit synonyms;no semantic relevance guarantee",
+        "UI candidate still separate pending live validation"
+      ],
+      "nextAction": "Expand literary original-quotation and identity evidence policy;preserve independent main22 UI submission"
     }
   },
-  "nextAction": "P0: strengthen009 literary grounding and search filtering;UI candidate needs reachable preview and interaction/mobile checks;main reviews returned separate main22 patch. No deployment.",
+  "nextAction": "Expand literary original-quotation and identity evidence policy;preserve independent main22 UI submission",
   "processedMainMessageIds": [
     "PACE-ACK008-20261027-001",
     "PACE-MAIN20-20261027-001",
