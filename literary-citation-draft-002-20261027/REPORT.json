@@ -1,0 +1,47 @@
+{
+  "submissionId": "AI01-LITERARY-CITATION-DRAFT-20261027-002",
+  "status": "incomplete_literary_review_candidate_not_general_identity_validation",
+  "replyTo": "PACE-DELEGATE-20261027-007",
+  "baselineMainCommit": "9469f395ec4b597e4606bc4991ca4db7230f744d",
+  "baselineSubmissionId": "AI-01-20261026-iteration-008",
+  "files": [
+    {
+      "path": "lib/ai.ts",
+      "base008Sha256": "4d5f58fcc2c4bbe5da4403451f453d8c0dec5828300e9060cad64935f04d71cf",
+      "bytes": 18723,
+      "sha256": "d09c6ed8de047a3bd3994aeb0e6b081a7e0171d85edbd5e497d82aef73d72a57"
+    },
+    {
+      "path": "lib/answer-grounding.ts",
+      "base008Sha256": null,
+      "bytes": 1790,
+      "sha256": "6f4235487e7fb27d00467dc3b868ec99f562b7af0ca6d247838192760471d776"
+    },
+    {
+      "path": "tests/answer-grounding.test.mjs",
+      "base008Sha256": null,
+      "bytes": 8397,
+      "sha256": "311029ac0c27aea1c19c0d911e2e94aca8a5620cebf7f2c7bb8003c2d1dfe471"
+    }
+  ],
+  "patchKind": "additional_only_vs008;REPLACES_literary001;do_not_apply001_then002;separate_from_research002_and_UI003",
+  "replacesCandidate": "AI01-LITERARY-CITATION-DRAFT-20261027-001",
+  "reproduction": "7new failing cases before fix:5quotation styles with linebreaks,unsupported second multiline quotation,and actual ask handler with unsupported multiline quotation.3positive controls pass.",
+  "change": "Retain prior001 actual-citation guard. Include linebreaks in quoted excerpt extraction so unsupported multiline original text is checked;whitespace-normalized verified source remains allowed.",
+  "validation": {
+    "groundingTests": "33pass0fail",
+    "fullIsolatedTests": "173pass0fail",
+    "typecheck": "pass",
+    "build": "pass",
+    "patchAppliedExactBytes": true,
+    "modelCalls": 0
+  },
+  "preserved": "008 strict finish_reason/retry behavior;all inherited tests;007 and prior009draft archives unchanged",
+  "limitations": [
+    "Exact quotation matching and explicitly bracketed title association only",
+    "No independent author/work/catalog identity validation;AKS key unavailable",
+    "Incomplete quote extraction and ambiguous/unmarked work claims remain review concerns",
+    "Synthetic materials only,not actual students/model quality evaluation"
+  ],
+  "nextAction": "Main may review bounded citation guard independently. Continue unquoted/over500char quote extraction and ambiguous work association in separate draft;official identity dependency remains main-owned."
+}
