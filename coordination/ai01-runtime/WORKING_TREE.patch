@@ -249,30 +249,37 @@ index c40b4ef..282b0f4 100644
 +test('single Latin condition is not inferred from inside another word',()=>assert.equal(researchMatches('battery X',syntheticSource('Battery oxide materials')),false));
 diff --git a/lib/answer-grounding.ts b/lib/answer-grounding.ts
 new file mode 100644
-index 0000000..b604fba
+index 0000000..11f729b
 --- /dev/null
 +++ b/lib/answer-grounding.ts
-@@ -0,0 +1,36 @@
+@@ -0,0 +1,43 @@
 +type LiterarySource=string|{text:string;name?:string};
 +// Explicit title association is a metadata check, not independent bibliographic verification.
 +export function unsupportedLiteraryQuote(question:string,text:string,sources:LiterarySource[]):boolean {
++ const markedText=text.replace(/\r\n?/g,'\n').replace(/^([ \t]*)(\*\*|__)(원문|시구|구절)[:：]?\2[ \t]*[:：]?/gm,'$1$3:').replace(/^([ \t]*)(원문|시구|구절)[ \t]*$/gm,'$1$2:');
 + const asserted=/(?:원문|원작|시구|구절|첫\s*행|첫\s*문장)[은는이가을를]?\s*(?:은|는|:|：|다음|["“‘「『])/;
 + const originalRequested=/(원문|시구|인용)/.test(question);
 + const explicitCreation=/(창작|지어\s*줘|써\s*줘)/.test(question)&&!/(원문|실제|인용)/.test(question);
-+ if(explicitCreation&&!asserted.test(text))return false;
-+ if(!originalRequested&&!asserted.test(text))return false;
++ if(explicitCreation&&!asserted.test(markedText))return false;
++ if(!originalRequested&&!asserted.test(markedText))return false;
 + const normalize=(s:string)=>s.normalize('NFC').replace(/\s+/g,'');
 + // Line breaks and long excerpts must not skip evidence checks.
 + // Inspect the complete quoted span/labelled line rather than silently ignoring or clipping it.
-+ const quotes=[...text.matchAll(/["“‘「『]([^"”’」』]{4,})["”’」』]/g)].map(m=>m[1]);
++ const quotes=[...markedText.matchAll(/["“‘「『]([^"”’」』]{4,})["”’」』]/g)].map(m=>m[1]);
 + // Explicit unquoted original blocks continue until a blank line or a labelled explanation.
 + // Do not validate only the first line while returning an unchecked continuation.
-+ for(const m of text.matchAll(/(?:원문|시구|구절)[ \t]*[:：][ \t]*/g)){
-+  const rest=text.slice(m.index!+m[0].length);
++ for(const m of markedText.matchAll(/(?:원문|시구|구절)[ \t]*[:：][ \t]*/g)){
++  const rest=markedText.slice(m.index!+m[0].length);
 +  if(/^["“‘「『]/.test(rest.trimStart()))continue; // Quoted spans are checked above.
-+  const lines=rest.split(/\r?\n/);if(!lines[0].trim())lines.shift();
++  const lines=rest.replace(/^(?:[ \t]*\n)+/,'').split('\n');
 +  const block:string[]=[];
-+  for(const line of lines){
++  const fence=lines[0]?.match(/^[ \t]*(`{3,}|~{3,})[^\n]*$/);
++  if(fence){
++   const close=new RegExp('^[ \\t]*'+fence[1][0]+'{'+fence[1].length+',}[ \\t]*$');
++   for(const line of lines.slice(1)){if(close.test(line))break;block.push(line);}
++  }else if(/^[ \t]*>/.test(lines[0]||'')){
++   for(const line of lines){const quoted=line.match(/^[ \t]*>[ \t]?(.*)$/);if(!quoted)break;block.push(quoted[1]);}
++  }else for(const line of lines){
 +   if(!line.trim()||/^(?:해설|설명|의미|풀이|분석|참고|출처)\s*[:：]/.test(line.trim()))break;
 +   block.push(line.trim());
 +  }
@@ -291,10 +298,10 @@ index 0000000..b604fba
 +}
 diff --git a/tests/answer-grounding.test.mjs b/tests/answer-grounding.test.mjs
 new file mode 100644
-index 0000000..c926c30
+index 0000000..28c4669
 --- /dev/null
 +++ b/tests/answer-grounding.test.mjs
-@@ -0,0 +1,49 @@
+@@ -0,0 +1,58 @@
 +import test from 'node:test';
 +import assert from 'node:assert/strict';
 +import {generateAI} from '../lib/ai.ts';
@@ -344,3 +351,12 @@ index 0000000..c926c30
 +test('omitted middle chunk cannot bridge an unsupported gap',async()=>{const result=await spanAnswer([spanMaterial('gap',[{page:1,text:'서두'.repeat(200)+spanLeft+'누락구간'.repeat(100)+spanRight+'끝'.repeat(100)}])],spanQuote,ctx=>[ctx[0].referenceId,ctx.at(-1).referenceId]);assert(!result.text.includes(spanQuote));});
 +for(const kind of ['material','page','section'])test(`citation merging cannot cross ${kind} boundaries`,async()=>{const materials=kind==='material'?[spanMaterial('a',[{page:1,text:spanLeft}]),spanMaterial('b',[{page:1,text:spanRight}])]:[spanMaterial('a',[{page:1,text:spanLeft},{page:kind==='page'?2:1,text:spanRight}])];const result=await spanAnswer(materials,spanQuote);assert(!result.text.includes(spanQuote));});
 +test('the eleventh reference cannot extend ten returned citations',async()=>{const result=await spanAnswer([spanMaterial('cap',[{page:1,text:'서두'.repeat(2225)+spanQuote+'끝'.repeat(100)}])],spanQuote,ctx=>ctx.slice(0,11).map(c=>c.referenceId));assert(!result.text.includes(spanQuote));});
++for(const label of ['**원문:**','**원문**:','__원문__:','원문'])test(`explicit markdown original label cannot bypass evidence:${label}`,()=>assert.equal(guard('작품 원문을 설명해줘',`${label}\n자료에 없는 모의 구절입니다`,[]),true));
++test('verified bold labelled blockquote remains supported',()=>assert.equal(guard('작품 원문을 설명해줘','**원문:**\n> 검증한 첫째 구절입니다\n> 검증한 둘째 구절입니다',['검증한 첫째 구절입니다 검증한 둘째 구절입니다']),false));
++test('blank quoted line does not invalidate a verified blockquote',()=>assert.equal(guard('작품 원문을 설명해줘','원문:\n> 검증한 첫째 구절입니다\n>\n> 검증한 둘째 구절입니다',['검증한 첫째 구절입니다 검증한 둘째 구절입니다']),false));
++test('blank quoted line does not hide an unsupported continuation',()=>assert.equal(guard('작품 원문을 설명해줘','원문:\n> 검증한 첫째 구절입니다\n>\n> 자료에 없는 둘째 구절입니다',['검증한 첫째 구절입니다']),true));
++for(const fence of ['```text','~~~'])test(`verified fenced original remains supported:${fence}`,()=>{const close=fence.startsWith('`')?'```':'~~~';assert.equal(guard('작품 원문을 설명해줘',`원문:\n${fence}\n검증한 첫째 구절입니다\n\n검증한 둘째 구절입니다\n${close}\n해설: 원문 밖의 설명입니다.`,['검증한 첫째 구절입니다 검증한 둘째 구절입니다']),false);});
++test('bold labelled fenced original cannot bypass evidence',()=>assert.equal(guard('작품 원문을 설명해줘','**원문:**\n```\n자료에 없는 모의 구절입니다\n```',[]),true));
++for(const correct of [false,true])test(`ask checks bold-labelled markdown original evidence:${correct}`,async()=>{let calls=0;const result=await generateAI({mode:'ask',subject:'국어',question:'「작품가」 원문을 설명해줘',materials:[{id:'markdown-source',subjectId:'s',kind:'lesson',name:'작품가.pdf',sections:[{page:1,text:correct?'검증한 첫째 구절입니다 검증한 둘째 구절입니다. 모의 자료입니다.':'검증한 첫째 구절입니다. 뒤 원문이 없는 모의 자료입니다.'}]}]},'synthetic-only',async()=>{calls++;return Response.json({choices:[{finish_reason:'stop',message:{content:JSON.stringify({text:'**원문:**\n> 검증한 첫째 구절입니다\n>\n> 검증한 둘째 구절입니다\n\n해설: 모의 설명입니다.',referenceIds:['R1']})}}]});});assert.equal(calls,1);assert.equal(result.text.includes('**원문:**'),correct);if(!correct)assert.equal(result.citations.length,0);});
++for(const correct of [false,true])test(`markdown original after blank separator still requires evidence:${correct}`,()=>assert.equal(guard('작품 원문을 설명해줘','원문:\n\n> 검증한 모의 구절입니다',correct?['검증한 모의 구절입니다']:[]),!correct));
++test('indented fence closer separates verified original from explanation',()=>assert.equal(guard('작품 원문을 설명해줘','원문:\n```\n검증한 모의 구절입니다\n\t```\n해설: 별도의 모의 설명입니다.',['검증한 모의 구절입니다']),false));
