@@ -1,5 +1,5 @@
 {
-  "observedAt": "2026-10-27T08:44:21.049Z",
+  "observedAt": "2026-10-27T09:43:28.735Z",
   "invocationSource": "scheduler",
   "status": "009_r6_incomplete",
   "lastProcessedMainMessageId": "PACE-DELEGATE-20261027-004",
@@ -36,7 +36,7 @@
       "nextAction": "Finish literary identity evidence policy;main review of normalized-query disclosure and type labels. Keep UI002 preserved."
     }
   },
-  "nextAction": "Finish literary identity evidence policy;main review of normalized-query disclosure and type labels. Keep UI002 preserved.",
+  "nextAction": "Strengthen actual selected-material claim/citation agreement while main reviews official literary lookup dependency;do not repeat missing credential or localhost probes.",
   "main22Checkout": "/workspace/pace-main22-ui-checkout-20261027",
   "mainQA": {
     "taskId": "MAIN20-AVAILABILITY-QA",
@@ -260,11 +260,28 @@
         "broader keyboard",
         "actual subject select label"
       ]
+    },
+    "subjectLabelEvidence": {
+      "scope": "source_only",
+      "implicitLabelWrapper": true,
+      "selectDirectChild": true,
+      "selectOutsideAdvancedDetails": true,
+      "actualBrowserLabelPass": false
     }
   },
   "authInvestigation": {
     "status": "report_delivered_actual_connection_blocked",
     "url": "https://github.com/minsec2314-cloud/pace-ai-work/blob/ai/ai-01-results-20261019/research-20261027/AI_AUTH_AND_CODEX_REPORT.md",
     "blocker": "Remotely hosted PACE plan-inference approval not established. Existing automation update has no host/project/agent field;no migration performed."
+  },
+  "literaryLookupInvestigation": {
+    "status": "official_dependency_identified_not_connected",
+    "url": "https://github.com/minsec2314-cloud/pace-ai-work/blob/ai/ai-01-results-20261019/literary-evidence-plan-20261027/REPORT.md",
+    "bytes": 3151,
+    "sha256": "07f5fcd9530e047980e5becc42018109b549da5b1d06f7df627e792dd38b50f3",
+    "officialGuide": "https://encykorea.aks.ac.kr/Guide/OpenApiUse",
+    "blocker": "Official API requires issuedX-API-Key;no authorized configured connection supplied.Operational credentials/API remain main-owned. No registration or bypass attempted.",
+    "productCodeChanged": false,
+    "regression": "17 grounding mocks pass inoriginalAIcheckout"
   }
 }
