@@ -1,0 +1,49 @@
+{
+  "submissionId": "AI01-LITERARY-CITATION-DRAFT-20261028-005",
+  "status": "incomplete_literary_review_candidate_not_general_identity_validation",
+  "replyTo": "PACE-DELEGATE-20261027-007",
+  "baselineMainCommit": "9469f395ec4b597e4606bc4991ca4db7230f744d",
+  "baselineSubmissionId": "AI-01-20261026-iteration-008",
+  "files": [
+    {
+      "path": "lib/ai.ts",
+      "base008Sha256": "4d5f58fcc2c4bbe5da4403451f453d8c0dec5828300e9060cad64935f04d71cf",
+      "bytes": 19959,
+      "sha256": "3997a1628fc6eaa6f8858421425a266e298be6f9f6aeed5edc94b2e3b3fa2333"
+    },
+    {
+      "path": "lib/answer-grounding.ts",
+      "base008Sha256": null,
+      "bytes": 2367,
+      "sha256": "8f8471d1de67ce294579a03d5fbc1e7c81cf0a324e4f25f8d80b9df919ea0371"
+    },
+    {
+      "path": "tests/answer-grounding.test.mjs",
+      "base008Sha256": null,
+      "bytes": 15121,
+      "sha256": "8ebd4a56ad54d40ac1d2e42f91d02b9c39b6d5fa9baf31a5b88f80c3394946a7"
+    }
+  ],
+  "patchKind": "additional_only_vs008;REPLACES_literary001through004;apply_only005;separate_from_research002_and_UI003",
+  "replacesCandidate": "AI01-LITERARY-CITATION-DRAFT-20261028-004",
+  "reproduction": "2new failures before fix:verified quotation crossing adjacent original chunks was withheld for both forward and reversed reference-ID order.6negative cases retained.",
+  "change": "Track original section index and offset internally;strip these fields from model payload.Only up-to10 actual returned referenceIDs may form adjacent/overlapping consistent source runs within same material,page,section.No missing spans or cross-source concatenation.Legacy excerpt citations unchanged.Response citation schema unchanged.",
+  "validation": {
+    "groundingTests": "60pass0fail",
+    "fullIsolatedTests": "200pass0fail",
+    "typecheck": "pass",
+    "build": "pass",
+    "patchAppliedExactBytes": true,
+    "modelCalls": 0
+  },
+  "preserved": "008 strict finish_reason/retry behavior;all inherited tests;007 and prior009draft archives unchanged",
+  "limitations": [
+    "Exact text matching and explicitly bracketed title association only;not general semantic or bibliographic verification",
+    "No independent author/work/catalog identity validation;AKS key unavailable",
+    "Blank lines and explicit explanation labels delimit unquoted original blocks;markdown/other formats remain incomplete",
+    "Unlabelled explanation appended without separator may be conservatively withheld",
+    "Separate pages/materials/original sections and legacy citations are not concatenated;actual contiguous reference-ID chunks only",
+    "Synthetic materials only;no actual student or model quality evaluation"
+  ],
+  "nextAction": "Main reviews005 replacing earlier literary candidates relative accepted008.Continue markdown/blank-line original text boundaries and unmarked work/author assertions;official identity dependency remains main-owned."
+}
