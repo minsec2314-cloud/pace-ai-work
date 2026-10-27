@@ -249,10 +249,10 @@ index c40b4ef..282b0f4 100644
 +test('single Latin condition is not inferred from inside another word',()=>assert.equal(researchMatches('battery X',syntheticSource('Battery oxide materials')),false));
 diff --git a/lib/answer-grounding.ts b/lib/answer-grounding.ts
 new file mode 100644
-index 0000000..11f729b
+index 0000000..4dfbb8e
 --- /dev/null
 +++ b/lib/answer-grounding.ts
-@@ -0,0 +1,43 @@
+@@ -0,0 +1,47 @@
 +type LiterarySource=string|{text:string;name?:string};
 +// Explicit title association is a metadata check, not independent bibliographic verification.
 +export function unsupportedLiteraryQuote(question:string,text:string,sources:LiterarySource[]):boolean {
@@ -265,7 +265,8 @@ index 0000000..11f729b
 + const normalize=(s:string)=>s.normalize('NFC').replace(/\s+/g,'');
 + // Line breaks and long excerpts must not skip evidence checks.
 + // Inspect the complete quoted span/labelled line rather than silently ignoring or clipping it.
-+ const quotes=[...markedText.matchAll(/["“‘「『]([^"”’」』]{4,})["”’」』]/g)].map(m=>m[1]);
++ const attributions=[...markedText.matchAll(/[「『《〈]([^」』》〉\n]{1,80})[」』》〉](?=\s*의\s*(?:원문|시구|구절))/g)].map(m=>({title:m[1].trim(),index:m.index!}));
++ const quotes=[...markedText.matchAll(/["“‘「『]([^"”’」』]{4,})["”’」』]/g)].filter(m=>!attributions.some(a=>a.index===m.index)).map(m=>({text:m[1],index:m.index!}));
 + // Explicit unquoted original blocks continue until a blank line or a labelled explanation.
 + // Do not validate only the first line while returning an unchecked continuation.
 + for(const m of markedText.matchAll(/(?:원문|시구|구절)[ \t]*[:：][ \t]*/g)){
@@ -283,25 +284,28 @@ index 0000000..11f729b
 +   if(!line.trim()||/^(?:해설|설명|의미|풀이|분석|참고|출처)\s*[:：]/.test(line.trim()))break;
 +   block.push(line.trim());
 +  }
-+  const excerpt=block.join('\n');if(excerpt.trim().length>=4)quotes.push(excerpt);
++  const excerpt=block.join('\n');if(excerpt.trim().length>=4)quotes.push({text:excerpt,index:m.index!});
 + }
 + const titles=[...question.matchAll(/[「『《〈]([^」』》〉\n]{1,80})[」』》〉]/g)].map(m=>m[1].trim());
-+ const scoped=sources.filter(source=>{
-+  if(!titles.length)return true;
++ const matchesTitle=(source:LiterarySource,title:string)=>{
 +  const identity=typeof source==='string'?source:(source.name||'')+'\n'+source.text;
-+  return titles.some(title=>{
-+   const escaped=title.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
-+   return new RegExp('(^|[^\\p{L}\\p{N}])'+escaped+'(?=$|[^\\p{L}\\p{N}])','u').test(identity.normalize('NFC'));
-+  });
++  const escaped=title.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
++  return new RegExp('(^|[^\\p{L}\\p{N}])'+escaped+'(?=$|[^\\p{L}\\p{N}])','u').test(identity.normalize('NFC'));
++ };
++ return quotes.some(q=>{
++  // A claimed work belongs to this excerpt,not any other work in the request.
++  const attributed=attributions.filter(a=>a.index<q.index).at(-1)?.title;
++  const targets=attributed?[attributed]:titles;
++  const scoped=targets.length?sources.filter(source=>targets.some(title=>matchesTitle(source,title))):sources;
++  return !scoped.some(source=>normalize(typeof source==='string'?source:source.text).includes(normalize(q.text)));
 + });
-+ return quotes.some(q=>!scoped.some(s=>normalize(typeof s==='string'?s:s.text).includes(normalize(q))));
 +}
 diff --git a/tests/answer-grounding.test.mjs b/tests/answer-grounding.test.mjs
 new file mode 100644
-index 0000000..28c4669
+index 0000000..c21f2ce
 --- /dev/null
 +++ b/tests/answer-grounding.test.mjs
-@@ -0,0 +1,58 @@
+@@ -0,0 +1,65 @@
 +import test from 'node:test';
 +import assert from 'node:assert/strict';
 +import {generateAI} from '../lib/ai.ts';
@@ -360,3 +364,10 @@ index 0000000..28c4669
 +for(const correct of [false,true])test(`ask checks bold-labelled markdown original evidence:${correct}`,async()=>{let calls=0;const result=await generateAI({mode:'ask',subject:'국어',question:'「작품가」 원문을 설명해줘',materials:[{id:'markdown-source',subjectId:'s',kind:'lesson',name:'작품가.pdf',sections:[{page:1,text:correct?'검증한 첫째 구절입니다 검증한 둘째 구절입니다. 모의 자료입니다.':'검증한 첫째 구절입니다. 뒤 원문이 없는 모의 자료입니다.'}]}]},'synthetic-only',async()=>{calls++;return Response.json({choices:[{finish_reason:'stop',message:{content:JSON.stringify({text:'**원문:**\n> 검증한 첫째 구절입니다\n>\n> 검증한 둘째 구절입니다\n\n해설: 모의 설명입니다.',referenceIds:['R1']})}}]});});assert.equal(calls,1);assert.equal(result.text.includes('**원문:**'),correct);if(!correct)assert.equal(result.citations.length,0);});
 +for(const correct of [false,true])test(`markdown original after blank separator still requires evidence:${correct}`,()=>assert.equal(guard('작품 원문을 설명해줘','원문:\n\n> 검증한 모의 구절입니다',correct?['검증한 모의 구절입니다']:[]),!correct));
 +test('indented fence closer separates verified original from explanation',()=>assert.equal(guard('작품 원문을 설명해줘','원문:\n```\n검증한 모의 구절입니다\n\t```\n해설: 별도의 모의 설명입니다.',['검증한 모의 구절입니다']),false));
++const attributionLine='작품가에서만 확인할 수 있는 모의 구절입니다';
++test('multi-work request does not permit assigning an excerpt to the other work',()=>assert.equal(guard('「작품가」와 「작품나」 원문을 비교해줘','「작품나」의 원문은 “'+attributionLine+'”입니다.',[{name:'작품가.pdf',text:attributionLine}]),true));
++test('response work attribution overrides a different requested title for excerpt checking',()=>assert.equal(guard('「작품가」 원문을 설명해줘','「작품나」의 원문은 “'+attributionLine+'”입니다.',[{name:'작품가.pdf',text:attributionLine}]),true));
++for(const [open,close] of [['「','」'],['『','』'],['《','》'],['〈','〉']])test(`work title metadata is not an original excerpt:${open}`,()=>assert.equal(guard(`${open}다섯글자작품${close} 원문을 설명해줘`,`${open}다섯글자작품${close}의 원문은 “검증한 모의 구절입니다”입니다.`,[{name:'다섯글자작품.pdf',text:'검증한 모의 구절입니다'}]),false));
++test('requested title quoted as actual original text still requires evidence',()=>assert.equal(guard('「다섯글자작품」 원문을 설명해줘','원문은 「다섯글자작품」입니다.',[{name:'다섯글자작품.pdf',text:'다른 모의 구절입니다'}]),true));
++test('each explicitly attributed original block uses its own work source',()=>assert.equal(guard('「작품가」와 「작품나」 원문을 비교해줘','「작품가」의 원문:\n'+attributionLine+'\n\n「작품나」의 원문:\n작품나에서만 확인할 수 있는 모의 구절입니다',[{name:'작품가.pdf',text:attributionLine},{name:'작품나.pdf',text:'작품나에서만 확인할 수 있는 모의 구절입니다'}]),false));
++for(const target of ['작품가','작품나'])test(`ask checks claimed work against actual returned citation:${target}`,async()=>{let calls=0;const materials=[{id:'attribution-a',subjectId:'s',kind:'lesson',name:'작품가.pdf',sections:[{page:1,text:attributionLine}]},{id:'attribution-b',subjectId:'s',kind:'lesson',name:'작품나.pdf',sections:[{page:1,text:'작품나에서만 확인할 수 있는 별도의 모의 구절입니다'}]}];const result=await generateAI({mode:'ask',subject:'국어',question:'「작품가」와 「작품나」 원문을 비교해줘',materials},'synthetic-only',async()=>{calls++;return Response.json({choices:[{finish_reason:'stop',message:{content:JSON.stringify({text:`「${target}」의 원문은 “${attributionLine}”입니다.`,referenceIds:['R1']})}}]});});assert.equal(calls,1);assert.equal(result.text.includes('의 원문은'),target==='작품가');if(target!=='작품가')assert.equal(result.citations.length,0);});
