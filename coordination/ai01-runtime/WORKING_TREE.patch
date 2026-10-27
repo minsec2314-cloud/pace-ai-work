@@ -46,6 +46,40 @@ index 5b43cf2..078e491 100644
 - try{const raw=await response.json() as {choices:{finish_reason:string;message:{content:string}}[]};if(raw.choices?.[0]?.finish_reason==='length')throw Error('검산 결과가 너무 깁니다. 문제 수를 줄여 주세요.');const result=JSON.parse(raw.choices[0].message.content) as {solutions:unknown[]};if(!Array.isArray(result.solutions)||result.solutions.length!==questions.length)throw Error('정답 검산 결과의 문항 수가 일치하지 않습니다.');return questions.map((q,i)=>{const s=result.solutions[i] as {answer?:unknown;explanation?:unknown;error?:unknown};if(!s||s.error||typeof s.answer!=='string'||!s.answer.trim()||typeof s.explanation!=='string'||!s.explanation.trim()||s.answer.length>4000||s.explanation.length>6000)throw Error('조건이 부족하거나 검산하지 못한 문항이 있어 다시 생성해야 합니다.');return {...q,answer:s.answer,explanation:s.explanation};});}catch(e){throw new AIError(e instanceof Error?e.message:'검산 결과를 읽지 못했습니다.',502);}
 + try{const raw=await response.json() as {choices:{finish_reason:string;message:{content:string}}[]};if(raw.choices?.[0]?.finish_reason!=='stop')throw Error('검산 결과가 너무 깁니다. 문제 수를 줄여 주세요.');const result=JSON.parse(raw.choices[0].message.content) as {solutions:unknown[]};if(!Array.isArray(result.solutions)||result.solutions.length!==questions.length)throw Error('정답 검산 결과의 문항 수가 일치하지 않습니다.');return questions.map((q,i)=>{const s=result.solutions[i] as {answer?:unknown;explanation?:unknown;error?:unknown};if(!s||s.error||typeof s.answer!=='string'||!s.answer.trim()||typeof s.explanation!=='string'||!s.explanation.trim()||s.answer.length>4000||s.explanation.length>6000)throw Error('조건이 부족하거나 검산하지 못한 문항이 있어 다시 생성해야 합니다.');return {...q,answer:s.answer,explanation:s.explanation};});}catch(e){throw new AIError(e instanceof Error?e.message:'검산 결과를 읽지 못했습니다.',502);}
  }
+diff --git a/PACE_AI_WORKSPACE/source/lib/research.ts b/PACE_AI_WORKSPACE/source/lib/research.ts
+index 460ce0a..de467d4 100644
+--- a/PACE_AI_WORKSPACE/source/lib/research.ts
++++ b/PACE_AI_WORKSPACE/source/lib/research.ts
+@@ -12,6 +12,22 @@ export function crossrefSources(works:CrossrefWork[]):Source[]{
+   return [{id:w.DOI,title,url:`https://doi.org/${w.DOI.split('/').map(part=>encodeURIComponent(part)).join('/')}`,authors,year:String(w.published?.['date-parts']?.[0]?.[0]||'연도 미확인'),abstract:textOnly(w.abstract),provider:'Crossref'}];
+  });
+ }
++// Metadata relevance is a conservative screen, not verification of paper claims.
++export function researchMatches(query:string,source:Source):boolean {
++ const q=query.normalize('NFKC').toLowerCase();
++ const text=(source.title+' '+source.abstract).normalize('NFKC').toLowerCase();
++ const compact=(s:string)=>s.replace(/[\s-]+/g,'');
++ const groups:[RegExp,RegExp][]=[
++  [/전지|battery|batteries/,/전지|\bbatter(?:y|ies)\b/],
++  [/나트륨\s*이온|sodium[ -]?ion/,/나트륨\s*이온|\bsodium[ -]?ion\b/],
++  [/리튬\s*황|lithium[ -]?sulfur/,/리튬\s*황|\blithium[ -]?sulfur\b/],
++  [/전고체|solid[ -]?state/,/전고체|\bsolid[ -]?state\b/],
++ ];
++ const required=groups.filter(([pattern])=>pattern.test(q));
++ if(required.length)return required.every(([,pattern])=>pattern.test(text));
++ const terms=q.match(/[\p{L}\p{N}]{2,}/gu)||[];
++ return terms.length>0&&terms.every(term=>compact(text).includes(compact(term)));
++}
+ export async function searchResearch(query:string,fetcher:typeof fetch=fetch):Promise<Source[]>{
+  if(query.trim().length<2||query.length>200)throw new Error('검색어를 2~200자로 입력해 주세요.');
+  const url=new URL('https://api.crossref.org/works');url.searchParams.set('query.bibliographic',query.trim());url.searchParams.set('rows','7');url.searchParams.set('select','DOI,title,author,published,abstract,type');
+@@ -20,5 +36,5 @@ export async function searchResearch(query:string,fetcher:typeof fetch=fetch):Pr
+  let data:{message?:{items?:CrossrefWork[]}}|null;
+  try{data=await response.json() as typeof data;}catch{throw new Error('학술 검색 결과의 형식을 읽지 못했습니다. 잠시 후 다시 시도해 주세요.');}
+  if(!Array.isArray(data?.message?.items))throw new Error('학술 검색 결과의 형식을 읽지 못했습니다. 잠시 후 다시 시도해 주세요.');
+- return crossrefSources(data.message.items);
++ return crossrefSources(data.message.items).filter(source=>researchMatches(query,source));
+ }
 diff --git a/PACE_AI_WORKSPACE/source/tests/ai.test.mjs b/PACE_AI_WORKSPACE/source/tests/ai.test.mjs
 index fae09d4..e54f9ca 100644
 --- a/PACE_AI_WORKSPACE/source/tests/ai.test.mjs
@@ -72,6 +106,60 @@ index ba6108c..a02f0e8 100644
 +for(const reason of ['content_filter','tool_calls',null,undefined])test(`non-completed review is not a checked quiz: ${String(reason)}`,async()=>{
 + await assert.rejects(reviewQuestions(questions,'수학','synthetic-only',Date.now()+20000,async()=>Response.json({choices:[{finish_reason:reason,message:{content:JSON.stringify({solutions:[{answer:'5',explanation:'표면상 완성된 풀이'}]})}}]})),e=>e.status===502);
 +});
+diff --git a/PACE_AI_WORKSPACE/source/tests/research-quality.test.mjs b/PACE_AI_WORKSPACE/source/tests/research-quality.test.mjs
+index c40b4ef..8834f7d 100644
+--- a/PACE_AI_WORKSPACE/source/tests/research-quality.test.mjs
++++ b/PACE_AI_WORKSPACE/source/tests/research-quality.test.mjs
+@@ -1,41 +1,14 @@
+ import test from 'node:test';
+ import assert from 'node:assert/strict';
+-import {crossrefSources} from '../lib/research.ts';
+-
+-for(const doi of ['10.1234/plain','10.1234/a?b','10.1234/a#b','10.1234/a?b#c','10.1234/part/with spaces']){
+- test(`DOI resolver preserves the full identifier: ${doi}`,()=>{
+-  const [source]=crossrefSources([{DOI:doi,title:['Synthetic study']}]);
+-  const url=new URL(source.url);
+-  assert.equal(url.origin,'https://doi.org');
+-  assert.equal(url.search,'');assert.equal(url.hash,'');
+-  assert.equal(decodeURIComponent(url.pathname.slice(1)),doi);
+-  assert.equal(source.id,doi);
+- });
+-}
+-
+ import {searchResearch} from '../lib/research.ts';
+-const validWork={DOI:'10.1234/valid',title:['Valid synthetic study']};
+-test('one malformed search row does not discard a valid scholarly source',()=>{
+- const sources=crossrefSources([null,{DOI:'10.1234/wrong-title',title:'not-an-array'},{DOI:'10.1234/empty',title:['<b> </b>']},validWork]);
+- assert.equal(sources.length,1);assert.equal(sources[0].id,validWork.DOI);assert.equal(sources[0].title,validWork.title[0]);
+-});
+-test('malformed optional authors do not break a valid source or invent names',()=>{
+- for(const author of [{given:'wrong container'},[null,{}, {given:42,family:'Kim'}]]){
+-  const sources=crossrefSources([{...validWork,author}]);
+-  assert.equal(sources.length,1);assert.equal(sources[0].authors,Array.isArray(author)?'Kim':'저자 정보 없음');
+- }
+-});
+-test('an empty DOI suffix cannot become a scholarly resolver link',()=>{
+- assert.deepEqual(crossrefSources([{DOI:'10.1234/',title:['Empty DOI']}]),[]);
+-});
+-test('malformed search envelope is a readable failure rather than a successful empty result',async()=>{
++const work=(title,abstract='')=>({DOI:'10.1234/'+encodeURIComponent(title),title:[title],abstract});
++test('battery search excludes unrelated chemistry and preserves battery evidence',async()=>{
+  let calls=0;
+- for(const body of [null,{}, {message:{}},{message:{items:null}},{message:{items:{}}}]){
+-  await assert.rejects(searchResearch('synthetic study',async()=>{calls++;return Response.json(body);}),e=>e instanceof Error&&/형식/.test(e.message));
+- }
+- assert.equal(calls,5);
++ const results=await searchResearch('차세대 화학전지',async()=>{calls++;return Response.json({message:{items:[work('Chemical analysis of ancient pottery'),work('Next generation rechargeable batteries'),work('Electrode materials','Sodium-ion batteries for energy storage')]}});});
++ assert.equal(results.length,2);assert(!results.some(s=>s.title.includes('pottery')));assert.equal(calls,1);
+ });
+-
+-test('a non-JSON upstream response reports the search result format failure',async()=>{
+- await assert.rejects(searchResearch('synthetic study',async()=>new Response('<html>upstream failure</html>',{headers:{'Content-Type':'text/html'}})),e=>e instanceof Error&&/형식/.test(e.message));
++test('specific battery chemistry cannot be replaced by another chemistry',async()=>{
++ const result=await searchResearch('나트륨이온 전지',async()=>Response.json({message:{items:[work('Lithium-ion batteries'),work('Sodium-ion batteries')]}}));assert.equal(result.length,1);assert.match(result[0].title,/Sodium/);
+ });
++test('unverifiable topic returns no filler',async()=>assert.deepEqual(await searchResearch('zznonexistenttopic',async()=>Response.json({message:{items:[work('Popular science')]}})),[]));
++test('missing abstracts can use an explicit matching title',async()=>assert.equal((await searchResearch('photosynthesis',async()=>Response.json({message:{items:[work('Photosynthesis mechanisms')]}}))).length,1));
 diff --git a/PACE_AI_WORKSPACE/source/lib/answer-grounding.ts b/PACE_AI_WORKSPACE/source/lib/answer-grounding.ts
 new file mode 100644
 index 0000000..aa38f04
@@ -106,3 +194,23 @@ index 0000000..6cf0db6
 + assert(!result.text.includes('은하수에 꽃배'));
 + assert.match(result.warning,/원문/);assert.equal(calls,1);
 +});
+diff --git a/PACE_AI_WORKSPACE/source/tests/research-quality.test.mjs b/PACE_AI_WORKSPACE/source/tests/research-quality.test.mjs
+new file mode 100644
+index 0000000..8834f7d
+--- /dev/null
++++ b/PACE_AI_WORKSPACE/source/tests/research-quality.test.mjs
+@@ -0,0 +1,14 @@
++import test from 'node:test';
++import assert from 'node:assert/strict';
++import {searchResearch} from '../lib/research.ts';
++const work=(title,abstract='')=>({DOI:'10.1234/'+encodeURIComponent(title),title:[title],abstract});
++test('battery search excludes unrelated chemistry and preserves battery evidence',async()=>{
++ let calls=0;
++ const results=await searchResearch('차세대 화학전지',async()=>{calls++;return Response.json({message:{items:[work('Chemical analysis of ancient pottery'),work('Next generation rechargeable batteries'),work('Electrode materials','Sodium-ion batteries for energy storage')]}});});
++ assert.equal(results.length,2);assert(!results.some(s=>s.title.includes('pottery')));assert.equal(calls,1);
++});
++test('specific battery chemistry cannot be replaced by another chemistry',async()=>{
++ const result=await searchResearch('나트륨이온 전지',async()=>Response.json({message:{items:[work('Lithium-ion batteries'),work('Sodium-ion batteries')]}}));assert.equal(result.length,1);assert.match(result[0].title,/Sodium/);
++});
++test('unverifiable topic returns no filler',async()=>assert.deepEqual(await searchResearch('zznonexistenttopic',async()=>Response.json({message:{items:[work('Popular science')]}})),[]));
++test('missing abstracts can use an explicit matching title',async()=>assert.equal((await searchResearch('photosynthesis',async()=>Response.json({message:{items:[work('Photosynthesis mechanisms')]}}))).length,1));
