@@ -1,0 +1,47 @@
+{
+  "submissionId": "AI01-LITERARY-CITATION-DRAFT-20261027-001",
+  "status": "incomplete_literary_review_candidate_not_general_identity_validation",
+  "replyTo": "PACE-DELEGATE-20261027-007",
+  "baselineMainCommit": "9469f395ec4b597e4606bc4991ca4db7230f744d",
+  "baselineSubmissionId": "AI-01-20261026-iteration-008",
+  "files": [
+    {
+      "path": "lib/ai.ts",
+      "base008Sha256": "4d5f58fcc2c4bbe5da4403451f453d8c0dec5828300e9060cad64935f04d71cf",
+      "bytes": 18723,
+      "sha256": "d09c6ed8de047a3bd3994aeb0e6b081a7e0171d85edbd5e497d82aef73d72a57"
+    },
+    {
+      "path": "lib/answer-grounding.ts",
+      "base008Sha256": null,
+      "bytes": 1703,
+      "sha256": "acb26d437486e01ff86c583ccde8da70180fbcd3ec4bb8e054bca4bcb80cee05"
+    },
+    {
+      "path": "tests/answer-grounding.test.mjs",
+      "base008Sha256": null,
+      "bytes": 6521,
+      "sha256": "5132a5c365355fc94d1f66e45df745194fb71f8815c1a7b100f39c1329b7aa5e"
+    }
+  ],
+  "patchKind": "additional_only_vs008;separate_from_research002_and_UI003",
+  "reproduction": "2new integration failures before fix:quote exists in another selected block but returned referenceIds R2 or [] let unsupported citation through. CorrectR1 control passes.",
+  "change": "Resolve returned citations first;guard checks only exact restored/verified citation excerpts with associated material names,not uncited selected context. Legacy citations checked within returned quote;normal explanations unaffected.",
+  "validation": {
+    "groundingTests": "23pass0fail",
+    "fullIsolatedTests": "163pass0fail",
+    "fullMixedDevelopmentTests": "193pass0fail",
+    "typecheck": "pass",
+    "build": "pass",
+    "patchAppliedExactBytes": true,
+    "modelCalls": 0
+  },
+  "preserved": "008 strict finish_reason/retry behavior;all inherited tests;007 and prior009draft archives unchanged",
+  "limitations": [
+    "Exact quotation matching and explicitly bracketed title association only",
+    "No independent author/work/catalog identity validation;AKS key unavailable",
+    "Incomplete quote extraction and ambiguous/unmarked work claims remain review concerns",
+    "Synthetic materials only,not actual students/model quality evaluation"
+  ],
+  "nextAction": "Main may review bounded citation guard independently. Continue multiline/unquoted quote extraction and ambiguous work association in separate draft;official identity dependency remains main-owned."
+}
