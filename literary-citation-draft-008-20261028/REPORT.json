@@ -1,0 +1,49 @@
+{
+  "submissionId": "AI01-LITERARY-CITATION-DRAFT-20261028-008",
+  "status": "incomplete_literary_review_candidate_not_general_identity_validation",
+  "replyTo": "PACE-DELEGATE-20261027-007",
+  "baselineMainCommit": "9469f395ec4b597e4606bc4991ca4db7230f744d",
+  "baselineSubmissionId": "AI-01-20261026-iteration-008",
+  "files": [
+    {
+      "path": "lib/ai.ts",
+      "base008Sha256": "4d5f58fcc2c4bbe5da4403451f453d8c0dec5828300e9060cad64935f04d71cf",
+      "bytes": 19959,
+      "sha256": "3997a1628fc6eaa6f8858421425a266e298be6f9f6aeed5edc94b2e3b3fa2333"
+    },
+    {
+      "path": "lib/answer-grounding.ts",
+      "base008Sha256": null,
+      "bytes": 4211,
+      "sha256": "8a65d7bc3c44d7ddb665c2247beccde28b7ed0f63ffc8e4f1d994ae5e0f4b3cf"
+    },
+    {
+      "path": "tests/answer-grounding.test.mjs",
+      "base008Sha256": null,
+      "bytes": 23241,
+      "sha256": "c43e26603c8ab21ed924bf9e8266058e9e77683ed9bd1ddc9e5e70d1480138ee"
+    }
+  ],
+  "patchKind": "additional_only_vs_accepted_generation008;REPLACES_literary001through007;apply_only_literary008;separate_from_research002_and_UI003",
+  "replacesCandidate": "AI01-LITERARY-CITATION-DRAFT-20261028-007",
+  "reproduction": "6new failing cases before fix:3nested quotation styles hid fabricated outer suffixes,unclosed/mismatched outer quotes hid suffixes,and actual ask returned fabricated nested continuation.5positive controls retained.",
+  "change": "Scan paired nested quotation boundaries and validate complete outer excerpt instead of stopping at the first inner closing mark.Withhold unclosed outer quotation with substantive text.Preserve correct nested source text,explicit work-title metadata handling,and actual-citation/source-span constraints.No extra model calls.",
+  "validation": {
+    "groundingTests": "96pass0fail",
+    "fullIsolatedTests": "236pass0fail",
+    "typecheck": "pass",
+    "build": "pass",
+    "patchAppliedExactBytes": true,
+    "modelCalls": 0
+  },
+  "preserved": "008 strict finish_reason/retry behavior;all inherited tests;007 and prior009draft archives unchanged",
+  "limitations": [
+    "Different paired quote delimiters handled;ambiguous same-delimiter or escaped quote conventions are not general language parsing",
+    "Incomplete original quotation may be conservatively withheld even when some text appears in source",
+    "Explicit response work attribution remains bounded syntax;unmarked topic switches and author/work assertions incomplete",
+    "Exact excerpt/title-to-provided-material checks do not independently verify authenticity;AKS key unavailable",
+    "Not full Markdown/HTML parser;formatting inside nested quotes may conservatively withhold",
+    "Synthetic materials only;zero actual model calls;no real student data"
+  ],
+  "nextAction": "Main reviews literary008 replacing earlier literary candidates relative accepted generation008.These are different submission IDs;do not reapply accepted generation008.Continue only concrete failures in ambiguous/unmarked claims;official catalog dependency remains main-owned."
+}
