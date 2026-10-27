@@ -2,7 +2,7 @@
   "baseHead": "4edb7b923ec66ff2e119a6dd6efb51d400c3a610",
   "patchSha256": "085d7753e5639795beb03c786cabc32a16508ebc57f8eae24a6f0a7146a4be1f",
   "checkpointSha256": "ab5a046dbfa9eb5bee21aeaf30aab98b8c0e70bde0548ffe3460c84a7821c42d",
-  "lastProcessedMainMessageId": "PACE-DELEGATE-20261027-006",
+  "lastProcessedMainMessageId": "PACE-DELEGATE-20261027-007",
   "latestCompleteSubmissionId": "AI-01-20261026-iteration-008",
   "draft": {
     "status": "incomplete009_r6_not_for_integration",
@@ -36,7 +36,7 @@
       "nextAction": "Finish literary identity evidence policy;main review of normalized-query disclosure and type labels. Keep UI002 preserved."
     }
   },
-  "nextAction": "Main reviews research002 replacement vs accepted008,not001then002.Continue literary selected citation/source agreement separately;preserveUI002.",
+  "nextAction": "Main integrates optional response query adapter and reviews UI003 using cumulative-main22 OR additional-UI002 patch. Continue separate literary multiline quoted-original/unlabelled-work boundaries;do not claim general identity validation. UI003 checkout:/workspace/pace-main22-ui003-20261027;literary isolated:/workspace/pace-ai01-literary-only-20261027. Preserve research002 and accepted008.",
   "processedMainMessageIds": [
     "PACE-ACK008-20261027-001",
     "PACE-MAIN20-20261027-001",
@@ -53,10 +53,123 @@
   "supplementId": "AI01-008-SUPPLEMENT-20261027-001",
   "mainQAProgress": "Public22:T03/T04/T05/T06/W01/W02/W04 pass;T07 exam completion partial;W03,T08,T09 remaining",
   "uiSubmission": {
-    "url": "https://github.com/minsec2314-cloud/pace-ai-work/raw/refs/heads/ai/ai-01-results-20261019/main22-chat-ui-r2-20261027/PACE_MAIN22_CHAT_UI_REVIEW_R2.zip",
-    "bytes": 88480,
-    "sha256": "db7d2c73fbb5b41f482b3bf932bdca0a2bcbc930dd94845f895589e0c15759a0",
-    "commit": "54fb2d22c3459b1d73ae39c5cf60c7bbc4b2151f"
+    "submissionId": "AI01-MAIN22-CHAT-UI-20261027-003",
+    "replyTo": "PACE-DELEGATE-20261027-007",
+    "status": "review_candidate_not_operationally_connected",
+    "baseline": "9469f395ec4b597e4606bc4991ca4db7230f744d",
+    "previousCandidate": "AI01-MAIN22-CHAT-UI-20261027-002",
+    "files": [
+      {
+        "path": "app/study-app.tsx",
+        "bytes": 116042,
+        "sha256": "a1fba9ec3e80da328813e10e0332b9ea096d24ef5c747484bc40799891ceedee",
+        "baseMain22Sha256": "688246d03f5a1b3bc2013ad7819da01be69aa25929fe9f8fe36f5b07b3e9781d",
+        "ui002Sha256": "08461684c31914bef9c0153a68527f6a78d048651dfdc0d98f1fc319fab159d5"
+      },
+      {
+        "path": "app/globals.css",
+        "bytes": 87035,
+        "sha256": "1b009f6281ce723e3fa1848d09b9fd03500bd2e2e9c5c6f5f7b3c1fcf888e6d0",
+        "baseMain22Sha256": "c3e3dd80f0653bbebf28f712b152bcb25aa946a697e8197c176a8210ba904a57",
+        "ui002Sha256": "1b009f6281ce723e3fa1848d09b9fd03500bd2e2e9c5c6f5f7b3c1fcf888e6d0"
+      },
+      {
+        "path": "lib/study.ts",
+        "bytes": 20094,
+        "sha256": "438b421853f9da24d952e90b3f69cde0c265a91a55e3069daf7bb03e051c2abc",
+        "baseMain22Sha256": "3010f157b75dbc122268c217914d01914f6deefeb4c91e8b329826b49e94e1af",
+        "ui002Sha256": "438b421853f9da24d952e90b3f69cde0c265a91a55e3069daf7bb03e051c2abc"
+      },
+      {
+        "path": "lib/chat-sessions.ts",
+        "bytes": 740,
+        "sha256": "b52e7726747d1b866c94c582c2b5f3d5d59dda9e086b8cd009ff1809c463ae3e",
+        "baseMain22Sha256": null,
+        "ui002Sha256": "b52e7726747d1b866c94c582c2b5f3d5d59dda9e086b8cd009ff1809c463ae3e"
+      },
+      {
+        "path": "lib/help-content.ts",
+        "bytes": 4321,
+        "sha256": "651756369023ebc5ac6eefb96b7b50936c2dc59e70bc6e380effa8f762c37e57",
+        "baseMain22Sha256": null,
+        "ui002Sha256": "651756369023ebc5ac6eefb96b7b50936c2dc59e70bc6e380effa8f762c37e57"
+      },
+      {
+        "path": "components/user-guide.tsx",
+        "bytes": 591,
+        "sha256": "684764837888bb79d39931a4fc2e05a2b15a467bd4a2d02017fd6424a118baf4",
+        "baseMain22Sha256": null,
+        "ui002Sha256": "684764837888bb79d39931a4fc2e05a2b15a467bd4a2d02017fd6424a118baf4"
+      },
+      {
+        "path": "components/advanced-options.tsx",
+        "bytes": 368,
+        "sha256": "f7809bb3c81727a0b604871e1237d3f9d6128e198059ce3fb22e2b1cfa58f70a",
+        "baseMain22Sha256": null,
+        "ui002Sha256": "f7809bb3c81727a0b604871e1237d3f9d6128e198059ce3fb22e2b1cfa58f70a"
+      },
+      {
+        "path": "app/guide/page.tsx",
+        "bytes": 79,
+        "sha256": "ffceafd492f514a843ee43653210be671938f56a45f215dd1fda961b01d50c10",
+        "baseMain22Sha256": null,
+        "ui002Sha256": "ffceafd492f514a843ee43653210be671938f56a45f215dd1fda961b01d50c10"
+      },
+      {
+        "path": "tests/chat-sessions.test.mjs",
+        "bytes": 2564,
+        "sha256": "2d7ad4679ecc6582d0d0ad17d396ffbe2ca27e7285d9b751e71cebb08b6a4b06",
+        "baseMain22Sha256": null,
+        "ui002Sha256": "2d7ad4679ecc6582d0d0ad17d396ffbe2ca27e7285d9b751e71cebb08b6a4b06"
+      },
+      {
+        "path": "tests/chat-request-race.test.mjs",
+        "bytes": 3725,
+        "sha256": "85e08572f6500842c02aaabd45156ad3d0c16b4871601b713b7c0b1d859df4d7",
+        "baseMain22Sha256": null,
+        "ui002Sha256": "85e08572f6500842c02aaabd45156ad3d0c16b4871601b713b7c0b1d859df4d7"
+      },
+      {
+        "path": "tests/research-query-ui.test.mjs",
+        "bytes": 3955,
+        "sha256": "7dc8d80de86980139eb5e8e22ff77beafd95b8e4d297a6b4e440f3005dedea80",
+        "baseMain22Sha256": null,
+        "ui002Sha256": null
+      }
+    ],
+    "additionalFiles": [
+      "app/study-app.tsx",
+      "tests/research-query-ui.test.mjs"
+    ],
+    "patchInstructions": "Choose cumulative_vs_main22 OR additional_vs_UI002. Do not apply both. Research002/literary009 NOT included.",
+    "reproduction": "UI002 fails3 new query-metadata render assertions. New candidate passes5 production component hook/server-render tests.",
+    "validation": {
+      "tests": "194pass0fail",
+      "typecheck": "pass",
+      "build": "pass",
+      "modelCalls": 0,
+      "browserMobileKeyboard": "not_run_existing_tool_limit;no localhost retries"
+    },
+    "implemented": [
+      "Show optional response original/provider metadata,including empty results",
+      "Different original/provider announces fixed scientific aliases",
+      "Snapshot response metadata and submitted query;input edits cannot overwrite result",
+      "Absent/malformed metadata ignored without guessing;legacy results remain usable",
+      "Always disclose unverified fulltext/review status/relevance for completed search"
+    ],
+    "limitations": [
+      "API adapter remains main-owned;assumed optional query contract not operationally connected",
+      "Synchronous hook+server-render checks are not browser/React scheduling validation",
+      "UI002 known pending mobile/broad keyboard checks remain",
+      "No search semantic/fulltext reliability or literary identity claim"
+    ],
+    "nextAction": "Main integrates optional query adapter and reviews UI003 using one patch;literary citation-to-source validation continues separately.",
+    "zip": {
+      "bytes": 97052,
+      "sha256": "dce2982e18992e2ea32902b3340fbc1ef6030172e34cc874044ea8c887b93514",
+      "url": "https://github.com/minsec2314-cloud/pace-ai-work/raw/refs/heads/ai/ai-01-results-20261019/main22-chat-ui-r3-20261027/PACE_MAIN22_CHAT_UI_REVIEW_R3.zip",
+      "commit": "d9bb39321445c649ca518974053f6f0ddceb42b3"
+    }
   },
   "literaryLookupInvestigation": {
     "status": "official_dependency_identified_not_connected",
@@ -81,5 +194,79 @@
     "isolatedResearchOnlyTests": "170pass0fail",
     "recoveryPatchSha256": "085d7753e5639795beb03c786cabc32a16508ebc57f8eae24a6f0a7146a4be1f",
     "previous009ZipPreserved": true
-  }
+  },
+  "observedAt": "2026-10-27T12:53:05.589Z",
+  "invocationSource": "manual",
+  "invocationEvidence": "Current user resume message does not carry an attributable scheduler event. Automation API separately records an in_progress run;not proof this turn is that worker or that it completed.",
+  "automationId": "6ad5e600246081919b8e3bddcb2fa8a3",
+  "schedulerStatus": {
+    "enabled": true,
+    "schedule": "hourly_until2026-11-17",
+    "lastRecordedRunId": "27bff24b-6148-8326-b56b-e75aa4cb39b4",
+    "recordedStatus": "in_progress",
+    "scheduledFor": "2026-10-27T12:42:10Z",
+    "startedAt": "2026-10-27T12:43:09.111006Z",
+    "successThisInvocation": false,
+    "latestResultIsOlderRun": true,
+    "newAutomationCreated": false
+  },
+  "quotaToolAvailable": false,
+  "quotaStatement": "No quota query tool;exact remaining10percent stop cannot be guaranteed.Each unit persisted.",
+  "lastReceivedMainMessageId": "PACE-DELEGATE-20261027-007",
+  "literaryCitationDraft": {
+    "submissionId": "AI01-LITERARY-CITATION-DRAFT-20261027-001",
+    "status": "incomplete_literary_review_candidate_not_general_identity_validation",
+    "replyTo": "PACE-DELEGATE-20261027-007",
+    "baselineMainCommit": "9469f395ec4b597e4606bc4991ca4db7230f744d",
+    "baselineSubmissionId": "AI-01-20261026-iteration-008",
+    "files": [
+      {
+        "path": "lib/ai.ts",
+        "base008Sha256": "4d5f58fcc2c4bbe5da4403451f453d8c0dec5828300e9060cad64935f04d71cf",
+        "bytes": 18723,
+        "sha256": "d09c6ed8de047a3bd3994aeb0e6b081a7e0171d85edbd5e497d82aef73d72a57"
+      },
+      {
+        "path": "lib/answer-grounding.ts",
+        "base008Sha256": null,
+        "bytes": 1703,
+        "sha256": "acb26d437486e01ff86c583ccde8da70180fbcd3ec4bb8e054bca4bcb80cee05"
+      },
+      {
+        "path": "tests/answer-grounding.test.mjs",
+        "base008Sha256": null,
+        "bytes": 6521,
+        "sha256": "5132a5c365355fc94d1f66e45df745194fb71f8815c1a7b100f39c1329b7aa5e"
+      }
+    ],
+    "patchKind": "additional_only_vs008;separate_from_research002_and_UI003",
+    "reproduction": "2new integration failures before fix:quote exists in another selected block but returned referenceIds R2 or [] let unsupported citation through. CorrectR1 control passes.",
+    "change": "Resolve returned citations first;guard checks only exact restored/verified citation excerpts with associated material names,not uncited selected context. Legacy citations checked within returned quote;normal explanations unaffected.",
+    "validation": {
+      "groundingTests": "23pass0fail",
+      "fullIsolatedTests": "163pass0fail",
+      "fullMixedDevelopmentTests": "193pass0fail",
+      "typecheck": "pass",
+      "build": "pass",
+      "patchAppliedExactBytes": true,
+      "modelCalls": 0
+    },
+    "preserved": "008 strict finish_reason/retry behavior;all inherited tests;007 and prior009draft archives unchanged",
+    "limitations": [
+      "Exact quotation matching and explicitly bracketed title association only",
+      "No independent author/work/catalog identity validation;AKS key unavailable",
+      "Incomplete quote extraction and ambiguous/unmarked work claims remain review concerns",
+      "Synthetic materials only,not actual students/model quality evaluation"
+    ],
+    "nextAction": "Main may review bounded citation guard independently. Continue multiline/unquoted quote extraction and ambiguous work association in separate draft;official identity dependency remains main-owned.",
+    "zip": {
+      "bytes": 15655,
+      "sha256": "f279d2caf0745add91a62b2124a859e2e6666862502baf182fd03262ab489aa5",
+      "url": "https://github.com/minsec2314-cloud/pace-ai-work/raw/refs/heads/ai/ai-01-results-20261019/literary-citation-draft-001-20261027/PACE_LITERARY_CITATION_DRAFT.zip",
+      "commit": "699a6d75b6bed91986cdc7cc63d246d2ecc14f61"
+    }
+  },
+  "status": "UI003_and_separate_literary_citation_draft_delivered_pending_main_review",
+  "workingTreePatchSha256": "885f633927e9bcac0a71eee601c369eb205584dbf55867b3ba5e936cebe8de18",
+  "workingTreePatchBytes": 35326
 }
