@@ -1,7 +1,7 @@
 {
-  "observedAt": "2026-10-27T17:48:27.078Z",
+  "observedAt": "2026-10-27T18:50:56.728Z",
   "invocationSource": "scheduler",
-  "status": "literary006_explicit_markdown_original_checked_delivered_pending_main_review",
+  "status": "literary007_explicit_work_attribution_checked_delivered_pending_main_review",
   "lastProcessedMainMessageId": "PACE-DELEGATE-20261027-007",
   "latestCompleteSubmissionId": "AI-01-20261026-iteration-008",
   "draftSubmission": {
@@ -36,7 +36,7 @@
       "nextAction": "Finish literary identity evidence policy;main review of normalized-query disclosure and type labels. Keep UI002 preserved."
     }
   },
-  "nextAction": "Main reviews literary006 replacing001through005 relative accepted008;apply only006.Continue ambiguous/unmarked work/author assertions and nested original quotation handling in isolated checkout:/workspace/pace-ai01-literary-markdown-20261028.Explicit bold/standalone labels,one-level blockquotes,fenced blocks now supported;not a general Markdown parser or identity check.Official API/key remains unavailable/main-owned.UI003/research002 preserved,no deployment.",
+  "nextAction": "Main reviews literary007 replacing001through006 relative accepted008;apply only007.Continue ambiguous/unmarked topic switches and nested quotation boundaries in isolated checkout:/workspace/pace-ai01-literary-attribution-20261028.Explicit bracketed-title plus 의 원문/시구/구절 now scopes following excerpts to claimed work;metadata title is not original excerpt.This does not verify external work/author identity.Official API/key remains unavailable/main-owned.UI003/research002 preserved,no deployment.",
   "main22Checkout": "/workspace/pace-main22-ui-checkout-20261027",
   "mainQA": {
     "taskId": "MAIN20-AVAILABILITY-QA",
@@ -352,7 +352,7 @@
     "recoveryPatchSha256": "085d7753e5639795beb03c786cabc32a16508ebc57f8eae24a6f0a7146a4be1f",
     "previous009ZipPreserved": true
   },
-  "invocationEvidence": "Actual automation runtime supplied scheduled event2026-10-28T02:42:19+09:00;source/checkpoint read and nonbillable tests executed in this invocation.",
+  "invocationEvidence": "Actual automation runtime supplied scheduled event2026-10-28T03:45:38+09:00;source/checkpoint read and nonbillable tests executed in this invocation.",
   "lastReceivedMainMessageId": "PACE-DELEGATE-20261027-007",
   "replyToMessageId": "PACE-DELEGATE-20261027-007",
   "previousUiSubmission": {
@@ -478,6 +478,63 @@
   },
   "quotaStatement": "No quota query tool;exact remaining10percent stop cannot be guaranteed.Each unit persisted.",
   "literaryCitationDraft": {
+    "submissionId": "AI01-LITERARY-CITATION-DRAFT-20261028-007",
+    "status": "incomplete_literary_review_candidate_not_general_identity_validation",
+    "replyTo": "PACE-DELEGATE-20261027-007",
+    "baselineMainCommit": "9469f395ec4b597e4606bc4991ca4db7230f744d",
+    "baselineSubmissionId": "AI-01-20261026-iteration-008",
+    "files": [
+      {
+        "path": "lib/ai.ts",
+        "base008Sha256": "4d5f58fcc2c4bbe5da4403451f453d8c0dec5828300e9060cad64935f04d71cf",
+        "bytes": 19959,
+        "sha256": "3997a1628fc6eaa6f8858421425a266e298be6f9f6aeed5edc94b2e3b3fa2333"
+      },
+      {
+        "path": "lib/answer-grounding.ts",
+        "base008Sha256": null,
+        "bytes": 3571,
+        "sha256": "65da07548cb4720830c20db5a9be9292f8b2f56c0c73123b792c827ecb67c9db"
+      },
+      {
+        "path": "tests/answer-grounding.test.mjs",
+        "base008Sha256": null,
+        "bytes": 21076,
+        "sha256": "b49c42c7b83b39c19294ea3597959ed0f0eb6ed4d5568a07a5007a5249b3c44e"
+      }
+    ],
+    "patchKind": "additional_only_vs008;REPLACES_literary001through006;apply_only007;separate_from_research002_and_UI003",
+    "replacesCandidate": "AI01-LITERARY-CITATION-DRAFT-20261028-006",
+    "reproduction": "5new failing cases before fix:multi-work/single-work request let an excerpt be explicitly attributed to another work,actual ask returned wrong-work quotation,and two long title markers were misread as original excerpts.5other controls retained.",
+    "change": "Track excerpt positions and explicit response work markers of form bracketed-title plus 의 원문/시구/구절.Scope each following original excerpt to that claimed work instead of any requested work.Treat such work-title markers as metadata,while title quoted as actual original still requires evidence.No external work/author identity claim.",
+    "validation": {
+      "groundingTests": "85pass0fail",
+      "fullIsolatedTests": "225pass0fail",
+      "typecheck": "pass",
+      "build": "pass",
+      "patchAppliedExactBytes": true,
+      "modelCalls": 0
+    },
+    "preserved": "008 strict finish_reason/retry behavior;all inherited tests;007 and prior009draft archives unchanged",
+    "limitations": [
+      "Explicit bracketed-title plus 의 원문/시구/구절 attribution pattern only;not general named-entity or semantic attribution parsing",
+      "Nearest explicit response attribution scopes subsequent excerpts;unmarked topic switches/ambiguous multi-work answers remain incomplete",
+      "Exact excerpt and title-to-provided-material checks do not establish independent author/work authenticity;AKS key unavailable",
+      "Nested quoted spans and general Markdown/HTML formats remain incomplete",
+      "Actual contiguous reference-ID chunks only;separate pages/materials/sections and legacy excerpts not concatenated",
+      "Synthetic materials only;zero actual model calls;no real student data"
+    ],
+    "nextAction": "Main reviews007 replacing earlier literary candidates relative accepted008.Continue ambiguous/unmarked work/author assertions and nested quotation cases if authorized;official catalog connection remains main-owned dependency.",
+    "zip": {
+      "bytes": 37804,
+      "sha256": "9454aceb3b8deade02be80a239d80bd62d857d1ca241db617d0b81fcb4d07873",
+      "url": "https://github.com/minsec2314-cloud/pace-ai-work/raw/refs/heads/ai/ai-01-results-20261019/literary-citation-draft-007-20261028/PACE_LITERARY_CITATION_DRAFT.zip",
+      "commit": "0e09c2f618fe7e632984ae67d369d59ff4fc15c9"
+    }
+  },
+  "workingTreePatchSha256": "66f9811018196af30d993a55bf35a43736c9b69959476c28b7a82342b7246f5b",
+  "workingTreePatchBytes": 57576,
+  "previousLiteraryCitationDraft": {
     "submissionId": "AI01-LITERARY-CITATION-DRAFT-20261028-006",
     "status": "incomplete_literary_review_candidate_not_general_identity_validation",
     "replyTo": "PACE-DELEGATE-20261027-007",
@@ -532,71 +589,14 @@
       "commit": "48508f61327e7fc38bad2f55d2692534677ad38f"
     }
   },
-  "workingTreePatchSha256": "08bcdcecde928ecba2f0942bd71f77e30ba27354aa7365bb06379f8a91136ff4",
-  "workingTreePatchBytes": 54225,
-  "previousLiteraryCitationDraft": {
-    "submissionId": "AI01-LITERARY-CITATION-DRAFT-20261028-005",
-    "status": "incomplete_literary_review_candidate_not_general_identity_validation",
-    "replyTo": "PACE-DELEGATE-20261027-007",
-    "baselineMainCommit": "9469f395ec4b597e4606bc4991ca4db7230f744d",
-    "baselineSubmissionId": "AI-01-20261026-iteration-008",
-    "files": [
-      {
-        "path": "lib/ai.ts",
-        "base008Sha256": "4d5f58fcc2c4bbe5da4403451f453d8c0dec5828300e9060cad64935f04d71cf",
-        "bytes": 19959,
-        "sha256": "3997a1628fc6eaa6f8858421425a266e298be6f9f6aeed5edc94b2e3b3fa2333"
-      },
-      {
-        "path": "lib/answer-grounding.ts",
-        "base008Sha256": null,
-        "bytes": 2367,
-        "sha256": "8f8471d1de67ce294579a03d5fbc1e7c81cf0a324e4f25f8d80b9df919ea0371"
-      },
-      {
-        "path": "tests/answer-grounding.test.mjs",
-        "base008Sha256": null,
-        "bytes": 15121,
-        "sha256": "8ebd4a56ad54d40ac1d2e42f91d02b9c39b6d5fa9baf31a5b88f80c3394946a7"
-      }
-    ],
-    "patchKind": "additional_only_vs008;REPLACES_literary001through004;apply_only005;separate_from_research002_and_UI003",
-    "replacesCandidate": "AI01-LITERARY-CITATION-DRAFT-20261028-004",
-    "reproduction": "2new failures before fix:verified quotation crossing adjacent original chunks was withheld for both forward and reversed reference-ID order.6negative cases retained.",
-    "change": "Track original section index and offset internally;strip these fields from model payload.Only up-to10 actual returned referenceIDs may form adjacent/overlapping consistent source runs within same material,page,section.No missing spans or cross-source concatenation.Legacy excerpt citations unchanged.Response citation schema unchanged.",
-    "validation": {
-      "groundingTests": "60pass0fail",
-      "fullIsolatedTests": "200pass0fail",
-      "typecheck": "pass",
-      "build": "pass",
-      "patchAppliedExactBytes": true,
-      "modelCalls": 0
-    },
-    "preserved": "008 strict finish_reason/retry behavior;all inherited tests;007 and prior009draft archives unchanged",
-    "limitations": [
-      "Exact text matching and explicitly bracketed title association only;not general semantic or bibliographic verification",
-      "No independent author/work/catalog identity validation;AKS key unavailable",
-      "Blank lines and explicit explanation labels delimit unquoted original blocks;markdown/other formats remain incomplete",
-      "Unlabelled explanation appended without separator may be conservatively withheld",
-      "Separate pages/materials/original sections and legacy citations are not concatenated;actual contiguous reference-ID chunks only",
-      "Synthetic materials only;no actual student or model quality evaluation"
-    ],
-    "nextAction": "Main reviews005 replacing earlier literary candidates relative accepted008.Continue markdown/blank-line original text boundaries and unmarked work/author assertions;official identity dependency remains main-owned.",
-    "zip": {
-      "bytes": 33483,
-      "sha256": "75f851bef8e2b26fe2971a508923684495b31cf066ad80354a25cdecc539f229",
-      "url": "https://github.com/minsec2314-cloud/pace-ai-work/raw/refs/heads/ai/ai-01-results-20261019/literary-citation-draft-005-20261028/PACE_LITERARY_CITATION_DRAFT.zip",
-      "commit": "d05aecbd90658713a8e963ea7ef09d46abce5005"
-    }
-  },
   "exactThresholdStopGuaranteed": false,
   "validation": {
-    "groundingTests": "75pass0fail",
-    "fullIsolatedTests": "215pass0fail",
-    "mixedRecoveryTests": "245pass0fail",
+    "groundingTests": "85pass0fail",
+    "fullIsolatedTests": "225pass0fail",
+    "mixedRecoveryTests": "255pass0fail",
     "typecheck": "pass",
     "build": "pass",
-    "newBeforeFixFailures": 10,
+    "newBeforeFixFailures": 5,
     "modelCalls": 0
   }
 }
