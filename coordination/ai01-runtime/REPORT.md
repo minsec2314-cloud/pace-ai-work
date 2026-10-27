@@ -1,1 +1,0 @@
-008 ready for integration. Non-stop finish reasons are rejected; incomplete generation is not retried. All 140 synthetic tests, typecheck and production build passed. No deployment or model call. Cumulative original-bundle return; merge against accepted007.
