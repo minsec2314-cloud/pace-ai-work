@@ -249,12 +249,12 @@ index c40b4ef..282b0f4 100644
 +test('single Latin condition is not inferred from inside another word',()=>assert.equal(researchMatches('battery X',syntheticSource('Battery oxide materials')),false));
 diff --git a/lib/answer-grounding.ts b/lib/answer-grounding.ts
 new file mode 100644
-index 0000000..aa08124
+index 0000000..2e2903a
 --- /dev/null
 +++ b/lib/answer-grounding.ts
-@@ -0,0 +1,62 @@
+@@ -0,0 +1,69 @@
 +type LiterarySource=string|{text:string;name?:string};
-+type QuotedExcerpt={text:string;index:number};
++type QuotedExcerpt={text:string;index:number;end?:number};
 +function quotedExcerpts(text:string){
 + const pairs:Record<string,string>={'"':'"','“':'”','‘':'’','「':'」','『':'』'};
 + const quotes:QuotedExcerpt[]=[],stack:string[]=[];let start=-1;
@@ -262,10 +262,10 @@ index 0000000..aa08124
 +  const ch=text[i];
 +  if(stack.length&&ch===stack.at(-1)){
 +   stack.pop();
-+   if(!stack.length){if(i-start-1>=4)quotes.push({text:text.slice(start+1,i),index:start});start=-1;}
++   if(!stack.length){if(text.slice(start+1,i).trim())quotes.push({text:text.slice(start+1,i),index:start,end:i+1});start=-1;}
 +  }else if(pairs[ch]){if(!stack.length)start=i;stack.push(pairs[ch]);}
 + }
-+ return {quotes,unclosed:start>=0&&text.slice(start+1).trim().length>=4};
++ return {quotes,unclosed:start>=0&&text.slice(start+1).trim().length>=1};
 +}
 +// Explicit title association is a metadata check, not independent bibliographic verification.
 +export function unsupportedLiteraryQuote(question:string,text:string,sources:LiterarySource[]):boolean {
@@ -281,7 +281,14 @@ index 0000000..aa08124
 + const attributions=[...markedText.matchAll(/[「『《〈]([^」』》〉\n]{1,80})[」』》〉](?=\s*의\s*(?:원문|시구|구절))/g)].map(m=>({title:m[1].trim(),index:m.index!}));
 + const scanned=quotedExcerpts(markedText);
 + if(scanned.unclosed)return true; // An open outer quotation must not leave an unchecked suffix.
-+ const quotes=scanned.quotes.filter(q=>!attributions.some(a=>a.index===q.index));
++ const quotes=scanned.quotes.filter(q=>{
++  if(attributions.some(a=>a.index===q.index))return false;
++  if(q.text.trim().length>=4)return true;
++  // Short terms in explanations are not automatically original text.
++  // Explicit original framing or a standalone quoted response still requires evidence.
++  const prefix=markedText.slice(0,q.index);
++  return /(?:원문|시구|구절|첫\s*행|첫\s*문장)(?:은|는|이|가)?\s*[:：]?\s*$/.test(prefix)||(!prefix.trim()&&!markedText.slice(q.end).trim());
++ });
 + // Explicit unquoted original blocks continue until a blank line or a labelled explanation.
 + // Do not validate only the first line while returning an unchecked continuation.
 + for(const m of markedText.matchAll(/(?:원문|시구|구절)[ \t]*[:：][ \t]*/g)){
@@ -299,7 +306,7 @@ index 0000000..aa08124
 +   if(!line.trim()||/^(?:해설|설명|의미|풀이|분석|참고|출처)\s*[:：]/.test(line.trim()))break;
 +   block.push(line.trim());
 +  }
-+  const excerpt=block.join('\n');if(excerpt.trim().length>=4)quotes.push({text:excerpt,index:m.index!});
++  const excerpt=block.join('\n');if(excerpt.trim().length>=1)quotes.push({text:excerpt,index:m.index!});
 + }
 + const titles=[...question.matchAll(/[「『《〈]([^」』》〉\n]{1,80})[」』》〉]/g)].map(m=>m[1].trim());
 + const matchesTitle=(source:LiterarySource,title:string)=>{
@@ -317,10 +324,10 @@ index 0000000..aa08124
 +}
 diff --git a/tests/answer-grounding.test.mjs b/tests/answer-grounding.test.mjs
 new file mode 100644
-index 0000000..2ce74cf
+index 0000000..996e34d
 --- /dev/null
 +++ b/tests/answer-grounding.test.mjs
-@@ -0,0 +1,73 @@
+@@ -0,0 +1,83 @@
 +import test from 'node:test';
 +import assert from 'node:assert/strict';
 +import {generateAI} from '../lib/ai.ts';
@@ -394,3 +401,13 @@ index 0000000..2ce74cf
 +for(const ending of ['', '」'])test(`unclosed or mismatched outer quote cannot hide unsupported suffix:${ending}`,()=>assert.equal(guard('작품 원문을 설명해줘',`원문은 “확인된 앞부분 ‘확인된 안쪽 구절’ 자료에 없는 허구의 뒷부분${ending}`,['확인된 앞부분 ‘확인된 안쪽 구절’ 실제 원문의 뒷부분']),true));
 +test('verified straight quote nested inside curly quote remains supported',()=>{const source='확인된 앞부분 "확인된 안쪽 구절" 실제 원문의 뒷부분';assert.equal(guard('작품 원문을 설명해줘',`원문은 “${source}”입니다.`,[source]),false);});
 +for(const correct of [false,true])test(`ask checks complete outer quotation around nested text:${correct}`,async()=>{let calls=0;const source='확인된 앞부분 ‘확인된 안쪽 구절’ 실제 원문의 뒷부분';const returned=correct?source:'확인된 앞부분 ‘확인된 안쪽 구절’ 자료에 없는 허구의 뒷부분';const result=await generateAI({mode:'ask',subject:'국어',question:'「작품가」 원문을 설명해줘',materials:[{id:'nested-source',subjectId:'s',kind:'lesson',name:'작품가.pdf',sections:[{page:1,text:source}]}]},'synthetic-only',async()=>{calls++;return Response.json({choices:[{finish_reason:'stop',message:{content:JSON.stringify({text:`원문은 “${returned}”입니다.`,referenceIds:['R1']})}}]});});assert.equal(calls,1);assert.equal(result.text.includes('원문은'),correct);if(!correct)assert.equal(result.citations.length,0);});
++for(const short of ['달','별빛','그리움'])for(const quoted of [false,true]){
++ const text=quoted?`원문은 “${short}”입니다.`:`원문: ${short}`;
++ test(`short explicitly original text requires evidence:${short}:${quoted}`,()=>assert.equal(guard('작품 원문을 설명해줘',text,[]),true));
++ test(`verified short explicitly original text remains supported:${short}:${quoted}`,()=>assert.equal(guard('작품 원문을 설명해줘',text,[short]),false));
++}
++test('standalone short original quotation requires evidence',()=>assert.equal(guard('작품 원문을 인용해줘','“달”',[]),true));
++test('open short original quotation cannot bypass evidence',()=>assert.equal(guard('작품 원문을 설명해줘','원문은 “별',[]),true));
++test('short conceptual term in a general explanation is not an original assertion',()=>assert.equal(guard('작품 원문과 의미를 설명해줘','일반 개념으로 설명하면 ‘사랑’은 관계의 감정입니다.',[]),false));
++test('short title heading is metadata before a verified original block',()=>assert.equal(guard('「작품가」 원문을 설명해줘','「작품가」\n원문: 별빛',[{name:'작품가.pdf',text:'별빛'}]),false));
++for(const correct of [false,true])test(`ask checks short original quotation evidence:${correct}`,async()=>{let calls=0;const result=await generateAI({mode:'ask',subject:'국어',question:'「작품가」 원문을 설명해줘',materials:[{id:'short-source',subjectId:'s',kind:'lesson',name:'작품가.pdf',sections:[{page:1,text:correct?'모의 원문에서 별빛이라는 짧은 구절을 확인할 수 있습니다.':'원문을 제공하지 않는 별개의 모의 자료와 설명입니다.'}]}]},'synthetic-only',async()=>{calls++;return Response.json({choices:[{finish_reason:'stop',message:{content:JSON.stringify({text:'원문은 “별빛”입니다.',referenceIds:['R1']})}}]});});assert.equal(calls,1);assert.equal(result.text.includes('원문은'),correct);if(!correct)assert.equal(result.citations.length,0);});
