@@ -1,10 +1,10 @@
 {
-  "messageId": "AI01-QA-MAIN22-MANUAL-20261027-001",
-  "replyToMessageId": "PACE-ACK008-20261027-001",
+  "messageId": "AI01-QA-MAIN22-MANUAL-20261027-002",
+  "replyToMessageId": "PACE-ACCEPT008-20261027-001",
   "nonce": "PACE-LOOP-20261019125859",
-  "observedAt": "2026-10-27T01:10:02.579Z",
+  "observedAt": "2026-10-27T01:46:04.352Z",
   "invocationSource": "manual",
-  "invocationEvidence": "Direct user request: 일단 메인 ai거 테스트 해봐",
+  "invocationEvidence": "Current direct user resume request; no current scheduler event independently established.",
   "automationId": "6ad5e600246081919b8e3bddcb2fa8a3",
   "schedulerStatus": "enabled",
   "nextScheduledRunAt": null,
@@ -48,7 +48,7 @@
     "commit": "4d8abdabb647d89da9cee3c2e7a77b9d8c2bf02c"
   },
   "draftSubmission": {
-    "status": "completed_pending_main_review",
+    "status": "accepted_by_main",
     "submitted": true,
     "priorDraftPreserved": true
   },
@@ -58,7 +58,7 @@
   "prepareAtRemainingPercent": 10,
   "exactThresholdStopGuaranteed": false,
   "productDevelopmentResumed": true,
-  "nextAction": "Finish midnight cross-study-day overlap, isolated laptop/paper priority test, completion preservation, backup/mobile. Do not repeat passed T03/T04/T06/W01/W02.",
+  "nextAction": "Finish isolated laptop/paper eligibility and actual deadline boundary; seed activity/general-study completions; backup compatibility and mobile tool capability. Preserve passed cases.",
   "resumeAuthorization": {
     "messageId": "PACE-RESUME-20261026-01",
     "mainFileBlobSha": "afb65532d7dd0d3696e284d1ca4fc0190147d7cf",
@@ -70,10 +70,10 @@
     "automationEnabledConfirmed": true,
     "firstSuccessfulScheduledSourceProbePending": false
   },
-  "lastReceivedMainMessageId": "PACE-API-COMPAT-20261027-001",
-  "lastProcessedMainMessageId": "PACE-API-COMPAT-20261027-001",
+  "lastReceivedMainMessageId": "PACE-ACCEPT008-20261027-001",
+  "lastProcessedMainMessageId": "PACE-ACCEPT008-20261027-001",
   "runtimeStatePath": "coordination/ai01-runtime/STATE.json",
-  "checkpointSha256": "b6afa8bc3409291c7bc9990c55affafc4199bbec1aca1095059cc478e2669c55",
+  "checkpointSha256": "840ac1e9312f5adcf131d3475c5421044e8f28a03486fc7c54b769ea5ccbdcae",
   "checkpointPath": "coordination/ai01-runtime/CHECKPOINT.json",
   "validation": {
     "npmCi": "pass; lockfile unchanged; ignore-scripts",
@@ -86,7 +86,9 @@
     "PACE-ACK008-20261027-001",
     "PACE-MAIN20-20261027-001",
     "PACE-QA-MAIN20-20261027-001",
-    "PACE-API-COMPAT-20261027-001"
+    "PACE-API-COMPAT-20261027-001",
+    "PACE-ACCEPT008-20261027-001",
+    "PACE-QA-MAIN21-20261027-001"
   ],
   "supplement": {
     "id": "AI01-008-SUPPLEMENT-20261027-001",
@@ -134,7 +136,7 @@
     "targetCommit": "9469f395ec4b597e4606bc4991ca4db7230f744d",
     "versionEvidence": "Main reports public22; actual UI exposes opt-in window allocation matching21/22, no independent build SHA label.",
     "observedURL": "https://pace-study-ralph-20261018.minsec2314.chatgpt.site/",
-    "checkedAt": "2026-10-27T01:10:02.579Z",
+    "checkedAt": "2026-10-27T01:46:04.352Z",
     "invocationSource": "manual",
     "toolsUsed": [
       "cua_repl cloud browser: AX-based form interaction, save/reload"
@@ -157,10 +159,10 @@
       },
       {
         "id": "T05",
-        "result": "not_run",
+        "result": "pass",
         "expected": "Same-time and adjacent-study-day midnight overlaps do not double count",
-        "actual": "Same-day19:00–19:50 plus19:20–19:50 produced explicit overlap message and suppressed total; adjacent-day midnight collision not yet exercised",
-        "evidence": "AX:겹치는 시간이 있어 총시간을 계산하지 않았어요"
+        "actual": "Prior same-day overlap passed. Added Tuesday next-day00:00–00:50 and Wednesday same-day00:20–01:00; both Oct27 and Oct28 previews show overlap warning, suppressing total.",
+        "evidence": "Direct browser AX on both study dates: 겹치는 시간이 있어 총시간을 계산하지 않았어요"
       },
       {
         "id": "T06",
@@ -173,8 +175,8 @@
         "id": "T07",
         "result": "not_run",
         "expected": "Existing completion records and totals preserved",
-        "actual": "weekday120/weekend180 visible unchanged; no completed record seeded yet",
-        "evidence": "Partial observation, no full pass"
+        "actual": "Partial: checked one example math30min focus session before saving; enabled window allocation and saved. Math completed30min retained, daily1/2 sessions completed, remaining slot actual2026-10-28 00:30–00:50. Weekday120/weekend180 unchanged. Activity/general-study completed records not yet seeded.",
+        "evidence": "Direct browser AX math completed30min and30/50min after recalculation; full case remains not_run"
       },
       {
         "id": "T08",
@@ -210,15 +212,23 @@
         "expected": "Laptop required tasks excluded from unavailable/unknown, paper option restores eligibility",
         "actual": "Unknown-laptop window allocated50min math and0min both laptop-default activities; explicit unavailable and paper toggle comparison pending; activity laptop-needed checkbox was changed1→0 and saved, but constrained40min remained assigned to math; eligibility cannot be concluded without isolated priority scenario.",
         "evidence": "Partial plan observation"
+      },
+      {
+        "id": "W04",
+        "result": "pass",
+        "expected": "Next-day plan displays actual calendar date and time",
+        "actual": "Study dateOct27 plan displays2026-10-28 00:30–00:50 for remaining20min after preserved30min completion",
+        "evidence": "Live plan AX startsAt display"
       }
     ],
     "findings": [],
     "blockers": [],
     "limitations": [
-      "Partial QA; remaining midnight overlap, completion preservation, backup and mobile cases require further work.",
+      "T07 partial: exam30min completion preserved, activity/general-study record equality not tested.",
+      "Backup/restore and mobile remain not_run; live UI has no independent version SHA.",
       "No real user records or model calls used."
     ],
-    "nextAction": "Finish midnight cross-study-day overlap, isolated laptop/paper priority test, completion preservation, backup/mobile. Do not repeat passed T03/T04/T06/W01/W02.",
+    "nextAction": "Finish isolated laptop/paper eligibility and actual deadline boundary; seed activity/general-study completions; backup compatibility and mobile tool capability. Preserve passed cases.",
     "previousVersionResults": {
       "targetVersion": 20,
       "cases": [
