@@ -1,7 +1,7 @@
 {
   "baseHead": "4edb7b923ec66ff2e119a6dd6efb51d400c3a610",
   "patchSha256": "67aabef58156d8443d84966bcad41d8c54e5c0e440d462479ef934efa3735979",
-  "checkpointSha256": "efae1f0a317cee43313c5204234094d80e8057511df01b6945604852b8a149a9",
+  "checkpointSha256": "fcc75341614105770db54cc66cd91f54eeb0c3902ea398455e43760d70c31c2b",
   "lastProcessedMainMessageId": "PACE-DELEGATE-20261027-002",
   "latestCompleteSubmissionId": "AI-01-20261026-iteration-008",
   "draft": {
@@ -38,7 +38,7 @@
       "realModelRun": false
     }
   },
-  "nextAction": "Strengthen grounded literary claims and search relevance fixtures;thenCHAT/UI in separate verified main22 copy",
+  "nextAction": "P0: strengthen009 literary grounding and search filtering;UI candidate needs reachable preview and interaction/mobile checks;main reviews returned separate main22 patch. No deployment.",
   "processedMainMessageIds": [
     "PACE-ACK008-20261027-001",
     "PACE-MAIN20-20261027-001",
@@ -48,5 +48,11 @@
     "PACE-QA-MAIN21-20261027-001"
   ],
   "supplementId": "AI01-008-SUPPLEMENT-20261027-001",
-  "mainQAProgress": "Public22:T03/T04/T05/T06/W01/W02/W04 pass;T07 exam completion partial;W03,T08,T09 remaining"
+  "mainQAProgress": "Public22:T03/T04/T05/T06/W01/W02/W04 pass;T07 exam completion partial;W03,T08,T09 remaining",
+  "uiSubmission": {
+    "url": "https://github.com/minsec2314-cloud/pace-ai-work/raw/refs/heads/ai/ai-01-results-20261019/main22-chat-ui-20261027-001/PACE_MAIN22_CHAT_UI_REVIEW.zip",
+    "bytes": 85145,
+    "sha256": "f5e5063d8791c94e6f932ae7e91425a2999847dff9ebb664e146c3e65b0c7b8f",
+    "commit": "f8b0d85c3587048b0f4e7ae5c5e231efef84b595"
+  }
 }
