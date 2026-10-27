@@ -1,10 +1,10 @@
 {
-  "messageId": "AI01-RESEARCH-QUALITY-20261027-001",
-  "replyToMessageId": "PACE-DELEGATE-20261027-005",
+  "messageId": "AI01-RESEARCH-QUALITY-20261027-002",
+  "replyToMessageId": "PACE-DELEGATE-20261027-006",
   "nonce": "PACE-LOOP-20261019125859",
-  "observedAt": "2026-10-27T10:44:22.573Z",
+  "observedAt": "2026-10-27T11:41:13.003Z",
   "invocationSource": "scheduler",
-  "invocationEvidence": "Automation runtime supplied actual scheduled event2026-10-27 19:39:18 Asia/Seoul.",
+  "invocationEvidence": "Automation runtime supplied actual scheduled event2026-10-27 20:37:43 Asia/Seoul.",
   "automationId": "6ad5e600246081919b8e3bddcb2fa8a3",
   "schedulerStatus": "enabled",
   "nextScheduledRunAt": null,
@@ -85,7 +85,7 @@
   "prepareAtRemainingPercent": 10,
   "exactThresholdStopGuaranteed": false,
   "productDevelopmentResumed": true,
-  "nextAction": "Main reviews research-only001 additional patch vs accepted008.Continue literary draft on actual selected citation/source agreement;do not mix research001 orUI002 into new cumulative application.",
+  "nextAction": "Main reviews research002 replacement vs accepted008,not001then002.Continue literary selected citation/source agreement separately;preserveUI002.",
   "resumeAuthorization": {
     "messageId": "PACE-RESUME-20261026-01",
     "mainFileBlobSha": "afb65532d7dd0d3696e284d1ca4fc0190147d7cf",
@@ -97,10 +97,10 @@
     "automationEnabledConfirmed": true,
     "firstSuccessfulScheduledSourceProbePending": false
   },
-  "lastReceivedMainMessageId": "PACE-DELEGATE-20261027-005",
-  "lastProcessedMainMessageId": "PACE-DELEGATE-20261027-005",
+  "lastReceivedMainMessageId": "PACE-DELEGATE-20261027-006",
+  "lastProcessedMainMessageId": "PACE-DELEGATE-20261027-006",
   "runtimeStatePath": "coordination/ai01-runtime/STATE.json",
-  "checkpointSha256": "e969c4ad712f6db8a5ecb51a32de18b2f310a92db2330b738358c71b6d9128ae",
+  "checkpointSha256": "ab5a046dbfa9eb5bee21aeaf30aab98b8c0e70bde0548ffe3460c84a7821c42d",
   "checkpointPath": "coordination/ai01-runtime/CHECKPOINT.json",
   "validation": {
     "npmCi": "pass; lockfile unchanged; ignore-scripts",
@@ -119,7 +119,8 @@
     "PACE-DELEGATE-20261027-002",
     "PACE-DELEGATE-20261027-003",
     "PACE-DELEGATE-20261027-004",
-    "PACE-DELEGATE-20261027-005"
+    "PACE-DELEGATE-20261027-005",
+    "PACE-DELEGATE-20261027-006"
   ],
   "supplement": {
     "id": "AI01-008-SUPPLEMENT-20261027-001",
@@ -531,6 +532,66 @@
     "regression": "17 grounding mocks pass inoriginalAIcheckout"
   },
   "independentResearchSubmission": {
+    "submissionId": "AI01-RESEARCH-QUALITY-20261027-002",
+    "status": "scoped_review_candidate_pending_main_acceptance",
+    "replacesCandidate": "AI01-RESEARCH-QUALITY-20261027-001",
+    "baselineSubmissionId": "AI-01-20261026-iteration-008",
+    "baselineMainCommit": "9469f395ec4b597e4606bc4991ca4db7230f744d",
+    "baselineOriginalCommit": "7145f0f3601cd4a6a369a80006fa73cbd142054d",
+    "patchKind": "additional_only_vs_008;do_not_apply001_then002",
+    "replyTo": "PACE-DELEGATE-20261027-006",
+    "files": [
+      {
+        "path": "lib/research.ts",
+        "base008Sha256": "e826ba85ef9fa654a1a568a0b590652cbfd1bdb96c0f7d73b644fc8b679f18ba",
+        "bytes": 5817,
+        "sha256": "c6d98ec9d8edb8f5fadbef7574fefb84b5502874a06e15bf4e81e77b4a063830"
+      },
+      {
+        "path": "tests/research-quality.test.mjs",
+        "base008Sha256": "6fac87d70a8908243a4ac8d56b693040cab0eddf96519f15bb8aca3e17e2c593",
+        "bytes": 8874,
+        "sha256": "ba528c937b5d28f6a4844cc2d8379e9db48e8718b4a4d0e0a7c4815bfca467d1"
+      }
+    ],
+    "reproduction": "MAIN006 exact two failures plus3 one-character variants fail before fix;spaced sodium-ion and chemical/solar comparison controls pass",
+    "validation": {
+      "fullIsolatedTests": "170pass0fail",
+      "typecheck": "pass",
+      "build": "pass",
+      "patchApplyExactBytes": true,
+      "modelCalls": 0,
+      "providerRequests": "1persearch,noretry;existingHTTP/format/DOI regressions retained"
+    },
+    "fixes": [
+      "Keep1character words and1digit constraints",
+      "Numeric7 does not match17;LatinX not inferred fromoxide",
+      "Explicit chemical-battery query requires chemical/battery lexical evidence,not solar-only substring",
+      "Mixed chemical/solar comparison retains eligibility"
+    ],
+    "limitations": [
+      "Still metadata lexical matching,not semantic/fulltext reliability verification",
+      "No new actual-paper relevance evaluation this run;counterexamples synthetic",
+      "Unsupported synonyms and ambiguous work context remain limitations"
+    ],
+    "nextAction": "Main reviews002instead001;continue independentliterary draft separately",
+    "zip": {
+      "url": "https://github.com/minsec2314-cloud/pace-ai-work/raw/refs/heads/ai/ai-01-results-20261019/research-quality-002-20261027/PACE_RESEARCH_QUALITY_002.zip",
+      "bytes": 12805,
+      "sha256": "95d7c56e862103936bc8da3407083cccf8a65a369d366a408f9a14f1b522f171",
+      "commit": "ca9d349f5d94ad576605f80c2d29ed78699cc11a"
+    },
+    "mainAccepted": false
+  },
+  "currentWorktreeCorrection": {
+    "restoredInheritedResearchTests": 10,
+    "reason": "Earlier009 drafts accidentally replaced original research-quality test content. Original008 cases now retained before new cases. Earlier test totals described then-current reduced suite,not full inherited coverage.",
+    "fullCurrentMixedDraftTests": "187pass0fail after research002 source sync",
+    "isolatedResearchOnlyTests": "170pass0fail",
+    "recoveryPatchSha256": "085d7753e5639795beb03c786cabc32a16508ebc57f8eae24a6f0a7146a4be1f",
+    "previous009ZipPreserved": true
+  },
+  "previousIndependentResearchSubmission": {
     "submissionId": "AI01-RESEARCH-QUALITY-20261027-001",
     "status": "complete_scoped_search_review_candidate_not_main_accepted",
     "baselineSubmissionId": "AI-01-20261026-iteration-008",
@@ -588,13 +649,5 @@
     },
     "patchApplyCheck": "Exact2file byte match after git apply to accepted008 files;passed",
     "mainAccepted": false
-  },
-  "currentWorktreeCorrection": {
-    "restoredInheritedResearchTests": 10,
-    "reason": "Earlier009 drafts accidentally replaced original research-quality test content. Original008 cases now retained before new cases. Earlier test totals described then-current reduced suite,not full inherited coverage.",
-    "fullCurrentMixedDraftTests": "178pass0fail",
-    "isolatedResearchOnlyTests": "161pass0fail",
-    "recoveryPatchSha256": "cdaba1b129d7c775be652972724a3f1bbf5c1ecd2d79e8c16d194db930421923",
-    "previous009ZipPreserved": true
   }
 }
