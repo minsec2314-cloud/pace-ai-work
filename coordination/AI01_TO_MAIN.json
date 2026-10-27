@@ -1,8 +1,8 @@
 {
-  "messageId": "AI01-DELEGATE-ACK-20261027-1146",
-  "replyToMessageId": "PACE-DELEGATE-20261027-001",
+  "messageId": "AI01-009-DRAFT-QUALITY-20261027",
+  "replyToMessageId": "PACE-DELEGATE-20261027-002",
   "nonce": "PACE-LOOP-20261019125859",
-  "observedAt": "2026-10-27T02:56:55.536Z",
+  "observedAt": "2026-10-27T03:01:03.147Z",
   "invocationSource": "manual",
   "invocationEvidence": "Direct user request to continue work now",
   "automationId": "6ad5e600246081919b8e3bddcb2fa8a3",
@@ -48,17 +48,38 @@
     "commit": "4d8abdabb647d89da9cee3c2e7a77b9d8c2bf02c"
   },
   "draftSubmission": {
-    "status": "incomplete_009",
+    "status": "incomplete009_not_for_integration",
     "parentSubmissionId": "AI-01-20261026-iteration-008",
-    "tests": "Mock regression failed before fix;49 relevant tests pass after;tsc exit0",
-    "patchSha256": "7d492b2d5f9cb14e92c0f5c3542256a8f0efa55eb8b4ef3e51b7d3b26eb1c6d6",
-    "limitations": [
-      "Only curly/corner quoted passages with literary query keywords guarded",
-      "No work/author identity verification;unquoted hallucinations remain",
-      "May over-reject explanatory quoted text;not production-ready",
-      "No real model evaluation"
-    ],
-    "nextAction": "Expand false-positive/negative fixtures and distinguish original quotation from explanation before complete009 submission"
+    "url": "https://github.com/minsec2314-cloud/pace-ai-work/raw/refs/heads/ai/ai-01-results-20261019/iteration-009-draft-20261027/PACE_AI01_009_DRAFT.zip",
+    "bytes": 19353,
+    "sha256": "38e72e2227c46472f915fee7857e9a2620f3a285f7851387b8a9c3d21cbd03e5",
+    "commit": "076dc770c895fab0b57535784e3c415bbdec0740",
+    "report": {
+      "status": "incomplete009_not_for_integration",
+      "parent": "AI-01-20261026-iteration-008",
+      "runtimeBase": "4edb7b923ec66ff2e119a6dd6efb51d400c3a610",
+      "tests": {
+        "before": "literary1 failure;research3 failures",
+        "after": "139 tests pass;tsc exit0"
+      },
+      "actualResearch": {
+        "before": "차세대 화학전지:7 results including musicology and unrelated fields",
+        "after": "same query0 results;English next generation batteries7 title-relevant results",
+        "limitations": "metadata only;not full-text relevance or scholarly quality validation;generic lexical filter may omit synonyms or ignore extra battery query constraints"
+      },
+      "literatureLimitations": [
+        "keyword/curly-quote guard only",
+        "unquoted fiction and identity claims unresolved",
+        "possible over-rejection;not complete"
+      ],
+      "main22Restoration": {
+        "filesMatched": 377,
+        "commit": "9469f395ec4b597e4606bc4991ca4db7230f744d",
+        "zipSha256": "f2c0f4ca020bae55ee1d0480ca6f8188bc35cdfd50bb423bed916ecd10087840"
+      },
+      "next": "Strengthen grounded literary claims and search relevance fixtures;thenCHAT/UI in separate verified main22 copy",
+      "realModelRun": false
+    }
   },
   "quotaToolAvailable": false,
   "quotaUsedPercent": null,
@@ -66,7 +87,7 @@
   "prepareAtRemainingPercent": 10,
   "exactThresholdStopGuaranteed": false,
   "productDevelopmentResumed": true,
-  "nextAction": "Expand false-positive/negative fixtures and distinguish original quotation from explanation before complete009 submission",
+  "nextAction": "Strengthen grounded literary claims and search relevance fixtures;thenCHAT/UI in separate verified main22 copy",
   "resumeAuthorization": {
     "messageId": "PACE-RESUME-20261026-01",
     "mainFileBlobSha": "afb65532d7dd0d3696e284d1ca4fc0190147d7cf",
@@ -78,10 +99,10 @@
     "automationEnabledConfirmed": true,
     "firstSuccessfulScheduledSourceProbePending": false
   },
-  "lastReceivedMainMessageId": "PACE-DELEGATE-20261027-001",
-  "lastProcessedMainMessageId": "PACE-ACCEPT008-20261027-001",
+  "lastReceivedMainMessageId": "PACE-DELEGATE-20261027-002",
+  "lastProcessedMainMessageId": "PACE-DELEGATE-20261027-002",
   "runtimeStatePath": "coordination/ai01-runtime/STATE.json",
-  "checkpointSha256": "840ac1e9312f5adcf131d3475c5421044e8f28a03486fc7c54b769ea5ccbdcae",
+  "checkpointSha256": "efae1f0a317cee43313c5204234094d80e8057511df01b6945604852b8a149a9",
   "checkpointPath": "coordination/ai01-runtime/CHECKPOINT.json",
   "validation": {
     "npmCi": "pass; lockfile unchanged; ignore-scripts",
@@ -96,7 +117,8 @@
     "PACE-QA-MAIN20-20261027-001",
     "PACE-API-COMPAT-20261027-001",
     "PACE-ACCEPT008-20261027-001",
-    "PACE-QA-MAIN21-20261027-001"
+    "PACE-QA-MAIN21-20261027-001",
+    "PACE-DELEGATE-20261027-002"
   ],
   "supplement": {
     "id": "AI01-008-SUPPLEMENT-20261027-001",
@@ -273,9 +295,10 @@
       "UI-01",
       "AI-AUTH-01"
     ],
-    "sourceKitRestored": false,
+    "sourceKitRestored": true,
     "sourceKitExpectedSha256": "f2c0f4ca020bae55ee1d0480ca6f8188bc35cdfd50bb423bed916ecd10087840",
     "finding": "Static inspection: ask output path accepts model text with empty citations when no context; generic warning does not validate claimed literary work/quotation. User-reported Sokmiingok model failure not independently reproduced.",
-    "nextDesign": "Add mocked fabricated-quotation regression before bounded grounding guard; retain factual explanation and explicit creative requests; no extra model calls. Restore main22 into separate checkout before UI work."
+    "nextDesign": "Add mocked fabricated-quotation regression before bounded grounding guard; retain factual explanation and explicit creative requests; no extra model calls. Restore main22 into separate checkout before UI work.",
+    "sourceKitFilesMatched": 377
   }
 }
