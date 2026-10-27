@@ -47,7 +47,7 @@ index 5b43cf2..078e491 100644
 + try{const raw=await response.json() as {choices:{finish_reason:string;message:{content:string}}[]};if(raw.choices?.[0]?.finish_reason!=='stop')throw Error('검산 결과가 너무 깁니다. 문제 수를 줄여 주세요.');const result=JSON.parse(raw.choices[0].message.content) as {solutions:unknown[]};if(!Array.isArray(result.solutions)||result.solutions.length!==questions.length)throw Error('정답 검산 결과의 문항 수가 일치하지 않습니다.');return questions.map((q,i)=>{const s=result.solutions[i] as {answer?:unknown;explanation?:unknown;error?:unknown};if(!s||s.error||typeof s.answer!=='string'||!s.answer.trim()||typeof s.explanation!=='string'||!s.explanation.trim()||s.answer.length>4000||s.explanation.length>6000)throw Error('조건이 부족하거나 검산하지 못한 문항이 있어 다시 생성해야 합니다.');return {...q,answer:s.answer,explanation:s.explanation};});}catch(e){throw new AIError(e instanceof Error?e.message:'검산 결과를 읽지 못했습니다.',502);}
  }
 diff --git a/PACE_AI_WORKSPACE/source/lib/research.ts b/PACE_AI_WORKSPACE/source/lib/research.ts
-index 460ce0a..6801994 100644
+index 460ce0a..4ae0609 100644
 --- a/PACE_AI_WORKSPACE/source/lib/research.ts
 +++ b/PACE_AI_WORKSPACE/source/lib/research.ts
 @@ -1,6 +1,11 @@
@@ -62,7 +62,7 @@ index 460ce0a..6801994 100644
  // A DOI suffix is an opaque identifier. Encode each path segment so ? and #
  // remain part of that identifier rather than changing the resolver URL.
  export function crossrefSources(works:CrossrefWork[]):Source[]{
-@@ -9,16 +14,46 @@ export function crossrefSources(works:CrossrefWork[]):Source[]{
+@@ -9,16 +14,48 @@ export function crossrefSources(works:CrossrefWork[]):Source[]{
    if(!w||typeof w.DOI!=='string'||!/^10\.\d{4,9}\/.+/u.test(w.DOI)||!Array.isArray(w.title)||typeof w.title[0]!=='string')return [];
    const title=textOnly(w.title[0],400);if(!title)return [];
    const authors=(Array.isArray(w.author)?w.author:[]).slice(0,4).filter(a=>a&&typeof a==='object').map(a=>[a.given,a.family].filter(p=>typeof p==='string'&&p.trim()).join(' ')).filter(Boolean).join(', ')||'저자 정보 없음';
@@ -73,6 +73,7 @@ index 460ce0a..6801994 100644
 +// Fixed scientific aliases only: unknown words/constraints are retained, never guessed.
 +export function researchProviderQuery(query:string):string {
 + return query.normalize('NFKC').trim()
++  .replace(/광합성/g,'photosynthesis')
 +  .replace(/나트륨\s*이온/g,'sodium-ion ').replace(/리튬\s*이온/g,'lithium-ion ')
 +  .replace(/리튬\s*황/g,'lithium-sulfur ').replace(/전고체/g,'solid-state ')
 +  .replace(/화학\s*전지(?![\p{L}\p{N}])/gu,'electrochemical batteries').replace(/(?<![\p{L}\p{N}])전지(?![\p{L}\p{N}])/gu,'batteries')
@@ -84,6 +85,7 @@ index 460ce0a..6801994 100644
 + const text=(source.title+' '+source.abstract).normalize('NFKC').toLowerCase();
 + const compact=(s:string)=>s.replace(/[\s-]+/g,'');
 + const groups:[RegExp,RegExp][]=[
++  [/광합성|\bphotosynth(?:esis|etic)\b/,/광합성|\bphotosynth(?:esis|etic)\b/],
 +  [/화학\s*전지|(?<![\p{L}\p{N}])전지(?![\p{L}\p{N}])|\bbatter(?:y|ies)\b/u,/전지|\bbatter(?:y|ies)\b/],
 +  [/나트륨\s*이온|sodium[ -]?ion/,/나트륨\s*이온|\bsodium[ -]?ion\b/],
 +  [/리튬\s*이온|lithium[ -]?ion/,/리튬\s*이온|\blithium[ -]?ion\b/],
@@ -139,70 +141,41 @@ index ba6108c..a02f0e8 100644
 + await assert.rejects(reviewQuestions(questions,'수학','synthetic-only',Date.now()+20000,async()=>Response.json({choices:[{finish_reason:reason,message:{content:JSON.stringify({solutions:[{answer:'5',explanation:'표면상 완성된 풀이'}]})}}]})),e=>e.status===502);
 +});
 diff --git a/PACE_AI_WORKSPACE/source/tests/research-quality.test.mjs b/PACE_AI_WORKSPACE/source/tests/research-quality.test.mjs
-index c40b4ef..6cd07a4 100644
+index c40b4ef..31ae04d 100644
 --- a/PACE_AI_WORKSPACE/source/tests/research-quality.test.mjs
 +++ b/PACE_AI_WORKSPACE/source/tests/research-quality.test.mjs
-@@ -1,41 +1,26 @@
- import test from 'node:test';
- import assert from 'node:assert/strict';
--import {crossrefSources} from '../lib/research.ts';
--
--for(const doi of ['10.1234/plain','10.1234/a?b','10.1234/a#b','10.1234/a?b#c','10.1234/part/with spaces']){
-- test(`DOI resolver preserves the full identifier: ${doi}`,()=>{
--  const [source]=crossrefSources([{DOI:doi,title:['Synthetic study']}]);
--  const url=new URL(source.url);
--  assert.equal(url.origin,'https://doi.org');
--  assert.equal(url.search,'');assert.equal(url.hash,'');
--  assert.equal(decodeURIComponent(url.pathname.slice(1)),doi);
--  assert.equal(source.id,doi);
-- });
--}
--
- import {searchResearch} from '../lib/research.ts';
--const validWork={DOI:'10.1234/valid',title:['Valid synthetic study']};
--test('one malformed search row does not discard a valid scholarly source',()=>{
-- const sources=crossrefSources([null,{DOI:'10.1234/wrong-title',title:'not-an-array'},{DOI:'10.1234/empty',title:['<b> </b>']},validWork]);
-- assert.equal(sources.length,1);assert.equal(sources[0].id,validWork.DOI);assert.equal(sources[0].title,validWork.title[0]);
--});
--test('malformed optional authors do not break a valid source or invent names',()=>{
-- for(const author of [{given:'wrong container'},[null,{}, {given:42,family:'Kim'}]]){
--  const sources=crossrefSources([{...validWork,author}]);
--  assert.equal(sources.length,1);assert.equal(sources[0].authors,Array.isArray(author)?'Kim':'저자 정보 없음');
-- }
+@@ -39,3 +39,31 @@ test('malformed search envelope is a readable failure rather than a successful e
+ test('a non-JSON upstream response reports the search result format failure',async()=>{
+  await assert.rejects(searchResearch('synthetic study',async()=>new Response('<html>upstream failure</html>',{headers:{'Content-Type':'text/html'}})),e=>e instanceof Error&&/형식/.test(e.message));
+ });
++
++// New metadata relevance/query coverage; original008 regression cases retained above.
 +const work=(title,abstract='')=>({DOI:'10.1234/'+encodeURIComponent(title),title:[title],abstract});
 +test('battery search excludes unrelated chemistry and preserves battery evidence',async()=>{
 + let calls=0;
 + const results=await searchResearch('차세대 화학전지',async()=>{calls++;return Response.json({message:{items:[work('Chemical analysis of ancient pottery'),work('Next generation rechargeable batteries'),work('Electrode materials','Sodium-ion batteries for energy storage')]}});});
 + assert.equal(results.length,2);assert(!results.some(s=>s.title.includes('pottery')));assert.equal(calls,1);
- });
--test('an empty DOI suffix cannot become a scholarly resolver link',()=>{
-- assert.deepEqual(crossrefSources([{DOI:'10.1234/',title:['Empty DOI']}]),[]);
++});
 +test('specific battery chemistry cannot be replaced by another chemistry',async()=>{
 + const result=await searchResearch('나트륨이온 전지',async()=>Response.json({message:{items:[work('Lithium-ion batteries'),work('Sodium-ion batteries')]}}));assert.equal(result.length,1);assert.match(result[0].title,/Sodium/);
- });
--test('malformed search envelope is a readable failure rather than a successful empty result',async()=>{
-- let calls=0;
-- for(const body of [null,{}, {message:{}},{message:{items:null}},{message:{items:{}}}]){
--  await assert.rejects(searchResearch('synthetic study',async()=>{calls++;return Response.json(body);}),e=>e instanceof Error&&/형식/.test(e.message));
-- }
-- assert.equal(calls,5);
++});
 +test('unverifiable topic returns no filler',async()=>assert.deepEqual(await searchResearch('zznonexistenttopic',async()=>Response.json({message:{items:[work('Popular science')]}})),[]));
 +test('missing abstracts can use an explicit matching title',async()=>assert.equal((await searchResearch('photosynthesis',async()=>Response.json({message:{items:[work('Photosynthesis mechanisms')]}}))).length,1));
 +test('battery topic does not discard an additional safety constraint',async()=>{
 + const r=await searchResearch('battery safety',async()=>Response.json({message:{items:[work('Battery market forecasts'),work('Battery safety under thermal stress')]}}));assert.equal(r.length,1);assert.match(r[0].title,/safety/);
- });
--
--test('a non-JSON upstream response reports the search result format failure',async()=>{
-- await assert.rejects(searchResearch('synthetic study',async()=>new Response('<html>upstream failure</html>',{headers:{'Content-Type':'text/html'}})),e=>e instanceof Error&&/형식/.test(e.message));
++});
 +test('solid-state physics does not silently become a battery query',async()=>{
 + const r=await searchResearch('solid-state physics',async()=>Response.json({message:{items:[work('Solid-state batteries'),work('Solid-state physics of crystals')]}}));assert.equal(r.length,1);assert.match(r[0].title,/physics/);
- });
++});
 +for(const status of [429,500])test(`research HTTP${status} does not retry or fill results`,async()=>{let calls=0;await assert.rejects(searchResearch('batteries',async()=>{calls++;return new Response('{}',{status});}));assert.equal(calls,1);});
 +for(const [query,expected]of [['차세대 화학전지','next generation electrochemical batteries'],['전고체 전지','solid-state batteries'],['나트륨이온 전지','sodium-ion batteries'],['리튬황 전지','lithium-sulfur batteries']])test(`bounded bilingual query preserves intent:${query}`,async()=>{let sent,calls=0;await searchResearch(query,async url=>{sent=new URL(url).searchParams.get('query.bibliographic');calls++;return Response.json({message:{items:[]}});});assert.equal(sent,expected);assert.equal(calls,1);});
 +test('unmapped Korean constraints remain in the outgoing query',async()=>{let sent;await searchResearch('전고체 전지 저온',async url=>{sent=new URL(url).searchParams.get('query.bibliographic');return Response.json({message:{items:[]}});});assert.match(sent,/저온/);assert.match(sent,/solid-state/);});
 +test('non-battery homonym is not translated into batteries',async()=>{let sent;await searchResearch('전지적 작가 시점',async url=>{sent=new URL(url).searchParams.get('query.bibliographic');return Response.json({message:{items:[]}});});assert.equal(sent,'전지적 작가 시점');});
 +for(const [type,label]of [['component','구성자료'],['posted-content','게시자료'],['book-chapter','책의 장'],['journal-article','학술지 논문']])test(`Crossref supplied type is retained in source label:${type}`,async()=>{const results=await searchResearch('batteries',async()=>Response.json({message:{items:[{...work('Batteries overview'),type}]}}));assert.match(results[0].provider,new RegExp(label));assert(!/심사 완료|peer.reviewed/i.test(results[0].provider));});
 +test('unknown Crossref type does not become a journal article',async()=>{const r=await searchResearch('batteries',async()=>Response.json({message:{items:[{...work('Batteries overview'),type:'synthetic-unknown'}]}}));assert.match(r[0].provider,/유형 미확인/);});
++
++test('non-battery bilingual concept and English synonym remain evidence-bound',async()=>{for(const query of ['광합성','photosynthesis','photosynthetic']){let calls=0;const result=await searchResearch(query,async url=>{calls++;if(query==='광합성')assert.equal(new URL(url).searchParams.get('query.bibliographic'),'photosynthesis');return Response.json({message:{items:[work('Photosynthetic light reactions'),work('Battery light indicators')]}});});assert.equal(result.length,1);assert.match(result[0].title,/Photosynthetic/);assert.equal(calls,1);}});
++test('unmapped English constraint is not silently dropped',async()=>{assert.deepEqual(await searchResearch('photosynthesis magicconstraint',async()=>Response.json({message:{items:[work('Photosynthesis mechanisms')]}})),[]);});
 diff --git a/PACE_AI_WORKSPACE/source/lib/answer-grounding.ts b/PACE_AI_WORKSPACE/source/lib/answer-grounding.ts
 new file mode 100644
 index 0000000..0c831b6
