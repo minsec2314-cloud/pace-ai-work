@@ -47,21 +47,30 @@ index 5b43cf2..078e491 100644
 + try{const raw=await response.json() as {choices:{finish_reason:string;message:{content:string}}[]};if(raw.choices?.[0]?.finish_reason!=='stop')throw Error('검산 결과가 너무 깁니다. 문제 수를 줄여 주세요.');const result=JSON.parse(raw.choices[0].message.content) as {solutions:unknown[]};if(!Array.isArray(result.solutions)||result.solutions.length!==questions.length)throw Error('정답 검산 결과의 문항 수가 일치하지 않습니다.');return questions.map((q,i)=>{const s=result.solutions[i] as {answer?:unknown;explanation?:unknown;error?:unknown};if(!s||s.error||typeof s.answer!=='string'||!s.answer.trim()||typeof s.explanation!=='string'||!s.explanation.trim()||s.answer.length>4000||s.explanation.length>6000)throw Error('조건이 부족하거나 검산하지 못한 문항이 있어 다시 생성해야 합니다.');return {...q,answer:s.answer,explanation:s.explanation};});}catch(e){throw new AIError(e instanceof Error?e.message:'검산 결과를 읽지 못했습니다.',502);}
  }
 diff --git a/PACE_AI_WORKSPACE/source/lib/research.ts b/PACE_AI_WORKSPACE/source/lib/research.ts
-index 460ce0a..293fd90 100644
+index 460ce0a..9b5c94c 100644
 --- a/PACE_AI_WORKSPACE/source/lib/research.ts
 +++ b/PACE_AI_WORKSPACE/source/lib/research.ts
-@@ -12,6 +12,27 @@ export function crossrefSources(works:CrossrefWork[]):Source[]{
+@@ -12,13 +12,43 @@ export function crossrefSources(works:CrossrefWork[]):Source[]{
    return [{id:w.DOI,title,url:`https://doi.org/${w.DOI.split('/').map(part=>encodeURIComponent(part)).join('/')}`,authors,year:String(w.published?.['date-parts']?.[0]?.[0]||'연도 미확인'),abstract:textOnly(w.abstract),provider:'Crossref'}];
   });
  }
++// Fixed scientific aliases only: unknown words/constraints are retained, never guessed.
++export function researchProviderQuery(query:string):string {
++ return query.normalize('NFKC').trim()
++  .replace(/나트륨\s*이온/g,'sodium-ion ').replace(/리튬\s*이온/g,'lithium-ion ')
++  .replace(/리튬\s*황/g,'lithium-sulfur ').replace(/전고체/g,'solid-state ')
++  .replace(/화학\s*전지(?![\p{L}\p{N}])/gu,'electrochemical batteries').replace(/(?<![\p{L}\p{N}])전지(?![\p{L}\p{N}])/gu,'batteries')
++  .replace(/차세대/g,'next generation').replace(/\s+/g,' ').trim();
++}
 +// Metadata relevance is a conservative screen, not verification of paper claims.
 +export function researchMatches(query:string,source:Source):boolean {
 + const q=query.normalize('NFKC').toLowerCase();
 + const text=(source.title+' '+source.abstract).normalize('NFKC').toLowerCase();
 + const compact=(s:string)=>s.replace(/[\s-]+/g,'');
 + const groups:[RegExp,RegExp][]=[
-+  [/전지|battery|batteries/,/전지|\bbatter(?:y|ies)\b/],
++  [/화학\s*전지|(?<![\p{L}\p{N}])전지(?![\p{L}\p{N}])|\bbatter(?:y|ies)\b/u,/전지|\bbatter(?:y|ies)\b/],
 +  [/나트륨\s*이온|sodium[ -]?ion/,/나트륨\s*이온|\bsodium[ -]?ion\b/],
++  [/리튬\s*이온|lithium[ -]?ion/,/리튬\s*이온|\blithium[ -]?ion\b/],
 +  [/리튬\s*황|lithium[ -]?sulfur/,/리튬\s*황|\blithium[ -]?sulfur\b/],
 +  [/전고체|solid[ -]?state/,/전고체|\bsolid[ -]?state\b/],
 + ];
@@ -70,15 +79,17 @@ index 460ce0a..293fd90 100644
 + // A recognized domain term must not erase additional user constraints.
 + // These query patterns contain no capturing groups or stateful flags.
 + let remainder=q;
-+ for(const [pattern] of required)remainder=remainder.replace(new RegExp(pattern.source,'g'),' ');
++ for(const [pattern] of required)remainder=remainder.replace(new RegExp(pattern.source,pattern.flags+'g'),' ');
 + if(required.length)remainder=remainder.replace(/차세대|화학|\bnext[ -]?generation\b/g,' ');
 + const terms=(remainder.match(/[\p{L}\p{N}]{2,}/gu)||[]).filter(term=>!['the','and','for','of','in','on','with'].includes(term));
 + return (required.length>0||terms.length>0)&&terms.every(term=>compact(text).includes(compact(term)));
 +}
  export async function searchResearch(query:string,fetcher:typeof fetch=fetch):Promise<Source[]>{
   if(query.trim().length<2||query.length>200)throw new Error('검색어를 2~200자로 입력해 주세요.');
-  const url=new URL('https://api.crossref.org/works');url.searchParams.set('query.bibliographic',query.trim());url.searchParams.set('rows','7');url.searchParams.set('select','DOI,title,author,published,abstract,type');
-@@ -20,5 +41,5 @@ export async function searchResearch(query:string,fetcher:typeof fetch=fetch):Pr
+- const url=new URL('https://api.crossref.org/works');url.searchParams.set('query.bibliographic',query.trim());url.searchParams.set('rows','7');url.searchParams.set('select','DOI,title,author,published,abstract,type');
++ const url=new URL('https://api.crossref.org/works');url.searchParams.set('query.bibliographic',researchProviderQuery(query));url.searchParams.set('rows','7');url.searchParams.set('select','DOI,title,author,published,abstract,type');
+  const response=await fetcher(url,{headers:{'User-Agent':'PaceStudyResearch/1.0','Accept':'application/json'},signal:AbortSignal.timeout(20000)});
+  if(!response.ok)throw new Error(response.status===429?'학술 검색 요청이 많습니다. 잠시 후 다시 시도해 주세요.':'학술 검색 서버에 연결하지 못했습니다.');
   let data:{message?:{items?:CrossrefWork[]}}|null;
   try{data=await response.json() as typeof data;}catch{throw new Error('학술 검색 결과의 형식을 읽지 못했습니다. 잠시 후 다시 시도해 주세요.');}
   if(!Array.isArray(data?.message?.items))throw new Error('학술 검색 결과의 형식을 읽지 못했습니다. 잠시 후 다시 시도해 주세요.');
@@ -112,10 +123,10 @@ index ba6108c..a02f0e8 100644
 + await assert.rejects(reviewQuestions(questions,'수학','synthetic-only',Date.now()+20000,async()=>Response.json({choices:[{finish_reason:reason,message:{content:JSON.stringify({solutions:[{answer:'5',explanation:'표면상 완성된 풀이'}]})}}]})),e=>e.status===502);
 +});
 diff --git a/PACE_AI_WORKSPACE/source/tests/research-quality.test.mjs b/PACE_AI_WORKSPACE/source/tests/research-quality.test.mjs
-index c40b4ef..50d1eda 100644
+index c40b4ef..4365122 100644
 --- a/PACE_AI_WORKSPACE/source/tests/research-quality.test.mjs
 +++ b/PACE_AI_WORKSPACE/source/tests/research-quality.test.mjs
-@@ -1,41 +1,21 @@
+@@ -1,41 +1,24 @@
  import test from 'node:test';
  import assert from 'node:assert/strict';
 -import {crossrefSources} from '../lib/research.ts';
@@ -171,6 +182,9 @@ index c40b4ef..50d1eda 100644
 + const r=await searchResearch('solid-state physics',async()=>Response.json({message:{items:[work('Solid-state batteries'),work('Solid-state physics of crystals')]}}));assert.equal(r.length,1);assert.match(r[0].title,/physics/);
  });
 +for(const status of [429,500])test(`research HTTP${status} does not retry or fill results`,async()=>{let calls=0;await assert.rejects(searchResearch('batteries',async()=>{calls++;return new Response('{}',{status});}));assert.equal(calls,1);});
++for(const [query,expected]of [['차세대 화학전지','next generation electrochemical batteries'],['전고체 전지','solid-state batteries'],['나트륨이온 전지','sodium-ion batteries'],['리튬황 전지','lithium-sulfur batteries']])test(`bounded bilingual query preserves intent:${query}`,async()=>{let sent,calls=0;await searchResearch(query,async url=>{sent=new URL(url).searchParams.get('query.bibliographic');calls++;return Response.json({message:{items:[]}});});assert.equal(sent,expected);assert.equal(calls,1);});
++test('unmapped Korean constraints remain in the outgoing query',async()=>{let sent;await searchResearch('전고체 전지 저온',async url=>{sent=new URL(url).searchParams.get('query.bibliographic');return Response.json({message:{items:[]}});});assert.match(sent,/저온/);assert.match(sent,/solid-state/);});
++test('non-battery homonym is not translated into batteries',async()=>{let sent;await searchResearch('전지적 작가 시점',async url=>{sent=new URL(url).searchParams.get('query.bibliographic');return Response.json({message:{items:[]}});});assert.equal(sent,'전지적 작가 시점');});
 diff --git a/PACE_AI_WORKSPACE/source/lib/answer-grounding.ts b/PACE_AI_WORKSPACE/source/lib/answer-grounding.ts
 new file mode 100644
 index 0000000..0c831b6
