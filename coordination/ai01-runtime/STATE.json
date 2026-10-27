@@ -1,7 +1,7 @@
 {
   "baseHead": "4edb7b923ec66ff2e119a6dd6efb51d400c3a610",
   "patchSha256": "c08c5833ac1420343496cb426ef730776d4f59fe7f594eb2028c7258cbb301ea",
-  "checkpointSha256": "fe0a5ec4936af24e2cff341cc7113ec97f986fb6d114f0db0d527980cce49ce1",
+  "checkpointSha256": "5647a9cf44ff1cac519022d6ab38f4899177f801146a7509efdcd41d6a36ef6a",
   "lastProcessedMainMessageId": "PACE-DELEGATE-20261027-003",
   "latestCompleteSubmissionId": "AI-01-20261026-iteration-008",
   "draft": {
@@ -29,7 +29,7 @@
       "nextAction": "Literary identity/source-to-work matching policy;separateUI delayed-response component test requested byMAIN003"
     }
   },
-  "nextAction": "Literary identity/source-to-work matching policy;separateUI delayed-response component test requested byMAIN003",
+  "nextAction": "ContinueP0 literary identity and source/work matching. UI-R2 requires main review plus realReact/browser mobile,keyboard,reconnect checks;do not repeat unavailable dependency probes.",
   "processedMainMessageIds": [
     "PACE-ACK008-20261027-001",
     "PACE-MAIN20-20261027-001",
@@ -43,9 +43,9 @@
   "supplementId": "AI01-008-SUPPLEMENT-20261027-001",
   "mainQAProgress": "Public22:T03/T04/T05/T06/W01/W02/W04 pass;T07 exam completion partial;W03,T08,T09 remaining",
   "uiSubmission": {
-    "url": "https://github.com/minsec2314-cloud/pace-ai-work/raw/refs/heads/ai/ai-01-results-20261019/main22-chat-ui-20261027-001/PACE_MAIN22_CHAT_UI_REVIEW.zip",
-    "bytes": 85145,
-    "sha256": "f5e5063d8791c94e6f932ae7e91425a2999847dff9ebb664e146c3e65b0c7b8f",
-    "commit": "f8b0d85c3587048b0f4e7ae5c5e231efef84b595"
+    "url": "https://github.com/minsec2314-cloud/pace-ai-work/raw/refs/heads/ai/ai-01-results-20261019/main22-chat-ui-r2-20261027/PACE_MAIN22_CHAT_UI_REVIEW_R2.zip",
+    "bytes": 88480,
+    "sha256": "db7d2c73fbb5b41f482b3bf932bdca0a2bcbc930dd94845f895589e0c15759a0",
+    "commit": "54fb2d22c3459b1d73ae39c5cf60c7bbc4b2151f"
   }
 }
