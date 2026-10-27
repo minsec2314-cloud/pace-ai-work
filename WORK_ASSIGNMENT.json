@@ -1,0 +1,165 @@
+{
+    "revision":  9,
+    "protocolVersion":  2,
+    "taskId":  "AI-01",
+    "main":  {
+                 "areas":  [
+                               "일정·시간표·준비 계획",
+                               "수행평가·탐구 활동 관리",
+                               "노트·필기",
+                               "공통 화면·상태·저장",
+                               "통합·검증·배포"
+                           ],
+                 "reservedFiles":  [
+                                       "app/study-app.tsx",
+                                       "lib/study.ts",
+                                       "lib/storage.ts",
+                                       "app/api/**",
+                                       "components/**",
+                                       "package.json",
+                                       "package-lock.json"
+                                   ],
+                 "temporarilyFrozenForPeerUI":  [
+                                                    "app/study-app.tsx",
+                                                    "app/globals.css",
+                                                    "components/availability-settings.tsx",
+                                                    "components/user-guide.tsx",
+                                                    "components/advanced-options.tsx",
+                                                    "lib/help-content.ts",
+                                                    "app/guide/page.tsx",
+                                                    "components/**",
+                                                    "lib/study.ts",
+                                                    "lib/storage.ts",
+                                                    "lib/routines.ts",
+                                                    "lib/availability.ts",
+                                                    "lib/window-planning.ts",
+                                                    "lib/chat-sessions.ts",
+                                                    "lib/help-content.ts",
+                                                    "tests/**"
+                                                ],
+                 "roleDuringDelegation":  "coordination_review_integration_validation_deployment_no_duplicate_product_implementation"
+             },
+    "peer":  {
+                 "areas":  [
+                               "과목 질문 답변",
+                               "일반 연습 문제",
+                               "선생님별 기출 관찰·예상 문제",
+                               "학습 설명·피드백",
+                               "탐구 주제 탐색·탐구 진행 AI",
+                               "자료 조사·출처 활용 품질",
+                               "메인 완성 기능의 독립 QA·실패 재현·재검증 (메인 파일 읽기만, 수정·배포는 메인)",
+                               "검증 가능한 사실·문학 설명 품질과 허위 원문 차단",
+                               "API+ChatGPT 요금제 공식 연동 타당성 조사",
+                               "초보용 UI 단순화·점진적 상세 설정·기능별 사용 안내"
+                           ],
+                 "allowedFiles":  [
+                                      "lib/ai.ts",
+                                      "lib/quiz-review.ts",
+                                      "lib/topics.ts",
+                                      "lib/research.ts",
+                                      "tests/ai.test.mjs",
+                                      "tests/quiz-review.test.mjs",
+                                      "tests/topics.test.mjs",
+                                      "lib/ai-quality.ts",
+                                      "tests/ai-quality.test.mjs",
+                                      "tests/research-quality.test.mjs",
+                                      "AI_QUALITY_NOTES.md",
+                                      "tests/fixtures/ai-quality-cases.json",
+                                      "scripts/evaluate-ai-quality.mjs",
+                                      "lib/answer-grounding.ts",
+                                      "tests/answer-grounding.test.mjs",
+                                      "tests/fixtures/answer-grounding-cases.json",
+                                      "scripts/evaluate-answer-grounding.mjs"
+                                  ],
+                 "preserveContracts":  true,
+                 "mayDeploy":  false,
+                 "mayUsePaidFallback":  false,
+                 "coordinationAllowedFiles":  [
+                                                  "coordination/AI01_TO_MAIN.json",
+                                                  "coordination/AI01_TO_MAIN.md",
+                                                  "coordination/ai01-runtime/WORKING_TREE.patch",
+                                                  "coordination/ai01-runtime/CHECKPOINT.json",
+                                                  "coordination/ai01-runtime/STATE.json"
+                                              ],
+                 "mainQA":  {
+                                "taskId":  "MAIN20-AVAILABILITY-QA",
+                                "targetVersion":  21,
+                                "scope":  "read_only_functional_QA_on_published_site_in_own_synthetic_test_storage",
+                                "mayEditMainFiles":  false,
+                                "actualBrowserToolRequiredForUiPass":  true,
+                                "assignment":  "MAIN21_QA_ASSIGNMENT.md",
+                                "reportIn":  "coordination/AI01_TO_MAIN.json#mainQA",
+                                "status":  "posted_and_readback_verified_peer_ack_pending"
+                            },
+                 "uiTask":  {
+                                "taskId":  "UI-01",
+                                "baseline":  "9469f395ec4b597e4606bc4991ca4db7230f744d",
+                                "status":  "approved_source_transfer_in_progress_then_development",
+                                "allowedFiles":  [
+                                                     "app/study-app.tsx",
+                                                     "app/globals.css",
+                                                     "components/availability-settings.tsx",
+                                                     "components/user-guide.tsx",
+                                                     "components/advanced-options.tsx",
+                                                     "lib/help-content.ts",
+                                                     "app/guide/page.tsx",
+                                                     "components/**",
+                                                     "lib/study.ts",
+                                                     "lib/storage.ts",
+                                                     "lib/routines.ts",
+                                                     "lib/availability.ts",
+                                                     "lib/window-planning.ts",
+                                                     "lib/chat-sessions.ts",
+                                                     "lib/help-content.ts",
+                                                     "tests/**"
+                                                 ],
+                                "separateCheckoutRequired":  true,
+                                "mayDeploy":  false,
+                                "returnBase":  "main22",
+                                "assignment":  "AI_UX_ASSIGNMENT_20261027.md"
+                            },
+                 "delegatedTasks":  [
+                                        "AI-LIT-01",
+                                        "CHAT-01",
+                                        "UI-01",
+                                        "AI-AUTH-01",
+                                        "PLAN-followups-after-bounded-delivery"
+                                    ]
+             },
+    "delivery":  {
+                     "checkpointAt":  "completed_meaningful_work_units_or_15_to_30_minutes",
+                     "resultZip":  "PACE_AI_01_결과.zip",
+                     "packageAt":  [
+                                       "meaningful_checkpoint",
+                                       "main_remaining_at_or_below_40_percent",
+                                       "peer_remaining_at_or_below_10_percent",
+                                       "before_session_stop",
+                                       "user_requests_result"
+                                   ],
+                     "ordinaryChatCanSelfWake":  false,
+                     "userReviewIntervalHoursRange":  [
+                                                          2,
+                                                          10
+                                                      ],
+                     "mainPrepareAtRemainingPercent":  40,
+                     "peerPrepareAtRemainingPercent":  10,
+                     "priority":  "loop_alignment_before_product_development",
+                     "mailbox":  {
+                                     "repository":  "minsec2314-cloud/pace-ai-work",
+                                     "branch":  "coordination/pace-main-ai01",
+                                     "mainOwned":  [
+                                                       "coordination/RULES.md",
+                                                       "coordination/MAIN_TO_AI01.md"
+                                                   ],
+                                     "peerOwned":  [
+                                                       "coordination/AI01_TO_MAIN.json",
+                                                       "coordination/AI01_TO_MAIN.md",
+                                                       "coordination/ai01-runtime/WORKING_TREE.patch",
+                                                       "coordination/ai01-runtime/CHECKPOINT.json",
+                                                       "coordination/ai01-runtime/STATE.json"
+                                                   ],
+                                     "mainReadWriteVerified":  true,
+                                     "peerRoundtripVerified":  false
+                                 }
+                 }
+}
