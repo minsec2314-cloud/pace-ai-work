@@ -1,8 +1,8 @@
 {
-  "observedAt": "2026-10-27T10:44:22.573Z",
+  "observedAt": "2026-10-27T11:41:13.003Z",
   "invocationSource": "scheduler",
-  "status": "research001_independent_review_candidate_literary_draft_preserved",
-  "lastProcessedMainMessageId": "PACE-DELEGATE-20261027-005",
+  "status": "research002_review_candidate_literary_draft_preserved",
+  "lastProcessedMainMessageId": "PACE-DELEGATE-20261027-006",
   "latestCompleteSubmissionId": "AI-01-20261026-iteration-008",
   "draftSubmission": {
     "status": "incomplete009_r6_not_for_integration",
@@ -36,7 +36,7 @@
       "nextAction": "Finish literary identity evidence policy;main review of normalized-query disclosure and type labels. Keep UI002 preserved."
     }
   },
-  "nextAction": "Main reviews research-only001 additional patch vs accepted008.Continue literary draft on actual selected citation/source agreement;do not mix research001 orUI002 into new cumulative application.",
+  "nextAction": "Main reviews research002 replacement vs accepted008,not001then002.Continue literary selected citation/source agreement separately;preserveUI002.",
   "main22Checkout": "/workspace/pace-main22-ui-checkout-20261027",
   "mainQA": {
     "taskId": "MAIN20-AVAILABILITY-QA",
@@ -285,70 +285,63 @@
     "regression": "17 grounding mocks pass inoriginalAIcheckout"
   },
   "independentResearchSubmission": {
-    "submissionId": "AI01-RESEARCH-QUALITY-20261027-001",
-    "status": "complete_scoped_search_review_candidate_not_main_accepted",
+    "submissionId": "AI01-RESEARCH-QUALITY-20261027-002",
+    "status": "scoped_review_candidate_pending_main_acceptance",
+    "replacesCandidate": "AI01-RESEARCH-QUALITY-20261027-001",
     "baselineSubmissionId": "AI-01-20261026-iteration-008",
     "baselineMainCommit": "9469f395ec4b597e4606bc4991ca4db7230f744d",
     "baselineOriginalCommit": "7145f0f3601cd4a6a369a80006fa73cbd142054d",
-    "baselineZipSha256": "5c1bb8eb4869698f49e2c35c42cb790c9cbd09a951b35449d00c1ec547ac3b8f",
-    "patchKind": "additional_only_vs_accepted008_not_original_bundle_cumulative",
+    "patchKind": "additional_only_vs_008;do_not_apply001_then002",
+    "replyTo": "PACE-DELEGATE-20261027-006",
     "files": [
       {
         "path": "lib/research.ts",
         "base008Sha256": "e826ba85ef9fa654a1a568a0b590652cbfd1bdb96c0f7d73b644fc8b679f18ba",
-        "bytes": 5502,
-        "sha256": "c99605814d96936f3fa26e16bbc5b6d84d279b93af7cb13200591ef597b5b753"
+        "bytes": 5817,
+        "sha256": "c6d98ec9d8edb8f5fadbef7574fefb84b5502874a06e15bf4e81e77b4a063830"
       },
       {
         "path": "tests/research-quality.test.mjs",
         "base008Sha256": "6fac87d70a8908243a4ac8d56b693040cab0eddf96519f15bb8aca3e17e2c593",
-        "bytes": 7235,
-        "sha256": "9b3da745ec0696e4825199ccb9421f3cf866ad1e1e2803bf0f22ccaf159e3151"
+        "bytes": 8874,
+        "sha256": "ba528c937b5d28f6a4844cc2d8379e9db48e8718b4a4d0e0a7c4815bfca467d1"
       }
     ],
-    "excluded": [
-      "all literary draft code",
-      "UI002 files",
-      "API/auth/environment/dependencies/deployment"
-    ],
+    "reproduction": "MAIN006 exact two failures plus3 one-character variants fail before fix;spaced sodium-ion and chemical/solar comparison controls pass",
     "validation": {
-      "isolatedCheckout": "accepted008 files restored and verified;only2research files changed;no literary imports",
-      "fullTests": "161pass0fail",
+      "fullIsolatedTests": "170pass0fail",
       "typecheck": "pass",
       "build": "pass",
-      "inheritedTests": "10original008 DOI/malformed-row/envelope cases restored;earlier009 draft accidentally omitted them",
-      "actualSearchEvidence": "earlier2026-10-27 live query snapshots included;not new calls this run",
-      "requests": "1 per search,no retry;mock assertions cover429/500",
-      "realModelCalls": 0
+      "patchApplyExactBytes": true,
+      "modelCalls": 0,
+      "providerRequests": "1persearch,noretry;existingHTTP/format/DOI regressions retained"
     },
-    "scope": [
-      "bounded bilingual science aliases:battery chemistries and photosynthesis",
-      "explicit metadata lexical constraints;empty when no supported match",
-      "DOI handling and malformed response original tests preserved",
-      "suppliedtype display;unknown type/reviewstatus never inferred"
+    "fixes": [
+      "Keep1character words and1digit constraints",
+      "Numeric7 does not match17;LatinX not inferred fromoxide",
+      "Explicit chemical-battery query requires chemical/battery lexical evidence,not solar-only substring",
+      "Mixed chemical/solar comparison retains eligibility"
     ],
     "limitations": [
-      "No general translation or semantic search",
-      "Unknown Korean constraints may produce no English results",
-      "No fulltext/review/identity verification",
-      "Not all synonyms covered;fixed mappings only"
+      "Still metadata lexical matching,not semantic/fulltext reliability verification",
+      "No new actual-paper relevance evaluation this run;counterexamples synthetic",
+      "Unsupported synonyms and ambiguous work context remain limitations"
     ],
-    "nextAction": "Main applies only2file additional patch and reviews query-disclosure API proposal;do not apply009 cumulative patches",
+    "nextAction": "Main reviews002instead001;continue independentliterary draft separately",
     "zip": {
-      "url": "https://github.com/minsec2314-cloud/pace-ai-work/raw/refs/heads/ai/ai-01-results-20261019/research-quality-001-20261027/PACE_RESEARCH_QUALITY_001.zip",
-      "bytes": 13869,
-      "sha256": "4b229cdd7db602015ffd2b766dcc12e6b3df1557355704eea68b35c71b8c7cf6",
-      "commit": "e9cb003f752a92e3ca51f6821c09d27b6ef03736"
+      "url": "https://github.com/minsec2314-cloud/pace-ai-work/raw/refs/heads/ai/ai-01-results-20261019/research-quality-002-20261027/PACE_RESEARCH_QUALITY_002.zip",
+      "bytes": 12805,
+      "sha256": "95d7c56e862103936bc8da3407083cccf8a65a369d366a408f9a14f1b522f171",
+      "commit": "ca9d349f5d94ad576605f80c2d29ed78699cc11a"
     },
-    "patchApplyCheck": "Exact2file byte match after git apply to accepted008 files;passed",
     "mainAccepted": false
   },
   "currentWorktreeCorrection": {
     "restoredInheritedResearchTests": 10,
     "reason": "Earlier009 drafts accidentally replaced original research-quality test content. Original008 cases now retained before new cases. Earlier test totals described then-current reduced suite,not full inherited coverage.",
-    "fullCurrentMixedDraftTests": "178pass0fail",
-    "isolatedResearchOnlyTests": "161pass0fail",
-    "recoveryPatchSha256": "cdaba1b129d7c775be652972724a3f1bbf5c1ecd2d79e8c16d194db930421923",
+    "fullCurrentMixedDraftTests": "187pass0fail after research002 source sync",
+    "isolatedResearchOnlyTests": "170pass0fail",
+    "recoveryPatchSha256": "085d7753e5639795beb03c786cabc32a16508ebc57f8eae24a6f0a7146a4be1f",
     "previous009ZipPreserved": true
   }
 }
