@@ -47,7 +47,7 @@ index 5b43cf2..078e491 100644
 + try{const raw=await response.json() as {choices:{finish_reason:string;message:{content:string}}[]};if(raw.choices?.[0]?.finish_reason!=='stop')throw Error('검산 결과가 너무 깁니다. 문제 수를 줄여 주세요.');const result=JSON.parse(raw.choices[0].message.content) as {solutions:unknown[]};if(!Array.isArray(result.solutions)||result.solutions.length!==questions.length)throw Error('정답 검산 결과의 문항 수가 일치하지 않습니다.');return questions.map((q,i)=>{const s=result.solutions[i] as {answer?:unknown;explanation?:unknown;error?:unknown};if(!s||s.error||typeof s.answer!=='string'||!s.answer.trim()||typeof s.explanation!=='string'||!s.explanation.trim()||s.answer.length>4000||s.explanation.length>6000)throw Error('조건이 부족하거나 검산하지 못한 문항이 있어 다시 생성해야 합니다.');return {...q,answer:s.answer,explanation:s.explanation};});}catch(e){throw new AIError(e instanceof Error?e.message:'검산 결과를 읽지 못했습니다.',502);}
  }
 diff --git a/PACE_AI_WORKSPACE/source/lib/research.ts b/PACE_AI_WORKSPACE/source/lib/research.ts
-index 460ce0a..4ae0609 100644
+index 460ce0a..43e6126 100644
 --- a/PACE_AI_WORKSPACE/source/lib/research.ts
 +++ b/PACE_AI_WORKSPACE/source/lib/research.ts
 @@ -1,6 +1,11 @@
@@ -62,14 +62,14 @@ index 460ce0a..4ae0609 100644
  // A DOI suffix is an opaque identifier. Encode each path segment so ? and #
  // remain part of that identifier rather than changing the resolver URL.
  export function crossrefSources(works:CrossrefWork[]):Source[]{
-@@ -9,16 +14,48 @@ export function crossrefSources(works:CrossrefWork[]):Source[]{
+@@ -9,16 +14,53 @@ export function crossrefSources(works:CrossrefWork[]):Source[]{
    if(!w||typeof w.DOI!=='string'||!/^10\.\d{4,9}\/.+/u.test(w.DOI)||!Array.isArray(w.title)||typeof w.title[0]!=='string')return [];
    const title=textOnly(w.title[0],400);if(!title)return [];
    const authors=(Array.isArray(w.author)?w.author:[]).slice(0,4).filter(a=>a&&typeof a==='object').map(a=>[a.given,a.family].filter(p=>typeof p==='string'&&p.trim()).join(' ')).filter(Boolean).join(', ')||'저자 정보 없음';
 -  return [{id:w.DOI,title,url:`https://doi.org/${w.DOI.split('/').map(part=>encodeURIComponent(part)).join('/')}`,authors,year:String(w.published?.['date-parts']?.[0]?.[0]||'연도 미확인'),abstract:textOnly(w.abstract),provider:'Crossref'}];
 +  return [{id:w.DOI,title,url:`https://doi.org/${w.DOI.split('/').map(part=>encodeURIComponent(part)).join('/')}`,authors,year:String(w.published?.['date-parts']?.[0]?.[0]||'연도 미확인'),abstract:textOnly(w.abstract),provider:crossrefTypeLabel(w.type)}];
-  });
- }
++ });
++}
 +// Fixed scientific aliases only: unknown words/constraints are retained, never guessed.
 +export function researchProviderQuery(query:string):string {
 + return query.normalize('NFKC').trim()
@@ -85,6 +85,7 @@ index 460ce0a..4ae0609 100644
 + const text=(source.title+' '+source.abstract).normalize('NFKC').toLowerCase();
 + const compact=(s:string)=>s.replace(/[\s-]+/g,'');
 + const groups:[RegExp,RegExp][]=[
++  [/화학\s*전지/,/\bbatter(?:y|ies)\b|(?:화학|일차|이차|전고체|납축)\s*전지|(?:리튬|나트륨)\s*(?:이온|황)?\s*전지/],
 +  [/광합성|\bphotosynth(?:esis|etic)\b/,/광합성|\bphotosynth(?:esis|etic)\b/],
 +  [/화학\s*전지|(?<![\p{L}\p{N}])전지(?![\p{L}\p{N}])|\bbatter(?:y|ies)\b/u,/전지|\bbatter(?:y|ies)\b/],
 +  [/나트륨\s*이온|sodium[ -]?ion/,/나트륨\s*이온|\bsodium[ -]?ion\b/],
@@ -99,9 +100,13 @@ index 460ce0a..4ae0609 100644
 + let remainder=q;
 + for(const [pattern] of required)remainder=remainder.replace(new RegExp(pattern.source,pattern.flags+'g'),' ');
 + if(required.length)remainder=remainder.replace(/차세대|화학|\bnext[ -]?generation\b/g,' ');
-+ const terms=(remainder.match(/[\p{L}\p{N}]{2,}/gu)||[]).filter(term=>!['the','and','for','of','in','on','with'].includes(term));
-+ return (required.length>0||terms.length>0)&&terms.every(term=>compact(text).includes(compact(term)));
-+}
++ const terms=(remainder.match(/[\p{L}\p{N}]+/gu)||[]).filter(term=>!['the','and','for','of','in','on','with'].includes(term));
++ return (required.length>0||terms.length>0)&&terms.every(term=>{
++  if(/^\d+$/.test(term))return new RegExp('(?<![0-9])'+term+'(?![0-9])').test(text);
++  if(/^[a-z]$/.test(term))return new RegExp('\\b'+term+'\\b').test(text);
++  return compact(text).includes(compact(term));
+  });
+ }
  export async function searchResearch(query:string,fetcher:typeof fetch=fetch):Promise<Source[]>{
   if(query.trim().length<2||query.length>200)throw new Error('검색어를 2~200자로 입력해 주세요.');
 - const url=new URL('https://api.crossref.org/works');url.searchParams.set('query.bibliographic',query.trim());url.searchParams.set('rows','7');url.searchParams.set('select','DOI,title,author,published,abstract,type');
@@ -141,10 +146,10 @@ index ba6108c..a02f0e8 100644
 + await assert.rejects(reviewQuestions(questions,'수학','synthetic-only',Date.now()+20000,async()=>Response.json({choices:[{finish_reason:reason,message:{content:JSON.stringify({solutions:[{answer:'5',explanation:'표면상 완성된 풀이'}]})}}]})),e=>e.status===502);
 +});
 diff --git a/PACE_AI_WORKSPACE/source/tests/research-quality.test.mjs b/PACE_AI_WORKSPACE/source/tests/research-quality.test.mjs
-index c40b4ef..31ae04d 100644
+index c40b4ef..282b0f4 100644
 --- a/PACE_AI_WORKSPACE/source/tests/research-quality.test.mjs
 +++ b/PACE_AI_WORKSPACE/source/tests/research-quality.test.mjs
-@@ -39,3 +39,31 @@ test('malformed search envelope is a readable failure rather than a successful e
+@@ -39,3 +39,40 @@ test('malformed search envelope is a readable failure rather than a successful e
  test('a non-JSON upstream response reports the search result format failure',async()=>{
   await assert.rejects(searchResearch('synthetic study',async()=>new Response('<html>upstream failure</html>',{headers:{'Content-Type':'text/html'}})),e=>e instanceof Error&&/형식/.test(e.message));
  });
@@ -176,6 +181,15 @@ index c40b4ef..31ae04d 100644
 +
 +test('non-battery bilingual concept and English synonym remain evidence-bound',async()=>{for(const query of ['광합성','photosynthesis','photosynthetic']){let calls=0;const result=await searchResearch(query,async url=>{calls++;if(query==='광합성')assert.equal(new URL(url).searchParams.get('query.bibliographic'),'photosynthesis');return Response.json({message:{items:[work('Photosynthetic light reactions'),work('Battery light indicators')]}});});assert.equal(result.length,1);assert.match(result[0].title,/Photosynthetic/);assert.equal(calls,1);}});
 +test('unmapped English constraint is not silently dropped',async()=>{assert.deepEqual(await searchResearch('photosynthesis magicconstraint',async()=>Response.json({message:{items:[work('Photosynthesis mechanisms')]}})),[]);});
++const syntheticSource=title=>({id:'10.1234/test',url:'https://doi.org/10.1234/test',authors:'Synthetic',year:'2026',provider:'Synthetic',title,abstract:''});
++import {researchMatches} from '../lib/research.ts';
++test('MAIN006 single-character element constraint is not discarded',()=>assert.equal(researchMatches('차세대 전지 납',syntheticSource('Next generation sodium-ion batteries')),false));
++test('MAIN006 chemical battery query excludes solar-only metadata',()=>assert.equal(researchMatches('화학전지',syntheticSource('고효율 태양전지의 광전 변환')),false));
++test('MAIN006 spaced sodium-ion query retains relevant metadata',()=>assert.equal(researchMatches('나트륨 이온 전지',syntheticSource('Sodium-ion batteries for grid storage')),true));
++for(const constraint of ['납','7','X'])test(`single-character constraint remains required:${constraint}`,()=>{assert.equal(researchMatches(`battery ${constraint}`,syntheticSource('Battery storage')),false);assert.equal(researchMatches(`battery ${constraint}`,syntheticSource(`Battery storage ${constraint}`)),true);});
++test('chemical/solar comparison is not excluded when both have evidence',()=>assert.equal(researchMatches('화학전지',syntheticSource('태양전지와 화학전지의 에너지 변환 비교')),true));
++test('one-digit constraint is not satisfied by a different multi-digit value',()=>assert.equal(researchMatches('battery 7',syntheticSource('Battery storage 17')),false));
++test('single Latin condition is not inferred from inside another word',()=>assert.equal(researchMatches('battery X',syntheticSource('Battery oxide materials')),false));
 diff --git a/PACE_AI_WORKSPACE/source/lib/answer-grounding.ts b/PACE_AI_WORKSPACE/source/lib/answer-grounding.ts
 new file mode 100644
 index 0000000..0c831b6
