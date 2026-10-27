@@ -1,0 +1,49 @@
+{
+  "submissionId": "AI01-LITERARY-CITATION-DRAFT-20261028-009",
+  "status": "incomplete_literary_review_candidate_not_general_identity_validation",
+  "replyTo": "PACE-DELEGATE-20261027-007",
+  "baselineMainCommit": "9469f395ec4b597e4606bc4991ca4db7230f744d",
+  "baselineSubmissionId": "AI-01-20261026-iteration-008",
+  "files": [
+    {
+      "path": "lib/ai.ts",
+      "base008Sha256": "4d5f58fcc2c4bbe5da4403451f453d8c0dec5828300e9060cad64935f04d71cf",
+      "bytes": 19959,
+      "sha256": "3997a1628fc6eaa6f8858421425a266e298be6f9f6aeed5edc94b2e3b3fa2333"
+    },
+    {
+      "path": "lib/answer-grounding.ts",
+      "base008Sha256": null,
+      "bytes": 4672,
+      "sha256": "654570455d5c6a6c6098b3bce37a824c6dd641def0a228911c877b624f57eda7"
+    },
+    {
+      "path": "tests/answer-grounding.test.mjs",
+      "base008Sha256": null,
+      "bytes": 25284,
+      "sha256": "03655fbc9fd0e5c0c7a9877edc8907a0e94ea6116d5cd67d6d72cfe0e71a3d06"
+    }
+  ],
+  "patchKind": "additional_only_vs_accepted_generation008;REPLACES_literary001through008;apply_only_literary009;separate_from_research002_and_UI003",
+  "replacesCandidate": "AI01-LITERARY-CITATION-DRAFT-20261028-008",
+  "reproduction": "9new failures before fix:1/2/3character explicitly quoted or labelled original text bypassed evidence,standalone short original quote and open short quote bypassed evidence,and actual ask returned unsupported2character original.9positive/control cases retained.",
+  "change": "Collect nonempty quote spans but check short spans only when explicitly framed as original text or standalone quoted response.Explicit original blocks now require evidence even below4characters.Open substantive quotations remain withheld.Preserve short conceptual terms and title headings rather than blanket-filtering all short quoted words.",
+  "validation": {
+    "groundingTests": "114pass0fail",
+    "fullIsolatedTests": "254pass0fail",
+    "typecheck": "pass",
+    "build": "pass",
+    "patchAppliedExactBytes": true,
+    "modelCalls": 0
+  },
+  "preserved": "008 strict finish_reason/retry behavior;all inherited tests;007 and prior009draft archives unchanged",
+  "limitations": [
+    "Short quote checks are explicit framing/standalone only;unmarked original claims remain incomplete",
+    "Open substantive quotations may be conservatively withheld even if some text appears in source",
+    "Explicit response-work attribution is bounded syntax;unmarked topic changes and author/work claims unresolved",
+    "Exact excerpt and title-to-provided-material matching is not independent authenticity verification;AKS key unavailable",
+    "Not a general Markdown/HTML or semantic quote parser;ambiguous same-delimiter/escaped conventions remain limited",
+    "Synthetic materials only;zero actual model calls;no real student data"
+  ],
+  "nextAction": "Main reviews literary009 replacing earlier literary candidates relative accepted generation008.Continue only concrete ambiguous or unmarked-original claim reproductions;official catalog connection remains main-owned dependency."
+}
