@@ -1,8 +1,8 @@
 {
-  "observedAt": "2026-10-27T09:43:28.735Z",
+  "observedAt": "2026-10-27T10:44:22.573Z",
   "invocationSource": "scheduler",
-  "status": "009_r6_incomplete",
-  "lastProcessedMainMessageId": "PACE-DELEGATE-20261027-004",
+  "status": "research001_independent_review_candidate_literary_draft_preserved",
+  "lastProcessedMainMessageId": "PACE-DELEGATE-20261027-005",
   "latestCompleteSubmissionId": "AI-01-20261026-iteration-008",
   "draftSubmission": {
     "status": "incomplete009_r6_not_for_integration",
@@ -36,7 +36,7 @@
       "nextAction": "Finish literary identity evidence policy;main review of normalized-query disclosure and type labels. Keep UI002 preserved."
     }
   },
-  "nextAction": "Strengthen actual selected-material claim/citation agreement while main reviews official literary lookup dependency;do not repeat missing credential or localhost probes.",
+  "nextAction": "Main reviews research-only001 additional patch vs accepted008.Continue literary draft on actual selected citation/source agreement;do not mix research001 orUI002 into new cumulative application.",
   "main22Checkout": "/workspace/pace-main22-ui-checkout-20261027",
   "mainQA": {
     "taskId": "MAIN20-AVAILABILITY-QA",
@@ -283,5 +283,72 @@
     "blocker": "Official API requires issuedX-API-Key;no authorized configured connection supplied.Operational credentials/API remain main-owned. No registration or bypass attempted.",
     "productCodeChanged": false,
     "regression": "17 grounding mocks pass inoriginalAIcheckout"
+  },
+  "independentResearchSubmission": {
+    "submissionId": "AI01-RESEARCH-QUALITY-20261027-001",
+    "status": "complete_scoped_search_review_candidate_not_main_accepted",
+    "baselineSubmissionId": "AI-01-20261026-iteration-008",
+    "baselineMainCommit": "9469f395ec4b597e4606bc4991ca4db7230f744d",
+    "baselineOriginalCommit": "7145f0f3601cd4a6a369a80006fa73cbd142054d",
+    "baselineZipSha256": "5c1bb8eb4869698f49e2c35c42cb790c9cbd09a951b35449d00c1ec547ac3b8f",
+    "patchKind": "additional_only_vs_accepted008_not_original_bundle_cumulative",
+    "files": [
+      {
+        "path": "lib/research.ts",
+        "base008Sha256": "e826ba85ef9fa654a1a568a0b590652cbfd1bdb96c0f7d73b644fc8b679f18ba",
+        "bytes": 5502,
+        "sha256": "c99605814d96936f3fa26e16bbc5b6d84d279b93af7cb13200591ef597b5b753"
+      },
+      {
+        "path": "tests/research-quality.test.mjs",
+        "base008Sha256": "6fac87d70a8908243a4ac8d56b693040cab0eddf96519f15bb8aca3e17e2c593",
+        "bytes": 7235,
+        "sha256": "9b3da745ec0696e4825199ccb9421f3cf866ad1e1e2803bf0f22ccaf159e3151"
+      }
+    ],
+    "excluded": [
+      "all literary draft code",
+      "UI002 files",
+      "API/auth/environment/dependencies/deployment"
+    ],
+    "validation": {
+      "isolatedCheckout": "accepted008 files restored and verified;only2research files changed;no literary imports",
+      "fullTests": "161pass0fail",
+      "typecheck": "pass",
+      "build": "pass",
+      "inheritedTests": "10original008 DOI/malformed-row/envelope cases restored;earlier009 draft accidentally omitted them",
+      "actualSearchEvidence": "earlier2026-10-27 live query snapshots included;not new calls this run",
+      "requests": "1 per search,no retry;mock assertions cover429/500",
+      "realModelCalls": 0
+    },
+    "scope": [
+      "bounded bilingual science aliases:battery chemistries and photosynthesis",
+      "explicit metadata lexical constraints;empty when no supported match",
+      "DOI handling and malformed response original tests preserved",
+      "suppliedtype display;unknown type/reviewstatus never inferred"
+    ],
+    "limitations": [
+      "No general translation or semantic search",
+      "Unknown Korean constraints may produce no English results",
+      "No fulltext/review/identity verification",
+      "Not all synonyms covered;fixed mappings only"
+    ],
+    "nextAction": "Main applies only2file additional patch and reviews query-disclosure API proposal;do not apply009 cumulative patches",
+    "zip": {
+      "url": "https://github.com/minsec2314-cloud/pace-ai-work/raw/refs/heads/ai/ai-01-results-20261019/research-quality-001-20261027/PACE_RESEARCH_QUALITY_001.zip",
+      "bytes": 13869,
+      "sha256": "4b229cdd7db602015ffd2b766dcc12e6b3df1557355704eea68b35c71b8c7cf6",
+      "commit": "e9cb003f752a92e3ca51f6821c09d27b6ef03736"
+    },
+    "patchApplyCheck": "Exact2file byte match after git apply to accepted008 files;passed",
+    "mainAccepted": false
+  },
+  "currentWorktreeCorrection": {
+    "restoredInheritedResearchTests": 10,
+    "reason": "Earlier009 drafts accidentally replaced original research-quality test content. Original008 cases now retained before new cases. Earlier test totals described then-current reduced suite,not full inherited coverage.",
+    "fullCurrentMixedDraftTests": "178pass0fail",
+    "isolatedResearchOnlyTests": "161pass0fail",
+    "recoveryPatchSha256": "cdaba1b129d7c775be652972724a3f1bbf5c1ecd2d79e8c16d194db930421923",
+    "previous009ZipPreserved": true
   }
 }
