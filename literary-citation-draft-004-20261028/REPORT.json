@@ -1,0 +1,49 @@
+{
+  "submissionId": "AI01-LITERARY-CITATION-DRAFT-20261028-004",
+  "status": "incomplete_literary_review_candidate_not_general_identity_validation",
+  "replyTo": "PACE-DELEGATE-20261027-007",
+  "baselineMainCommit": "9469f395ec4b597e4606bc4991ca4db7230f744d",
+  "baselineSubmissionId": "AI-01-20261026-iteration-008",
+  "files": [
+    {
+      "path": "lib/ai.ts",
+      "base008Sha256": "4d5f58fcc2c4bbe5da4403451f453d8c0dec5828300e9060cad64935f04d71cf",
+      "bytes": 18723,
+      "sha256": "d09c6ed8de047a3bd3994aeb0e6b081a7e0171d85edbd5e497d82aef73d72a57"
+    },
+    {
+      "path": "lib/answer-grounding.ts",
+      "base008Sha256": null,
+      "bytes": 2367,
+      "sha256": "8f8471d1de67ce294579a03d5fbc1e7c81cf0a324e4f25f8d80b9df919ea0371"
+    },
+    {
+      "path": "tests/answer-grounding.test.mjs",
+      "base008Sha256": null,
+      "bytes": 12553,
+      "sha256": "138cfd1ef0756de18da5563ee830f32b161b205927f4bbfd09fec3f40f1bdb4d"
+    }
+  ],
+  "patchKind": "additional_only_vs008;REPLACES_literary001_002_003;apply_only004;separate_from_research002_and_UI003",
+  "replacesCandidate": "AI01-LITERARY-CITATION-DRAFT-20261027-003",
+  "reproduction": "6new failing cases before fix:3explicit original labels with unsupported second line,inline label continuation,CRLF continuation,and actual ask unsupported multiline original block.3positive controls retained.",
+  "change": "Inspect explicit unquoted original blocks through all adjacent lines until blank line or named explanation label;quoted spans still use existing complete-span guard.Original source agreement remains exact normalized excerpt matching.",
+  "validation": {
+    "groundingTests": "52pass0fail",
+    "fullIsolatedTests": "192pass0fail",
+    "typecheck": "pass",
+    "build": "pass",
+    "patchAppliedExactBytes": true,
+    "modelCalls": 0
+  },
+  "preserved": "008 strict finish_reason/retry behavior;all inherited tests;007 and prior009draft archives unchanged",
+  "limitations": [
+    "Exact text matching and explicitly bracketed title association only;not general semantic or bibliographic verification",
+    "No independent author/work/catalog identity validation;AKS key unavailable",
+    "Blank lines and explicit explanation labels delimit unquoted blocks;other formats/unmarked original claims remain incomplete",
+    "Unlabelled explanation appended without a separator may be conservatively withheld as part of original block",
+    "Evidence must contain complete normalized excerpt in one cited source;separate cited chunks are not reconstructed",
+    "Synthetic materials only;no actual student or model quality evaluation"
+  ],
+  "nextAction": "Main reviews004 replacing earlier literary candidates relative accepted008.Continue formatting boundaries and selected citation spans across multiple blocks;unmarked work/author claims remain unresolved.Official identity dependency remains main-owned."
+}
