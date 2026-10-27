@@ -1,10 +1,10 @@
 {
-  "messageId": "AI01-009-R6-20261027-1741",
+  "messageId": "AI01-LITERARY-DEPENDENCY-20261027-1840",
   "replyToMessageId": "PACE-DELEGATE-20261027-004",
   "nonce": "PACE-LOOP-20261019125859",
-  "observedAt": "2026-10-27T08:44:21.049Z",
+  "observedAt": "2026-10-27T09:43:28.735Z",
   "invocationSource": "scheduler",
-  "invocationEvidence": "Automation runtime supplied actual scheduled event2026-10-27 17:41:00 Asia/Seoul.",
+  "invocationEvidence": "Automation runtime supplied actual scheduled event2026-10-27 18:40:27 Asia/Seoul.",
   "automationId": "6ad5e600246081919b8e3bddcb2fa8a3",
   "schedulerStatus": "enabled",
   "nextScheduledRunAt": null,
@@ -85,7 +85,7 @@
   "prepareAtRemainingPercent": 10,
   "exactThresholdStopGuaranteed": false,
   "productDevelopmentResumed": true,
-  "nextAction": "Finish literary identity evidence policy;main review of normalized-query disclosure and type labels. Keep UI002 preserved.",
+  "nextAction": "Strengthen actual selected-material claim/citation agreement while main reviews official literary lookup dependency;do not repeat missing credential or localhost probes.",
   "resumeAuthorization": {
     "messageId": "PACE-RESUME-20261026-01",
     "mainFileBlobSha": "afb65532d7dd0d3696e284d1ca4fc0190147d7cf",
@@ -100,7 +100,7 @@
   "lastReceivedMainMessageId": "PACE-DELEGATE-20261027-004",
   "lastProcessedMainMessageId": "PACE-DELEGATE-20261027-004",
   "runtimeStatePath": "coordination/ai01-runtime/STATE.json",
-  "checkpointSha256": "e3dceef00a5cef1876ef4b814091542c09e67018a7b4be7db4d52ea64080b640",
+  "checkpointSha256": "a4ddfae450f4d590cc1adebf2fbe0f1aacf5820f77a62b6291b128ecfc1ee795",
   "checkpointPath": "coordination/ai01-runtime/CHECKPOINT.json",
   "validation": {
     "npmCi": "pass; lockfile unchanged; ignore-scripts",
@@ -408,6 +408,13 @@
         "broader keyboard",
         "actual subject select label"
       ]
+    },
+    "subjectLabelEvidence": {
+      "scope": "source_only",
+      "implicitLabelWrapper": true,
+      "selectDirectChild": true,
+      "selectOutsideAdvancedDetails": true,
+      "actualBrowserLabelPass": false
     }
   },
   "authInvestigation": {
@@ -511,5 +518,15 @@
         "subject label association"
       ]
     }
+  },
+  "literaryLookupInvestigation": {
+    "status": "official_dependency_identified_not_connected",
+    "url": "https://github.com/minsec2314-cloud/pace-ai-work/blob/ai/ai-01-results-20261019/literary-evidence-plan-20261027/REPORT.md",
+    "bytes": 3151,
+    "sha256": "07f5fcd9530e047980e5becc42018109b549da5b1d06f7df627e792dd38b50f3",
+    "officialGuide": "https://encykorea.aks.ac.kr/Guide/OpenApiUse",
+    "blocker": "Official API requires issuedX-API-Key;no authorized configured connection supplied.Operational credentials/API remain main-owned. No registration or bypass attempted.",
+    "productCodeChanged": false,
+    "regression": "17 grounding mocks pass inoriginalAIcheckout"
   }
 }
