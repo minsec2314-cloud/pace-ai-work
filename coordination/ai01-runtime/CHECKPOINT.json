@@ -1,36 +1,37 @@
 {
-  "observedAt": "2026-10-27T06:49:21.220Z",
+  "observedAt": "2026-10-27T07:42:02.032Z",
   "invocationSource": "scheduler",
-  "status": "009_r4_incomplete",
+  "status": "009_r5_incomplete",
   "lastProcessedMainMessageId": "PACE-DELEGATE-20261027-004",
   "latestCompleteSubmissionId": "AI-01-20261026-iteration-008",
   "draftSubmission": {
-    "status": "incomplete009_r4_not_for_integration",
+    "status": "incomplete009_r5_not_for_integration",
     "parentSubmissionId": "AI-01-20261026-iteration-008",
-    "url": "https://github.com/minsec2314-cloud/pace-ai-work/raw/refs/heads/ai/ai-01-results-20261019/iteration-009-draft-r4-20261027/PACE_AI01_009_DRAFT_R4.zip",
-    "bytes": 22351,
-    "sha256": "9afd747894e994dda97da5686396b06a63176eb7766c5f2c631a99a68c34d15b",
-    "commit": "f391f80d897b46f8b40e5e0c8b13a7a6f45417e5",
+    "url": "https://github.com/minsec2314-cloud/pace-ai-work/raw/refs/heads/ai/ai-01-results-20261019/iteration-009-draft-r5-20261027/PACE_AI01_009_DRAFT_R5.zip",
+    "bytes": 24629,
+    "sha256": "13008268d6427a7436564815cdcb2b66af312cb0b2e191a3b763a4126c8b067d",
+    "commit": "bba57a030b0ee473304b080b3b29fd36ef428531",
     "report": {
-      "status": "incomplete009_r4_not_for_integration",
+      "status": "incomplete009_r5_not_for_integration",
       "baseHead": "4edb7b923ec66ff2e119a6dd6efb51d400c3a610",
       "parentSubmissionId": "AI-01-20261026-iteration-008",
       "changedThisRun": [
-        "lib/answer-grounding.ts",
-        "lib/ai.ts",
-        "tests/answer-grounding.test.mjs"
+        "lib/research.ts",
+        "tests/research-quality.test.mjs"
       ],
-      "reproduction": "Matching excerpt from explicitly different work accepted before scoped-title guard;regression failed before and passed after",
-      "validation": "155 full local tests pass;tsc exit0;zero real-model calls;ask integration1 mocked generation with no extra retries in matching/mismatching cases",
-      "remaining": [
-        "Only explicitly bracketed work titles scoped;ambiguous/unmarked titles unverified",
-        "Title in metadata/text does not independently verify authorship or quoted passage attribution within mixed-work documents",
-        "Unlabelled paraphrase and fabricated author claims unresolved"
+      "validation": "161 full local tests pass;tsc exit0;14 targeted research tests pass after preserving regex flags;no real-model calls",
+      "actualSearch": "차세대 화학전지 returned0 filtered entries before;fixed dictionary provider query next generation electrochemical batteries returned6 title-associated metadata entries after",
+      "searchScope": "one public Crossref request per search;no automated retries;unknown query constraints retained",
+      "limitations": [
+        "Returned metadata includes supplemental/preprint/book chapter material;not6 peer-reviewed papers;full text not read",
+        "Dictionary covers bounded battery terms,not general Korean translation",
+        "UI should disclose normalized provider query on future integration;Source response contract unchanged",
+        "Literary identity and unlabelled claims remain unresolved"
       ],
-      "nextAction": "Define evidence-backed literary identity policy without hardcoding one work;preserve separateUI002 candidate pending main review"
+      "nextAction": "Review metadata type/provenance and query disclosure with main;continue literary identity grounding separately"
     }
   },
-  "nextAction": "Define evidence-backed literary identity policy without hardcoding one work;preserve separateUI002 candidate pending main review",
+  "nextAction": "Review metadata type/provenance and query disclosure with main;continue literary identity grounding separately",
   "main22Checkout": "/workspace/pace-main22-ui-checkout-20261027",
   "mainQA": {
     "taskId": "MAIN20-AVAILABILITY-QA",
