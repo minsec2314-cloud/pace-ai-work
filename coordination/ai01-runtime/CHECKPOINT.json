@@ -1,18 +1,45 @@
 {
+  "observedAt": "2026-10-27T03:01:03.147Z",
   "invocationSource": "manual",
-  "observedAt": "2026-10-27T01:46:04.352Z",
-  "lastProcessedMainMessageId": "PACE-ACCEPT008-20261027-001",
-  "submissionId": "AI-01-20261026-iteration-008",
-  "status": "008_accepted_main22_qa_in_progress",
-  "nextAction": "Finish isolated laptop/paper eligibility and actual deadline boundary; seed activity/general-study completions; backup compatibility and mobile tool capability. Preserve passed cases.",
-  "processedMainMessageIds": [
-    "PACE-ACK008-20261027-001",
-    "PACE-MAIN20-20261027-001",
-    "PACE-QA-MAIN20-20261027-001",
-    "PACE-API-COMPAT-20261027-001",
-    "PACE-ACCEPT008-20261027-001",
-    "PACE-QA-MAIN21-20261027-001"
-  ],
+  "status": "009_incomplete_quality_draft",
+  "lastProcessedMainMessageId": "PACE-DELEGATE-20261027-002",
+  "latestCompleteSubmissionId": "AI-01-20261026-iteration-008",
+  "draftSubmission": {
+    "status": "incomplete009_not_for_integration",
+    "parentSubmissionId": "AI-01-20261026-iteration-008",
+    "url": "https://github.com/minsec2314-cloud/pace-ai-work/raw/refs/heads/ai/ai-01-results-20261019/iteration-009-draft-20261027/PACE_AI01_009_DRAFT.zip",
+    "bytes": 19353,
+    "sha256": "38e72e2227c46472f915fee7857e9a2620f3a285f7851387b8a9c3d21cbd03e5",
+    "commit": "076dc770c895fab0b57535784e3c415bbdec0740",
+    "report": {
+      "status": "incomplete009_not_for_integration",
+      "parent": "AI-01-20261026-iteration-008",
+      "runtimeBase": "4edb7b923ec66ff2e119a6dd6efb51d400c3a610",
+      "tests": {
+        "before": "literary1 failure;research3 failures",
+        "after": "139 tests pass;tsc exit0"
+      },
+      "actualResearch": {
+        "before": "차세대 화학전지:7 results including musicology and unrelated fields",
+        "after": "same query0 results;English next generation batteries7 title-relevant results",
+        "limitations": "metadata only;not full-text relevance or scholarly quality validation;generic lexical filter may omit synonyms or ignore extra battery query constraints"
+      },
+      "literatureLimitations": [
+        "keyword/curly-quote guard only",
+        "unquoted fiction and identity claims unresolved",
+        "possible over-rejection;not complete"
+      ],
+      "main22Restoration": {
+        "filesMatched": 377,
+        "commit": "9469f395ec4b597e4606bc4991ca4db7230f744d",
+        "zipSha256": "f2c0f4ca020bae55ee1d0480ca6f8188bc35cdfd50bb423bed916ecd10087840"
+      },
+      "next": "Strengthen grounded literary claims and search relevance fixtures;thenCHAT/UI in separate verified main22 copy",
+      "realModelRun": false
+    }
+  },
+  "nextAction": "Strengthen grounded literary claims and search relevance fixtures;thenCHAT/UI in separate verified main22 copy",
+  "main22Checkout": "/workspace/pace-main22-ui-checkout-20261027",
   "mainQA": {
     "taskId": "MAIN20-AVAILABILITY-QA",
     "replyToMessageId": "PACE-QA-MAIN21-20261027-001",
