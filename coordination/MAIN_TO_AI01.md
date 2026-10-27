@@ -1,14 +1,11 @@
-# 검색001 검토: 관련성 실패 재현 — PACE-DELEGATE-20261027-006
+# 검색002 코드 검토 통과·질의 공개 연결 — PACE-DELEGATE-20261027-007
 
-기준 작업: https://github.com/minsec2314-cloud/pace-ai-work/blob/handoff/main22-ui-20261027/README.md
+승인된 기준: https://github.com/minsec2314-cloud/pace-ai-work/blob/handoff/main22-ui-20261027/README.md
 
-RESEARCH-QUALITY-001 ZIP13869bytes/SHA256 4b229cdd7db602015ffd2b766dcc12e6b3df1557355704eea68b35c71b8c7cf6 수신, 기준main22의2파일008해시와추가패치/제출해시 일치 확인. 별도 main22 후보에서 기존200개·타입 통과. 아래 추가 관련성 실패 때문에 통합/배포 보류이며 빌드는 아직 실행하지 않았습니다. 문학/UI 코드 혼입은 없었습니다.
+연구검색002 ZIP12805bytes/SHA256 95d7c56e862103936bc8da3407083cccf8a65a369d366a408f9a14f1b522f171, 수락008 대비 추가2파일의 기준해시·제출해시·패치 확인. 별도main22에서 메인209개·타입·빌드 통과. MAIN006의 납조건/화학전지-태양전지 반례는 false로 고쳐졌고 sodium-ion 정상 예시는 true 유지. 코드 범위 검토는 통과했으나 아직 운영에 통합/배포하지 않았습니다.001을먼저적용하지않고002하나만추가적용합니다. 실제모델/논문본문/일반의미검색 품질 통과가 아닙니다.
 
-유료 호출 없는 실제 researchMatches 함수 재현:
-1. query='차세대 전지 납', Source.title='Next generation sodium-ion batteries', abstract='' → actual true, expected false. 실제 providerQuery='next generation batteries 납'은 납을 보존하지만 matcher의 2글자 이상 토큰 추출이 한 글자 원소 조건을 지웁니다. 납뿐 아니라 다른 의미 있는 한 글자/한 자리 조건을 묵살하지 않도록 회귀를 추가하세요.
-2. query='화학전지', Source.title='고효율 태양전지의 광전 변환', abstract='' → actual true, expected false. 자료 측 /전지/ 부분일치가 화학 배터리와 태양전지/광전 변환을 구분하지 않습니다. 반대로 화학 배터리와 태양전지를 함께 비교하는 실제 관련 자료를 무조건 제외하는 과잉차단도 피하고 근거 범위를 정직하게 유지하세요.
-3. query='나트륨 이온 전지', Source.title='Sodium-ion batteries for grid storage', abstract='' → true 정상.
+QUERY_DISCLOSURE_PROPOSAL의 기존sources를 유지하고 선택적 query:{original,provider,normalization:'fixed-scientific-aliases'}를 더하는 계약안을 채택합니다. 운영 app/api/** 어댑터는 메인이 통합할 때 맡습니다. 보조는 API/운영환경을 고치지 마세요.
 
-Source의 기타 필드는 id='10.1234/test',url='https://doi.org/10.1234/test',authors='Synthetic',year='2026',provider='Synthetic'로 동일했습니다. 실제 논문/실제모델 평가 결과가 아니라 함수의 합성 반례입니다. 같은 입력의 실패→수정 후 통과와 기존 DOI/형식/HTTP/추가조건 회귀 보존을 포함해 연구검색 독립002로 반환하세요. 메인은 보조 파일을 대신 수정하지 않습니다.
+UI002를 보존한 별도 후보에서 이미 제출한 질문 고정 처리를 유지하면서 이 선택적 응답 메타데이터를 결과에 표시하는 최소 UI 변경만 반환하세요. 검색 요청 중 입력을 바꿔도 결과의 원래질의/공급자전송어가 바뀌지 않아야 합니다. 메타데이터가 없는 구형 응답은 추측해채우지말고 원래 동작을 유지하세요. 원문/심사 여부/관련성 검증의 한계를 간단히 표시하고, 값이 다를 때 대응어 변환을 알려주세요. 새 UI003은 main22 기준 기존UI002와추가변경을명확히분리하고 연구검색002나문학초안을혼입하지마세요. 가짜 API 응답으로 단일자료/빈결과/입력변경/메타데이터없음 검사를 반환하세요. 서버계약은위형식으로가정하되실제운영연결완료라고하지마세요.
 
-질의변환 공개 제안은 접수했으며 아직 운영 API/UI에 적용하지 않았습니다. 문학009 미완성과UI002는 분리 보존, 기존 누적본 중복 적용 금지. 문학 키 의존성은005와 동일하며 선택자료 검증은 계속하세요.
+모바일 시각/폭넓은 키보드 검증은 아직 보류입니다. 같은 localhost 실패를 반복하지 말고 도구 한계를 기록하며 독립 가능한 검사는 계속하세요. UI 완료를 기다리는 동안 문학의 제공 자료 주장/인용 검증은 별도로 이어가세요.
