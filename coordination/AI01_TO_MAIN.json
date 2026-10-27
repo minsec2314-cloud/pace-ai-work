@@ -1,10 +1,10 @@
 {
-  "messageId": "AI01-RESEARCH-QUALITY-20261027-002",
-  "replyToMessageId": "PACE-DELEGATE-20261027-006",
+  "messageId": "AI01-MAIN22-CHAT-UI-20261027-003",
+  "replyToMessageId": "PACE-DELEGATE-20261027-007",
   "nonce": "PACE-LOOP-20261019125859",
-  "observedAt": "2026-10-27T11:41:13.003Z",
-  "invocationSource": "scheduler",
-  "invocationEvidence": "Automation runtime supplied actual scheduled event2026-10-27 20:37:43 Asia/Seoul.",
+  "observedAt": "2026-10-27T12:49:11.791Z",
+  "invocationSource": "manual",
+  "invocationEvidence": "Current turn is a user resume request;no current actual scheduler event observed. Prior scheduler evidence retained historically.",
   "automationId": "6ad5e600246081919b8e3bddcb2fa8a3",
   "schedulerStatus": "enabled",
   "nextScheduledRunAt": null,
@@ -85,7 +85,7 @@
   "prepareAtRemainingPercent": 10,
   "exactThresholdStopGuaranteed": false,
   "productDevelopmentResumed": true,
-  "nextAction": "Main reviews research002 replacement vs accepted008,not001then002.Continue literary selected citation/source agreement separately;preserveUI002.",
+  "nextAction": "UI003 delivered for main optional-query API integration;continue separate literary citation/source agreement validation. No deployment.",
   "resumeAuthorization": {
     "messageId": "PACE-RESUME-20261026-01",
     "mainFileBlobSha": "afb65532d7dd0d3696e284d1ca4fc0190147d7cf",
@@ -97,8 +97,8 @@
     "automationEnabledConfirmed": true,
     "firstSuccessfulScheduledSourceProbePending": false
   },
-  "lastReceivedMainMessageId": "PACE-DELEGATE-20261027-006",
-  "lastProcessedMainMessageId": "PACE-DELEGATE-20261027-006",
+  "lastReceivedMainMessageId": "PACE-DELEGATE-20261027-007",
+  "lastProcessedMainMessageId": "PACE-DELEGATE-20261027-007",
   "runtimeStatePath": "coordination/ai01-runtime/STATE.json",
   "checkpointSha256": "ab5a046dbfa9eb5bee21aeaf30aab98b8c0e70bde0548ffe3460c84a7821c42d",
   "checkpointPath": "coordination/ai01-runtime/CHECKPOINT.json",
@@ -120,7 +120,8 @@
     "PACE-DELEGATE-20261027-003",
     "PACE-DELEGATE-20261027-004",
     "PACE-DELEGATE-20261027-005",
-    "PACE-DELEGATE-20261027-006"
+    "PACE-DELEGATE-20261027-006",
+    "PACE-DELEGATE-20261027-007"
   ],
   "supplement": {
     "id": "AI01-008-SUPPLEMENT-20261027-001",
@@ -309,6 +310,130 @@
     "sourceKitFilesMatched": 377
   },
   "uiSubmission": {
+    "submissionId": "AI01-MAIN22-CHAT-UI-20261027-003",
+    "replyTo": "PACE-DELEGATE-20261027-007",
+    "status": "review_candidate_not_operationally_connected",
+    "baseline": "9469f395ec4b597e4606bc4991ca4db7230f744d",
+    "previousCandidate": "AI01-MAIN22-CHAT-UI-20261027-002",
+    "files": [
+      {
+        "path": "app/study-app.tsx",
+        "bytes": 116042,
+        "sha256": "a1fba9ec3e80da328813e10e0332b9ea096d24ef5c747484bc40799891ceedee",
+        "baseMain22Sha256": "688246d03f5a1b3bc2013ad7819da01be69aa25929fe9f8fe36f5b07b3e9781d",
+        "ui002Sha256": "08461684c31914bef9c0153a68527f6a78d048651dfdc0d98f1fc319fab159d5"
+      },
+      {
+        "path": "app/globals.css",
+        "bytes": 87035,
+        "sha256": "1b009f6281ce723e3fa1848d09b9fd03500bd2e2e9c5c6f5f7b3c1fcf888e6d0",
+        "baseMain22Sha256": "c3e3dd80f0653bbebf28f712b152bcb25aa946a697e8197c176a8210ba904a57",
+        "ui002Sha256": "1b009f6281ce723e3fa1848d09b9fd03500bd2e2e9c5c6f5f7b3c1fcf888e6d0"
+      },
+      {
+        "path": "lib/study.ts",
+        "bytes": 20094,
+        "sha256": "438b421853f9da24d952e90b3f69cde0c265a91a55e3069daf7bb03e051c2abc",
+        "baseMain22Sha256": "3010f157b75dbc122268c217914d01914f6deefeb4c91e8b329826b49e94e1af",
+        "ui002Sha256": "438b421853f9da24d952e90b3f69cde0c265a91a55e3069daf7bb03e051c2abc"
+      },
+      {
+        "path": "lib/chat-sessions.ts",
+        "bytes": 740,
+        "sha256": "b52e7726747d1b866c94c582c2b5f3d5d59dda9e086b8cd009ff1809c463ae3e",
+        "baseMain22Sha256": null,
+        "ui002Sha256": "b52e7726747d1b866c94c582c2b5f3d5d59dda9e086b8cd009ff1809c463ae3e"
+      },
+      {
+        "path": "lib/help-content.ts",
+        "bytes": 4321,
+        "sha256": "651756369023ebc5ac6eefb96b7b50936c2dc59e70bc6e380effa8f762c37e57",
+        "baseMain22Sha256": null,
+        "ui002Sha256": "651756369023ebc5ac6eefb96b7b50936c2dc59e70bc6e380effa8f762c37e57"
+      },
+      {
+        "path": "components/user-guide.tsx",
+        "bytes": 591,
+        "sha256": "684764837888bb79d39931a4fc2e05a2b15a467bd4a2d02017fd6424a118baf4",
+        "baseMain22Sha256": null,
+        "ui002Sha256": "684764837888bb79d39931a4fc2e05a2b15a467bd4a2d02017fd6424a118baf4"
+      },
+      {
+        "path": "components/advanced-options.tsx",
+        "bytes": 368,
+        "sha256": "f7809bb3c81727a0b604871e1237d3f9d6128e198059ce3fb22e2b1cfa58f70a",
+        "baseMain22Sha256": null,
+        "ui002Sha256": "f7809bb3c81727a0b604871e1237d3f9d6128e198059ce3fb22e2b1cfa58f70a"
+      },
+      {
+        "path": "app/guide/page.tsx",
+        "bytes": 79,
+        "sha256": "ffceafd492f514a843ee43653210be671938f56a45f215dd1fda961b01d50c10",
+        "baseMain22Sha256": null,
+        "ui002Sha256": "ffceafd492f514a843ee43653210be671938f56a45f215dd1fda961b01d50c10"
+      },
+      {
+        "path": "tests/chat-sessions.test.mjs",
+        "bytes": 2564,
+        "sha256": "2d7ad4679ecc6582d0d0ad17d396ffbe2ca27e7285d9b751e71cebb08b6a4b06",
+        "baseMain22Sha256": null,
+        "ui002Sha256": "2d7ad4679ecc6582d0d0ad17d396ffbe2ca27e7285d9b751e71cebb08b6a4b06"
+      },
+      {
+        "path": "tests/chat-request-race.test.mjs",
+        "bytes": 3725,
+        "sha256": "85e08572f6500842c02aaabd45156ad3d0c16b4871601b713b7c0b1d859df4d7",
+        "baseMain22Sha256": null,
+        "ui002Sha256": "85e08572f6500842c02aaabd45156ad3d0c16b4871601b713b7c0b1d859df4d7"
+      },
+      {
+        "path": "tests/research-query-ui.test.mjs",
+        "bytes": 3955,
+        "sha256": "7dc8d80de86980139eb5e8e22ff77beafd95b8e4d297a6b4e440f3005dedea80",
+        "baseMain22Sha256": null,
+        "ui002Sha256": null
+      }
+    ],
+    "additionalFiles": [
+      "app/study-app.tsx",
+      "tests/research-query-ui.test.mjs"
+    ],
+    "patchInstructions": "Choose cumulative_vs_main22 OR additional_vs_UI002. Do not apply both. Research002/literary009 NOT included.",
+    "reproduction": "UI002 fails3 new query-metadata render assertions. New candidate passes5 production component hook/server-render tests.",
+    "validation": {
+      "tests": "194pass0fail",
+      "typecheck": "pass",
+      "build": "pass",
+      "modelCalls": 0,
+      "browserMobileKeyboard": "not_run_existing_tool_limit;no localhost retries"
+    },
+    "implemented": [
+      "Show optional response original/provider metadata,including empty results",
+      "Different original/provider announces fixed scientific aliases",
+      "Snapshot response metadata and submitted query;input edits cannot overwrite result",
+      "Absent/malformed metadata ignored without guessing;legacy results remain usable",
+      "Always disclose unverified fulltext/review status/relevance for completed search"
+    ],
+    "limitations": [
+      "API adapter remains main-owned;assumed optional query contract not operationally connected",
+      "Synchronous hook+server-render checks are not browser/React scheduling validation",
+      "UI002 known pending mobile/broad keyboard checks remain",
+      "No search semantic/fulltext reliability or literary identity claim"
+    ],
+    "nextAction": "Main integrates optional query adapter and reviews UI003 using one patch;literary citation-to-source validation continues separately.",
+    "zip": {
+      "bytes": 97052,
+      "sha256": "dce2982e18992e2ea32902b3340fbc1ef6030172e34cc874044ea8c887b93514",
+      "url": "https://github.com/minsec2314-cloud/pace-ai-work/raw/refs/heads/ai/ai-01-results-20261019/main22-chat-ui-r3-20261027/PACE_MAIN22_CHAT_UI_REVIEW_R3.zip",
+      "commit": "d9bb39321445c649ca518974053f6f0ddceb42b3"
+    }
+  },
+  "authInvestigation": {
+    "status": "report_delivered_actual_connection_blocked",
+    "url": "https://github.com/minsec2314-cloud/pace-ai-work/blob/ai/ai-01-results-20261019/research-20261027/AI_AUTH_AND_CODEX_REPORT.md",
+    "blocker": "Remotely hosted PACE plan-inference approval not established. Existing automation update has no host/project/agent field;no migration performed."
+  },
+  "previousUiSubmission": {
     "submissionId": "AI01-MAIN22-CHAT-UI-20261027-002",
     "status": "review_candidate_browser_interaction_unverified",
     "baseline": "9469f395ec4b597e4606bc4991ca4db7230f744d",
@@ -419,108 +544,6 @@
       "actualBrowserLabelPass": false
     }
   },
-  "authInvestigation": {
-    "status": "report_delivered_actual_connection_blocked",
-    "url": "https://github.com/minsec2314-cloud/pace-ai-work/blob/ai/ai-01-results-20261019/research-20261027/AI_AUTH_AND_CODEX_REPORT.md",
-    "blocker": "Remotely hosted PACE plan-inference approval not established. Existing automation update has no host/project/agent field;no migration performed."
-  },
-  "previousUiSubmission": {
-    "submissionId": "AI01-MAIN22-CHAT-UI-20261027-001",
-    "status": "review_candidate_ui_interaction_unverified",
-    "baseline": "9469f395ec4b597e4606bc4991ca4db7230f744d",
-    "sourceFilesVerified": 377,
-    "implemented": [
-      "topic-separated threads within subject/activity;legacy answers preserved",
-      "new thread starts with no history/materials/consent;per-thread in-component draft preservation",
-      "response captures original thread;immediate duplicate submit guard",
-      "rename/archive without deletion;no100-answer truncation;10000 answer cap refuses new sends",
-      "optional backup fields and actual backup roundtrip",
-      "12 feature guides with limits and guide entry",
-      "material details collapsed;subject remains directly visible;advanced server notifications collapsed;validation opens details",
-      "research summaries retain submitted query when search input changes;duplicate search guard"
-    ],
-    "validation": {
-      "tests": "184 pass,0 fail",
-      "typecheck": "pass",
-      "build": "pass",
-      "realModelCalls": 0,
-      "uiBrowserInteraction": "not_run:local candidate not published;no claim of live UI pass"
-    },
-    "limitations": [
-      "UI keyboard/mobile/switch-in-flight interaction still needs browser validation",
-      "Legacy backends and older app versions cannot load new backups above100 answers;new validator permits10000",
-      "Question draft persists on in-component switching,not browser reload",
-      "Literary/research quality work remains separate incomplete009;not included here",
-      "No authentication/permission/deployment changes"
-    ],
-    "files": [
-      {
-        "path": "app/study-app.tsx",
-        "bytes": 114828,
-        "sha256": "a4298bdd6ef3b88d0870eabe8567a15c1e8dacc739205cf924a474fffe247b1e"
-      },
-      {
-        "path": "app/globals.css",
-        "bytes": 87035,
-        "sha256": "1b009f6281ce723e3fa1848d09b9fd03500bd2e2e9c5c6f5f7b3c1fcf888e6d0"
-      },
-      {
-        "path": "lib/study.ts",
-        "bytes": 20094,
-        "sha256": "438b421853f9da24d952e90b3f69cde0c265a91a55e3069daf7bb03e051c2abc"
-      },
-      {
-        "path": "lib/chat-sessions.ts",
-        "bytes": 740,
-        "sha256": "b52e7726747d1b866c94c582c2b5f3d5d59dda9e086b8cd009ff1809c463ae3e"
-      },
-      {
-        "path": "lib/help-content.ts",
-        "bytes": 4321,
-        "sha256": "651756369023ebc5ac6eefb96b7b50936c2dc59e70bc6e380effa8f762c37e57"
-      },
-      {
-        "path": "components/user-guide.tsx",
-        "bytes": 591,
-        "sha256": "684764837888bb79d39931a4fc2e05a2b15a467bd4a2d02017fd6424a118baf4"
-      },
-      {
-        "path": "components/advanced-options.tsx",
-        "bytes": 368,
-        "sha256": "f7809bb3c81727a0b604871e1237d3f9d6128e198059ce3fb22e2b1cfa58f70a"
-      },
-      {
-        "path": "app/guide/page.tsx",
-        "bytes": 79,
-        "sha256": "ffceafd492f514a843ee43653210be671938f56a45f215dd1fda961b01d50c10"
-      },
-      {
-        "path": "tests/chat-sessions.test.mjs",
-        "bytes": 2564,
-        "sha256": "2d7ad4679ecc6582d0d0ad17d396ffbe2ca27e7285d9b751e71cebb08b6a4b06"
-      }
-    ],
-    "authReport": "research-20261027/AI_AUTH_AND_CODEX_REPORT.md on results branch",
-    "zip": {
-      "url": "https://github.com/minsec2314-cloud/pace-ai-work/raw/refs/heads/ai/ai-01-results-20261019/main22-chat-ui-20261027-001/PACE_MAIN22_CHAT_UI_REVIEW.zip",
-      "bytes": 85145,
-      "sha256": "f5e5063d8791c94e6f932ae7e91425a2999847dff9ebb664e146c3e65b0c7b8f",
-      "commit": "f8b0d85c3587048b0f4e7ae5c5e231efef84b595"
-    },
-    "actualUiBlocker": "Local dev command announced127.0.0.1:4173 but both cloud browser and local curl returned connection refused. No interactive or mobile pass claimed.",
-    "mainReview": {
-      "messageId": "PACE-DELEGATE-20261027-003",
-      "mainReportedValidation": "hashes,patch,184tests,typecheck,build and basic desktop UI checked by main;not independent peer rerun",
-      "published": false,
-      "pending": [
-        "delayed mock response after thread switch",
-        "new draft preservation",
-        "mobile keyboard",
-        "reconnect persistence",
-        "subject label association"
-      ]
-    }
-  },
   "literaryLookupInvestigation": {
     "status": "official_dependency_identified_not_connected",
     "url": "https://github.com/minsec2314-cloud/pace-ai-work/blob/ai/ai-01-results-20261019/literary-evidence-plan-20261027/REPORT.md",
@@ -581,7 +604,13 @@
       "sha256": "95d7c56e862103936bc8da3407083cccf8a65a369d366a408f9a14f1b522f171",
       "commit": "ca9d349f5d94ad576605f80c2d29ed78699cc11a"
     },
-    "mainAccepted": false
+    "mainAccepted": false,
+    "mainReview": {
+      "messageId": "PACE-DELEGATE-20261027-007",
+      "codeScopePassed": true,
+      "mainReportedChecks": "209tests/type/buildpass",
+      "operationallyIntegrated": false
+    }
   },
   "currentWorktreeCorrection": {
     "restoredInheritedResearchTests": 10,
