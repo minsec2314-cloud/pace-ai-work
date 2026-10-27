@@ -196,10 +196,10 @@ index c40b4ef..282b0f4 100644
 +test('single Latin condition is not inferred from inside another word',()=>assert.equal(researchMatches('battery X',syntheticSource('Battery oxide materials')),false));
 diff --git a/lib/answer-grounding.ts b/lib/answer-grounding.ts
 new file mode 100644
-index 0000000..0c831b6
+index 0000000..9863b83
 --- /dev/null
 +++ b/lib/answer-grounding.ts
-@@ -0,0 +1,25 @@
+@@ -0,0 +1,26 @@
 +type LiterarySource=string|{text:string;name?:string};
 +// Explicit title association is a metadata check, not independent bibliographic verification.
 +export function unsupportedLiteraryQuote(question:string,text:string,sources:LiterarySource[]):boolean {
@@ -209,7 +209,8 @@ index 0000000..0c831b6
 + if(explicitCreation&&!asserted.test(text))return false;
 + if(!originalRequested&&!asserted.test(text))return false;
 + const normalize=(s:string)=>s.normalize('NFC').replace(/\s+/g,'');
-+ const quotes=[...text.matchAll(/["“‘「『]([^"”’」』\n]{4,500})["”’」』]/g)].map(m=>m[1]);
++ // Line breaks are part of an original quotation, not a reason to skip evidence checks.
++ const quotes=[...text.matchAll(/["“‘「『]([^"”’」』]{4,500})["”’」』]/g)].map(m=>m[1]);
 + // A model may omit quotation marks but still explicitly label a passage as original.
 + for(const m of text.matchAll(/(?:원문|시구|구절)\s*[:：]\s*([^\n]{4,500})/g)){
 +  if(!/^["“‘「『]/.test(m[1]))quotes.push(m[1].trim());
@@ -227,10 +228,10 @@ index 0000000..0c831b6
 +}
 diff --git a/tests/answer-grounding.test.mjs b/tests/answer-grounding.test.mjs
 new file mode 100644
-index 0000000..faaae40
+index 0000000..254a283
 --- /dev/null
 +++ b/tests/answer-grounding.test.mjs
-@@ -0,0 +1,26 @@
+@@ -0,0 +1,30 @@
 +import test from 'node:test';
 +import assert from 'node:assert/strict';
 +import {generateAI} from '../lib/ai.ts';
@@ -257,3 +258,7 @@ index 0000000..faaae40
 +for(const refs of [['R2'],[],['R1']])test(`quote evidence must agree with restored citations:${JSON.stringify(refs)}`,async()=>{let calls=0;const materials=[{id:'has-quote',subjectId:'s',kind:'lesson',name:'작품가.pdf',sections:[{page:1,text:'검증할 예제 구절입니다. 작품가의 모의 원문.'}]},{id:'other-source',subjectId:'s',kind:'lesson',name:'작품가 보충.pdf',sections:[{page:1,text:'작품가의 설명입니다. 인용 대상 구절은 없습니다.'}]}];const result=await generateAI({mode:'ask',subject:'국어',question:'「작품가」 원문을 설명해줘',materials},'synthetic-only',async()=>{calls++;return Response.json({choices:[{finish_reason:'stop',message:{content:JSON.stringify({text:'원문은 “검증할 예제 구절입니다”입니다.',referenceIds:refs})}}]});});assert.equal(calls,1);assert.equal(result.text.includes('원문은'),refs.includes('R1'));if(!refs.includes('R1'))assert.equal(result.citations.length,0);});
 +for(const correct of [true,false])test(`legacy citation excerpt itself must contain quoted words:${correct}`,async()=>{const line='검증할 예제 구절입니다';const rest='작품가의 장르에 관한 설명입니다';const material={id:'legacy-source',subjectId:'s',kind:'lesson',name:'작품가.pdf',sections:[{page:1,text:line+'\n'+rest}]};const result=await generateAI({mode:'ask',subject:'국어',question:'「작품가」 원문을 설명해줘',materials:[material]},'synthetic-only',async()=>Response.json({choices:[{finish_reason:'stop',message:{content:JSON.stringify({text:`원문은 “${line}”입니다.`,citations:[{materialId:material.id,page:1,quote:correct?line:rest}]})}}]}));assert.equal(result.text.includes('원문은'),correct);});
 +test('general literary explanation without quotation does not require citations',async()=>{const result=await generateAI({mode:'ask',subject:'국어',question:'문학 비유의 일반 개념을 설명해줘',materials:[]},'synthetic-only',async()=>Response.json({choices:[{finish_reason:'stop',message:{content:JSON.stringify({text:'비유는 대상을 다른 것에 빗대는 표현입니다.',referenceIds:[]})}}]}));assert.match(result.text,/비유는/);});
++for(const [open,close] of [['“','”'],['"','"'],['‘','’'],['「','」'],['『','』']])test(`unsupported multiline original quote is blocked:${open}`,()=>assert.equal(guard('작품 원문을 설명해줘',`원문은 ${open}자료에는 없는 첫째 구절\n자료에는 없는 둘째 구절${close}입니다.`,[]),true));
++for(const newline of ['\n','\r\n'])test(`verified multiline quote tolerates source wrapping:${JSON.stringify(newline)}`,()=>assert.equal(guard('「작품가」 원문을 설명해줘',`원문은 “검증할 예제${newline}구절입니다”입니다.`,[{name:'작품가.pdf',text:'검증할 예제 구절입니다'}]),false));
++test('one verified quote does not excuse a later unsupported multiline quote',()=>assert.equal(guard('작품 원문을 설명해줘','원문은 “검증한 예제 구절입니다”입니다. 다음 구절은 “자료에는 없는 첫째 구절\n자료에는 없는 둘째 구절”입니다.',['검증한 예제 구절입니다']),true));
++for(const correct of [false,true])test(`ask checks multiline quote against returned evidence:${correct}`,async()=>{let calls=0;const text=correct?'검증할 예제 구절입니다. 모의 원문을 확인합니다.':'검증할 구절이 없는 별개의 자료입니다. 모의 설명만 있습니다.';const result=await generateAI({mode:'ask',subject:'국어',question:'「작품가」 원문을 설명해줘',materials:[{id:'multiline-source',subjectId:'s',kind:'lesson',name:'작품가.pdf',sections:[{page:1,text}]}]},'synthetic-only',async()=>{calls++;return Response.json({choices:[{finish_reason:'stop',message:{content:JSON.stringify({text:'원문은 “검증할 예제\n구절입니다”입니다.',referenceIds:['R1']})}}]});});assert.equal(calls,1);assert.equal(result.text.includes('원문은'),correct);if(!correct)assert.equal(result.citations.length,0);});
