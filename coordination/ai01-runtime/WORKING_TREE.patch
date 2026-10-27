@@ -1,5 +1,5 @@
 diff --git a/PACE_AI_WORKSPACE/source/lib/ai.ts b/PACE_AI_WORKSPACE/source/lib/ai.ts
-index b09a0e8..153acff 100644
+index b09a0e8..bd6b637 100644
 --- a/PACE_AI_WORKSPACE/source/lib/ai.ts
 +++ b/PACE_AI_WORKSPACE/source/lib/ai.ts
 @@ -1,4 +1,5 @@
@@ -8,7 +8,7 @@ index b09a0e8..153acff 100644
  import {readableText} from './material-readiness.ts';
  import { topicSystem,readTopicIdeas } from './topics.ts';
  import type { Material, Citation, QuizQuestion } from './study.ts';
-@@ -73,14 +74,15 @@ export async function generateAI(body:unknown,key:string,fetcher:typeof fetch=fe
+@@ -73,15 +74,18 @@ export async function generateAI(body:unknown,key:string,fetcher:typeof fetch=fe
    let response:Response;
    try{response=await fetcher('https://api.groq.com/openai/v1/chat/completions',{method:'POST',headers:{'Authorization':`Bearer ${key}`,'Content-Type':'application/json'},body:JSON.stringify({model:'openai/gpt-oss-120b',temperature:.2,reasoning_effort:input.mode==='quiz'?'medium':'low',max_completion_tokens:input.mode==='ask'?2400:5500,response_format:{type:'json_object'},messages:[{role:'system',content:system+repair},...input.history,{role:'user',content:JSON.stringify({subject:input.subject,request:input.question,referenceMaterial:context})}]}),signal:AbortSignal.timeout(Math.max(1000,deadline-Date.now()))});}catch{throw new AIError('AI 연결 시간이 초과되었거나 네트워크에 연결할 수 없습니다. 잠시 후 다시 시도해 주세요.',504);}
    if(!response.ok){if(response.status===429)throw new AIError('무료 AI 사용 한도에 도달했어요. 잠시 후 다시 시도해 주세요. 유료 모델로 전환하지 않습니다.',429);if([401,403].includes(response.status))throw new AIError('AI 키를 사용할 수 없습니다. 운영자가 키와 무료 플랜 상태를 확인해 주세요.',503);throw new AIError('AI 제공 서버가 응답하지 못했습니다. 잠시 후 다시 시도해 주세요.',502);}
@@ -22,11 +22,15 @@ index b09a0e8..153acff 100644
     const citationsFor=(value:Record<string,unknown>)=>{const refs=resolveReferences(value.referenceIds,context);return refs.length?refs:verifyCitations(value.citations,context);};
     if(input.mode==='ask'){
      if(typeof output.text!=='string'||!output.text.trim())throw new AIError('AI가 올바른 답변을 만들지 못했습니다.',502);
-+    if(unsupportedLiteraryQuote(input.question,output.text,context))return {text:'답변의 인용 구절 또는 요청한 작품과 자료의 연결을 확인하지 못했습니다. 작품 제목과 작가, 확인할 원문을 제공해 주시면 그 근거 안에서 설명하겠습니다.',citations:[],warning:'원문·작품 연결 미확인: 생성된 인용을 작품의 실제 구절로 표시하지 않았습니다.'};
-     const citations=citationsFor(output);return {text:output.text.slice(0,20000),citations,warning:[typeof output.warning==='string'?output.warning:'',context.length&&!citations.length?'제공 자료에서 연결한 근거가 없습니다. 원문을 확인해 주세요.':'',!context.length?'자료 없이 일반 개념으로 답변했습니다. 선생님 자료에 근거한 답변이 아닙니다.':''].filter(Boolean).join(' ')};
+-    const citations=citationsFor(output);return {text:output.text.slice(0,20000),citations,warning:[typeof output.warning==='string'?output.warning:'',context.length&&!citations.length?'제공 자료에서 연결한 근거가 없습니다. 원문을 확인해 주세요.':'',!context.length?'자료 없이 일반 개념으로 답변했습니다. 선생님 자료에 근거한 답변이 아닙니다.':''].filter(Boolean).join(' ')};
++    const citations=citationsFor(output);
++    const citedSources=citations.map(c=>({text:c.quote,name:context.find(s=>s.materialId===c.materialId&&s.page===c.page&&clean(s.text).includes(clean(c.quote)))?.name}));
++    if(unsupportedLiteraryQuote(input.question,output.text,citedSources))return {text:'답변의 인용 구절 또는 요청한 작품과 자료의 연결을 확인하지 못했습니다. 작품 제목과 작가, 확인할 원문을 제공해 주시면 그 근거 안에서 설명하겠습니다.',citations:[],warning:'원문·작품 연결 미확인: 생성된 인용을 작품의 실제 구절로 표시하지 않았습니다.'};
++    return {text:output.text.slice(0,20000),citations,warning:[typeof output.warning==='string'?output.warning:'',context.length&&!citations.length?'제공 자료에서 연결한 근거가 없습니다. 원문을 확인해 주세요.':'',!context.length?'자료 없이 일반 개념으로 답변했습니다. 선생님 자료에 근거한 답변이 아닙니다.':''].filter(Boolean).join(' ')};
     }
     if(!Array.isArray(output.questions)||output.questions.length!==input.count||typeof output.analysis!=='string')throw new AIError('요청한 개수와 형식의 문제를 만들지 못했습니다.',502);
-@@ -101,7 +103,7 @@ export async function generateAI(body:unknown,key:string,fetcher:typeof fetch=fe
+    const pastContext=context.filter(c=>c.kind==='exam');
+@@ -101,7 +105,7 @@ export async function generateAI(body:unknown,key:string,fetcher:typeof fetch=fe
     reviewing=true;
     const reviewed=await reviewQuestions(questions,input.subject,key,deadline,fetcher);
     return {title:typeof output.title==='string'?output.title:`${input.subject} ${input.quizMode==='exam'?'예상':'연습'} 문제`,analysis:output.analysis.slice(0,12000),analysisCitations,patterns,limitations:[typeof output.limitations==='string'?output.limitations:'',input.quizMode==='exam'?'선택한 기출에서 관찰한 특징과 수업 자료 일부를 참고한 연습용 예상 문제입니다. 실제 출제를 보장하지 않습니다.':'공부를 위한 일반 연습 문제이며 선생님별 출제를 예측하지 않습니다.','문제만 보고 다시 푸는 AI 검산을 거쳤지만 오류가 있을 수 있습니다. 출처 연결은 원문 블록의 존재를 확인한 것이며 공식 정답 검증을 대신하지 않습니다.'].filter(Boolean).join(' '),questions:reviewed};
@@ -190,11 +194,11 @@ index c40b4ef..282b0f4 100644
 +test('chemical/solar comparison is not excluded when both have evidence',()=>assert.equal(researchMatches('화학전지',syntheticSource('태양전지와 화학전지의 에너지 변환 비교')),true));
 +test('one-digit constraint is not satisfied by a different multi-digit value',()=>assert.equal(researchMatches('battery 7',syntheticSource('Battery storage 17')),false));
 +test('single Latin condition is not inferred from inside another word',()=>assert.equal(researchMatches('battery X',syntheticSource('Battery oxide materials')),false));
-diff --git a/PACE_AI_WORKSPACE/source/lib/answer-grounding.ts b/PACE_AI_WORKSPACE/source/lib/answer-grounding.ts
+diff --git a/lib/answer-grounding.ts b/lib/answer-grounding.ts
 new file mode 100644
 index 0000000..0c831b6
 --- /dev/null
-+++ b/PACE_AI_WORKSPACE/source/lib/answer-grounding.ts
++++ b/lib/answer-grounding.ts
 @@ -0,0 +1,25 @@
 +type LiterarySource=string|{text:string;name?:string};
 +// Explicit title association is a metadata check, not independent bibliographic verification.
@@ -221,12 +225,12 @@ index 0000000..0c831b6
 + });
 + return quotes.some(q=>!scoped.some(s=>normalize(typeof s==='string'?s:s.text).includes(normalize(q))));
 +}
-diff --git a/PACE_AI_WORKSPACE/source/tests/answer-grounding.test.mjs b/PACE_AI_WORKSPACE/source/tests/answer-grounding.test.mjs
+diff --git a/tests/answer-grounding.test.mjs b/tests/answer-grounding.test.mjs
 new file mode 100644
-index 0000000..9bb8bae
+index 0000000..faaae40
 --- /dev/null
-+++ b/PACE_AI_WORKSPACE/source/tests/answer-grounding.test.mjs
-@@ -0,0 +1,23 @@
++++ b/tests/answer-grounding.test.mjs
+@@ -0,0 +1,26 @@
 +import test from 'node:test';
 +import assert from 'node:assert/strict';
 +import {generateAI} from '../lib/ai.ts';
@@ -250,3 +254,6 @@ index 0000000..9bb8bae
 +test('title prefix is not a match for another work',()=>assert.equal(guard('「작품가」 원문','원문은 “검증할 예제 구절입니다”입니다.',[{name:'작품가짜.pdf',text:'검증할 예제 구절입니다'}]),true));
 +test('metadata title with punctuation is treated literally',()=>assert.equal(guard('「작품(가)」 원문','원문은 “검증할 예제 구절입니다”입니다.',[{name:'작품(가).pdf',text:'검증할 예제 구절입니다'}]),false));
 +for(const matching of [false,true])test(`ask integrates explicit work association:${matching}`,async()=>{let calls=0;const source={id:'synthetic-material',subjectId:'s',kind:'lesson',name:matching?'작품가.pdf':'작품나.pdf',sections:[{page:1,text:'검증할 예제 구절입니다. 이 자료는 모의 검사에서만 사용하는 창작 문장입니다.'}]};const result=await generateAI({mode:'ask',subject:'국어',question:'「작품가」 원문을 설명해줘',materials:[source]},'synthetic-only',async()=>{calls++;return Response.json({choices:[{finish_reason:'stop',message:{content:JSON.stringify({text:'원문은 “검증할 예제 구절입니다”입니다.',referenceIds:['R1']})}}]});});assert.equal(calls,1);assert.equal(result.text.includes('원문은'),matching);if(!matching)assert.equal(result.citations.length,0);});
++for(const refs of [['R2'],[],['R1']])test(`quote evidence must agree with restored citations:${JSON.stringify(refs)}`,async()=>{let calls=0;const materials=[{id:'has-quote',subjectId:'s',kind:'lesson',name:'작품가.pdf',sections:[{page:1,text:'검증할 예제 구절입니다. 작품가의 모의 원문.'}]},{id:'other-source',subjectId:'s',kind:'lesson',name:'작품가 보충.pdf',sections:[{page:1,text:'작품가의 설명입니다. 인용 대상 구절은 없습니다.'}]}];const result=await generateAI({mode:'ask',subject:'국어',question:'「작품가」 원문을 설명해줘',materials},'synthetic-only',async()=>{calls++;return Response.json({choices:[{finish_reason:'stop',message:{content:JSON.stringify({text:'원문은 “검증할 예제 구절입니다”입니다.',referenceIds:refs})}}]});});assert.equal(calls,1);assert.equal(result.text.includes('원문은'),refs.includes('R1'));if(!refs.includes('R1'))assert.equal(result.citations.length,0);});
++for(const correct of [true,false])test(`legacy citation excerpt itself must contain quoted words:${correct}`,async()=>{const line='검증할 예제 구절입니다';const rest='작품가의 장르에 관한 설명입니다';const material={id:'legacy-source',subjectId:'s',kind:'lesson',name:'작품가.pdf',sections:[{page:1,text:line+'\n'+rest}]};const result=await generateAI({mode:'ask',subject:'국어',question:'「작품가」 원문을 설명해줘',materials:[material]},'synthetic-only',async()=>Response.json({choices:[{finish_reason:'stop',message:{content:JSON.stringify({text:`원문은 “${line}”입니다.`,citations:[{materialId:material.id,page:1,quote:correct?line:rest}]})}}]}));assert.equal(result.text.includes('원문은'),correct);});
++test('general literary explanation without quotation does not require citations',async()=>{const result=await generateAI({mode:'ask',subject:'국어',question:'문학 비유의 일반 개념을 설명해줘',materials:[]},'synthetic-only',async()=>Response.json({choices:[{finish_reason:'stop',message:{content:JSON.stringify({text:'비유는 대상을 다른 것에 빗대는 표현입니다.',referenceIds:[]})}}]}));assert.match(result.text,/비유는/);});
