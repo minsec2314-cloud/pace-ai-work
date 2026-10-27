@@ -1,17 +1,19 @@
 {
   "baseHead": "4edb7b923ec66ff2e119a6dd6efb51d400c3a610",
   "patchSha256": "4451faae31f82c64e8b360df83d1db20290cd691dc401f80efc1cff8ee4fff39",
-  "checkpointSha256": "96f98bdd6c34540cb9c6b1aebeeaad4b067754ad5f73dc476acbff0ab8fbaccc",
+  "checkpointSha256": "840ac1e9312f5adcf131d3475c5421044e8f28a03486fc7c54b769ea5ccbdcae",
   "lastProcessedMainMessageId": "PACE-ACCEPT008-20261027-001",
   "latestCompleteSubmissionId": "AI-01-20261026-iteration-008",
   "draft": "008 formally accepted by main; no pending development draft",
-  "nextAction": "Finish midnight cross-study-day overlap, isolated laptop/paper priority test, completion preservation, backup/mobile. Do not repeat passed T03/T04/T06/W01/W02.",
+  "nextAction": "Finish isolated laptop/paper eligibility and actual deadline boundary; seed activity/general-study completions; backup compatibility and mobile tool capability. Preserve passed cases.",
   "processedMainMessageIds": [
     "PACE-ACK008-20261027-001",
     "PACE-MAIN20-20261027-001",
     "PACE-QA-MAIN20-20261027-001",
-    "PACE-API-COMPAT-20261027-001"
+    "PACE-API-COMPAT-20261027-001",
+    "PACE-ACCEPT008-20261027-001",
+    "PACE-QA-MAIN21-20261027-001"
   ],
   "supplementId": "AI01-008-SUPPLEMENT-20261027-001",
-  "mainQAProgress": "Public22:T03/T04/T06/W01/W02 pass;T05/W03 partial;T07-T09 pending"
+  "mainQAProgress": "Public22:T03/T04/T05/T06/W01/W02/W04 pass;T07 exam completion partial;W03,T08,T09 remaining"
 }
