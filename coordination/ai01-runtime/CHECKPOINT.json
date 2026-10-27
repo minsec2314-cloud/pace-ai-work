@@ -1,37 +1,42 @@
 {
-  "observedAt": "2026-10-27T07:42:02.032Z",
+  "observedAt": "2026-10-27T08:44:21.049Z",
   "invocationSource": "scheduler",
-  "status": "009_r5_incomplete",
+  "status": "009_r6_incomplete",
   "lastProcessedMainMessageId": "PACE-DELEGATE-20261027-004",
   "latestCompleteSubmissionId": "AI-01-20261026-iteration-008",
   "draftSubmission": {
-    "status": "incomplete009_r5_not_for_integration",
+    "status": "incomplete009_r6_not_for_integration",
     "parentSubmissionId": "AI-01-20261026-iteration-008",
-    "url": "https://github.com/minsec2314-cloud/pace-ai-work/raw/refs/heads/ai/ai-01-results-20261019/iteration-009-draft-r5-20261027/PACE_AI01_009_DRAFT_R5.zip",
-    "bytes": 24629,
-    "sha256": "13008268d6427a7436564815cdcb2b66af312cb0b2e191a3b763a4126c8b067d",
-    "commit": "bba57a030b0ee473304b080b3b29fd36ef428531",
+    "url": "https://github.com/minsec2314-cloud/pace-ai-work/raw/refs/heads/ai/ai-01-results-20261019/iteration-009-draft-r6-20261027/PACE_AI01_009_DRAFT_R6.zip",
+    "bytes": 25870,
+    "sha256": "3c80101f561d08417f6a4cf2f453f5db05300dad8e31c32defb2ba0ce6eaee5d",
+    "commit": "ce0efd45c2af3f1669a017e6a185edd1ec746f8d",
     "report": {
-      "status": "incomplete009_r5_not_for_integration",
+      "status": "incomplete009_r6_not_for_integration",
       "baseHead": "4edb7b923ec66ff2e119a6dd6efb51d400c3a610",
       "parentSubmissionId": "AI-01-20261026-iteration-008",
       "changedThisRun": [
         "lib/research.ts",
         "tests/research-quality.test.mjs"
       ],
-      "validation": "161 full local tests pass;tsc exit0;14 targeted research tests pass after preserving regex flags;no real-model calls",
-      "actualSearch": "차세대 화학전지 returned0 filtered entries before;fixed dictionary provider query next generation electrochemical batteries returned6 title-associated metadata entries after",
-      "searchScope": "one public Crossref request per search;no automated retries;unknown query constraints retained",
-      "limitations": [
-        "Returned metadata includes supplemental/preprint/book chapter material;not6 peer-reviewed papers;full text not read",
-        "Dictionary covers bounded battery terms,not general Korean translation",
-        "UI should disclose normalized provider query on future integration;Source response contract unchanged",
-        "Literary identity and unlabelled claims remain unresolved"
+      "reproduction": "5 mocked failures before fix:returned Source provider omitted supplied Crossref work type;unknown type indistinguishable",
+      "validation": "166 full local tests pass;tsc exit0;zero model calls",
+      "actualSearch": "6 matching-title entries:2component,2posted-content,2book-chapter;all labelled review status unknown",
+      "contract": "Same Source fields and single provider request;provider display string now contains supplied type and explicit review-status uncertainty. Unknown types not inferred from DOI or title.",
+      "sources": [
+        "https://github.com/CrossRef/rest-api-doc/blob/master/api_format.md",
+        "https://support.crossref.org/hc/en-us/articles/213123586-Metadata-and-content-type-overview"
       ],
-      "nextAction": "Review metadata type/provenance and query disclosure with main;continue literary identity grounding separately"
+      "limitations": [
+        "Type is provider metadata,not independent quality validation",
+        "No full text or actual peer-review verification",
+        "Literary work/author identity remains unresolved",
+        "UI main22 candidate remains separate"
+      ],
+      "nextAction": "Finish literary identity evidence policy;main review of normalized-query disclosure and type labels. Keep UI002 preserved."
     }
   },
-  "nextAction": "Review metadata type/provenance and query disclosure with main;continue literary identity grounding separately",
+  "nextAction": "Finish literary identity evidence policy;main review of normalized-query disclosure and type labels. Keep UI002 preserved.",
   "main22Checkout": "/workspace/pace-main22-ui-checkout-20261027",
   "mainQA": {
     "taskId": "MAIN20-AVAILABILITY-QA",
