@@ -1,35 +1,36 @@
 {
   "baseHead": "4edb7b923ec66ff2e119a6dd6efb51d400c3a610",
-  "patchSha256": "c08c5833ac1420343496cb426ef730776d4f59fe7f594eb2028c7258cbb301ea",
-  "checkpointSha256": "5647a9cf44ff1cac519022d6ab38f4899177f801146a7509efdcd41d6a36ef6a",
-  "lastProcessedMainMessageId": "PACE-DELEGATE-20261027-003",
+  "patchSha256": "7d9cac98113959e1596047d4f32481bae090a00d5b76b7c461ee30624c9c5092",
+  "checkpointSha256": "2626a551373a1d3ef810e725c07dad87bb35ec4374c42522e9c0a30fcfb2b2f7",
+  "lastProcessedMainMessageId": "PACE-DELEGATE-20261027-004",
   "latestCompleteSubmissionId": "AI-01-20261026-iteration-008",
   "draft": {
-    "status": "incomplete009_r3_not_for_integration",
+    "status": "incomplete009_r4_not_for_integration",
     "parentSubmissionId": "AI-01-20261026-iteration-008",
-    "url": "https://github.com/minsec2314-cloud/pace-ai-work/raw/refs/heads/ai/ai-01-results-20261019/iteration-009-draft-r3-20261027/PACE_AI01_009_DRAFT_R3.zip",
-    "bytes": 20956,
-    "sha256": "d5a94aec3cb79b0b2e455b5acf2f275af2a58046ddefb934f06b32013c434760",
-    "commit": "ae169b2d711efad7dd3cd1c9e8c160add9cfcc39",
+    "url": "https://github.com/minsec2314-cloud/pace-ai-work/raw/refs/heads/ai/ai-01-results-20261019/iteration-009-draft-r4-20261027/PACE_AI01_009_DRAFT_R4.zip",
+    "bytes": 22351,
+    "sha256": "9afd747894e994dda97da5686396b06a63176eb7766c5f2c631a99a68c34d15b",
+    "commit": "f391f80d897b46f8b40e5e0c8b13a7a6f45417e5",
     "report": {
-      "status": "incomplete009_r3_not_for_integration",
+      "status": "incomplete009_r4_not_for_integration",
       "baseHead": "4edb7b923ec66ff2e119a6dd6efb51d400c3a610",
       "parentSubmissionId": "AI-01-20261026-iteration-008",
       "changedThisRun": [
         "lib/answer-grounding.ts",
+        "lib/ai.ts",
         "tests/answer-grounding.test.mjs"
       ],
-      "reproduction": "4 mocked failures before fix: ordinary explanation overblocked;ASCII quotes,single curly quotes,unquoted original-label passage missed",
-      "validation": "149 full local tests pass;tsc exit0;zero real-model calls",
+      "reproduction": "Matching excerpt from explicitly different work accepted before scoped-title guard;regression failed before and passed after",
+      "validation": "155 full local tests pass;tsc exit0;zero real-model calls;ask integration1 mocked generation with no extra retries in matching/mismatching cases",
       "remaining": [
-        "Work/author identity and source/work matching unverified",
-        "Unlabelled or paraphrased fabricated passages may still pass",
-        "Lexical search synonym coverage incomplete"
+        "Only explicitly bracketed work titles scoped;ambiguous/unmarked titles unverified",
+        "Title in metadata/text does not independently verify authorship or quoted passage attribution within mixed-work documents",
+        "Unlabelled paraphrase and fabricated author claims unresolved"
       ],
-      "nextAction": "Literary identity/source-to-work matching policy;separateUI delayed-response component test requested byMAIN003"
+      "nextAction": "Define evidence-backed literary identity policy without hardcoding one work;preserve separateUI002 candidate pending main review"
     }
   },
-  "nextAction": "ContinueP0 literary identity and source/work matching. UI-R2 requires main review plus realReact/browser mobile,keyboard,reconnect checks;do not repeat unavailable dependency probes.",
+  "nextAction": "Define evidence-backed literary identity policy without hardcoding one work;preserve separateUI002 candidate pending main review",
   "processedMainMessageIds": [
     "PACE-ACK008-20261027-001",
     "PACE-MAIN20-20261027-001",
@@ -38,7 +39,8 @@
     "PACE-ACCEPT008-20261027-001",
     "PACE-QA-MAIN21-20261027-001",
     "PACE-DELEGATE-20261027-002",
-    "PACE-DELEGATE-20261027-003"
+    "PACE-DELEGATE-20261027-003",
+    "PACE-DELEGATE-20261027-004"
   ],
   "supplementId": "AI01-008-SUPPLEMENT-20261027-001",
   "mainQAProgress": "Public22:T03/T04/T05/T06/W01/W02/W04 pass;T07 exam completion partial;W03,T08,T09 remaining",
