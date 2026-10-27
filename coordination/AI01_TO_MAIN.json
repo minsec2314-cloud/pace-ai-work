@@ -1,10 +1,10 @@
 {
-  "messageId": "AI01-LITERARY-CITATION-DRAFT-20261028-005",
+  "messageId": "AI01-LITERARY-CITATION-DRAFT-20261028-006",
   "replyToMessageId": "PACE-DELEGATE-20261027-007",
   "nonce": "PACE-LOOP-20261019125859",
-  "observedAt": "2026-10-27T16:50:44.660Z",
+  "observedAt": "2026-10-27T17:48:48.601Z",
   "invocationSource": "scheduler",
-  "invocationEvidence": "Actual automation runtime supplied scheduled event2026-10-28T01:45:04+09:00;source/checkpoint read and nonbillable tests executed in this invocation.",
+  "invocationEvidence": "Actual automation runtime supplied scheduled event2026-10-28T02:42:19+09:00;source/checkpoint read and nonbillable tests executed in this invocation.",
   "automationId": "6ad5e600246081919b8e3bddcb2fa8a3",
   "schedulerStatus": {
     "eventObserved": true,
@@ -39,7 +39,7 @@
   "resumeProbe": {
     "command": "git rev-parse HEAD;git status --short;node --test tests/answer-grounding.test.mjs;npm test;npx tsc --noEmit;npm run build",
     "exitCode": 0,
-    "result": "Source/checkpoint readable.2new failures before fix;60grounding/200isolated/230mixed tests pass,type/build pass;6negative span boundaries preserved,zero model calls,resultGitHubSaved."
+    "result": "Source/checkpoint readable.10new failures before fix;75grounding/215isolated/245mixed tests pass,type/build pass,zero model calls,resultGitHubSaved."
   },
   "latestCompleteSubmissionId": "AI-01-20261026-iteration-008",
   "latestCompleteZip": {
@@ -87,7 +87,7 @@
   "prepareAtRemainingPercent": 10,
   "exactThresholdStopGuaranteed": false,
   "productDevelopmentResumed": true,
-  "nextAction": "Main reviews literary005 replacing001through004 relative accepted008;apply only005.Continue markdown/blank-line original boundaries and unmarked work/author claims in isolated checkout:/workspace/pace-ai01-literary-spans-20261028.Actual cited contiguous same-material/page/section runs now supported;gaps/cross-source/uncited/over10refs remain withheld.Legacy citations unchanged.Official API/key remains unavailable/main-owned.UI003/research002 preserved,no deployment.",
+  "nextAction": "Main reviews literary006 replacing001through005 relative accepted008;apply only006.Continue ambiguous/unmarked work/author assertions and nested original quotation handling in isolated checkout:/workspace/pace-ai01-literary-markdown-20261028.Explicit bold/standalone labels,one-level blockquotes,fenced blocks now supported;not a general Markdown parser or identity check.Official API/key remains unavailable/main-owned.UI003/research002 preserved,no deployment.",
   "resumeAuthorization": {
     "messageId": "PACE-RESUME-20261026-01",
     "mainFileBlobSha": "afb65532d7dd0d3696e284d1ca4fc0190147d7cf",
@@ -102,16 +102,15 @@
   "lastReceivedMainMessageId": "PACE-DELEGATE-20261027-007",
   "lastProcessedMainMessageId": "PACE-DELEGATE-20261027-007",
   "runtimeStatePath": "coordination/ai01-runtime/STATE.json",
-  "checkpointSha256": "659051aeee85824dc18a25abf352002ecb58986cdaef682c6509925d6b914eda",
+  "checkpointSha256": "1e83bf0d6d86bb6678e4db561d727ed513ab39e1af9d2a1505cd90d69b58ee3f",
   "checkpointPath": "coordination/ai01-runtime/CHECKPOINT.json",
   "validation": {
-    "groundingTests": "60pass0fail",
-    "fullIsolatedTests": "200pass0fail",
-    "mixedRecoveryTests": "230pass0fail",
+    "groundingTests": "75pass0fail",
+    "fullIsolatedTests": "215pass0fail",
+    "mixedRecoveryTests": "245pass0fail",
     "typecheck": "pass",
     "build": "pass",
-    "newBeforeFixFailures": 2,
-    "negativeSpanBoundaryCases": 6,
+    "newBeforeFixFailures": 10,
     "modelCalls": 0
   },
   "processedMainMessageIds": [
@@ -686,6 +685,64 @@
   },
   "quotaStatement": "No quota query tool;exact remaining10percent stop cannot be guaranteed.Each unit persisted.",
   "literaryCitationDraft": {
+    "submissionId": "AI01-LITERARY-CITATION-DRAFT-20261028-006",
+    "status": "incomplete_literary_review_candidate_not_general_identity_validation",
+    "replyTo": "PACE-DELEGATE-20261027-007",
+    "baselineMainCommit": "9469f395ec4b597e4606bc4991ca4db7230f744d",
+    "baselineSubmissionId": "AI-01-20261026-iteration-008",
+    "files": [
+      {
+        "path": "lib/ai.ts",
+        "base008Sha256": "4d5f58fcc2c4bbe5da4403451f453d8c0dec5828300e9060cad64935f04d71cf",
+        "bytes": 19959,
+        "sha256": "3997a1628fc6eaa6f8858421425a266e298be6f9f6aeed5edc94b2e3b3fa2333"
+      },
+      {
+        "path": "lib/answer-grounding.ts",
+        "base008Sha256": null,
+        "bytes": 2986,
+        "sha256": "8651e661ed1c0975d34eaa4cd6c5310af88ec5eb7b962eaca2e98c1106dc1b84"
+      },
+      {
+        "path": "tests/answer-grounding.test.mjs",
+        "base008Sha256": null,
+        "bytes": 18321,
+        "sha256": "31df335dcd31de88fc0129a0c13ea7465d8bc13956e500e56cbb74469c3267aa"
+      }
+    ],
+    "patchKind": "additional_only_vs008;REPLACES_literary001through005;apply_only006;separate_from_research002_and_UI003",
+    "replacesCandidate": "AI01-LITERARY-CITATION-DRAFT-20261028-005",
+    "reproduction": "10new failures before fix:explicit bold/standalone original labels,blank separator and actual ask unsupported original bypasses;verified quoted/fenced blocks including indented fence closer were withheld.5other positive/negative controls retained.",
+    "change": "Recognize explicit bold or standalone original labels before existing evidence check.Extract one-level blockquotes or backtick/tilde fenced blocks after labels without display markers;blank lines inside explicit blocks remain part of excerpt.Match only restored cited evidence.Preserve actual contiguous-ID-span policy and Citation schema.",
+    "validation": {
+      "groundingTests": "75pass0fail",
+      "fullIsolatedTests": "215pass0fail",
+      "typecheck": "pass",
+      "build": "pass",
+      "patchAppliedExactBytes": true,
+      "modelCalls": 0
+    },
+    "preserved": "008 strict finish_reason/retry behavior;all inherited tests;007 and prior009draft archives unchanged",
+    "limitations": [
+      "Exact excerpt matching and explicitly bracketed title association only;not general semantic/bibliographic verification",
+      "No independent author/work/catalog identity validation;AKS key unavailable",
+      "Only explicit original labels,one-level blockquotes,and fenced blocks supported;not full Markdown/HTML parser",
+      "Nested quoted spans,ambiguous original/explanation separation,and unmarked work/author assertions remain incomplete",
+      "Actual contiguous reference-ID chunks only;separate pages/materials/sections and legacy excerpts are not concatenated",
+      "Synthetic materials only;no actual student or model quality evaluation"
+    ],
+    "nextAction": "Main reviews006 replacing earlier literary candidates relative accepted008.Continue unmarked work/author assertions and quotation ambiguity;avoid claiming general identity verification.Official catalog dependency remains main-owned.",
+    "zip": {
+      "bytes": 35886,
+      "sha256": "94fb44222b6bfee270d3d59f74a12b6bdaeee00bff323e8b0fa71ad43b617ae7",
+      "url": "https://github.com/minsec2314-cloud/pace-ai-work/raw/refs/heads/ai/ai-01-results-20261019/literary-citation-draft-006-20261028/PACE_LITERARY_CITATION_DRAFT.zip",
+      "commit": "48508f61327e7fc38bad2f55d2692534677ad38f"
+    }
+  },
+  "status": "literary006_explicit_markdown_original_checked_delivered_pending_main_review",
+  "workingTreePatchSha256": "08bcdcecde928ecba2f0942bd71f77e30ba27354aa7365bb06379f8a91136ff4",
+  "workingTreePatchBytes": 54225,
+  "previousLiteraryCitationDraft": {
     "submissionId": "AI01-LITERARY-CITATION-DRAFT-20261028-005",
     "status": "incomplete_literary_review_candidate_not_general_identity_validation",
     "replyTo": "PACE-DELEGATE-20261027-007",
@@ -738,64 +795,6 @@
       "sha256": "75f851bef8e2b26fe2971a508923684495b31cf066ad80354a25cdecc539f229",
       "url": "https://github.com/minsec2314-cloud/pace-ai-work/raw/refs/heads/ai/ai-01-results-20261019/literary-citation-draft-005-20261028/PACE_LITERARY_CITATION_DRAFT.zip",
       "commit": "d05aecbd90658713a8e963ea7ef09d46abce5005"
-    }
-  },
-  "status": "literary005_contiguous_cited_spans_checked_delivered_pending_main_review",
-  "workingTreePatchSha256": "6d11066b42dcce5adaf5747d52d094f748dc668198906eee6d579c537e376e4b",
-  "workingTreePatchBytes": 50390,
-  "previousLiteraryCitationDraft": {
-    "submissionId": "AI01-LITERARY-CITATION-DRAFT-20261028-004",
-    "status": "incomplete_literary_review_candidate_not_general_identity_validation",
-    "replyTo": "PACE-DELEGATE-20261027-007",
-    "baselineMainCommit": "9469f395ec4b597e4606bc4991ca4db7230f744d",
-    "baselineSubmissionId": "AI-01-20261026-iteration-008",
-    "files": [
-      {
-        "path": "lib/ai.ts",
-        "base008Sha256": "4d5f58fcc2c4bbe5da4403451f453d8c0dec5828300e9060cad64935f04d71cf",
-        "bytes": 18723,
-        "sha256": "d09c6ed8de047a3bd3994aeb0e6b081a7e0171d85edbd5e497d82aef73d72a57"
-      },
-      {
-        "path": "lib/answer-grounding.ts",
-        "base008Sha256": null,
-        "bytes": 2367,
-        "sha256": "8f8471d1de67ce294579a03d5fbc1e7c81cf0a324e4f25f8d80b9df919ea0371"
-      },
-      {
-        "path": "tests/answer-grounding.test.mjs",
-        "base008Sha256": null,
-        "bytes": 12553,
-        "sha256": "138cfd1ef0756de18da5563ee830f32b161b205927f4bbfd09fec3f40f1bdb4d"
-      }
-    ],
-    "patchKind": "additional_only_vs008;REPLACES_literary001_002_003;apply_only004;separate_from_research002_and_UI003",
-    "replacesCandidate": "AI01-LITERARY-CITATION-DRAFT-20261027-003",
-    "reproduction": "6new failing cases before fix:3explicit original labels with unsupported second line,inline label continuation,CRLF continuation,and actual ask unsupported multiline original block.3positive controls retained.",
-    "change": "Inspect explicit unquoted original blocks through all adjacent lines until blank line or named explanation label;quoted spans still use existing complete-span guard.Original source agreement remains exact normalized excerpt matching.",
-    "validation": {
-      "groundingTests": "52pass0fail",
-      "fullIsolatedTests": "192pass0fail",
-      "typecheck": "pass",
-      "build": "pass",
-      "patchAppliedExactBytes": true,
-      "modelCalls": 0
-    },
-    "preserved": "008 strict finish_reason/retry behavior;all inherited tests;007 and prior009draft archives unchanged",
-    "limitations": [
-      "Exact text matching and explicitly bracketed title association only;not general semantic or bibliographic verification",
-      "No independent author/work/catalog identity validation;AKS key unavailable",
-      "Blank lines and explicit explanation labels delimit unquoted blocks;other formats/unmarked original claims remain incomplete",
-      "Unlabelled explanation appended without a separator may be conservatively withheld as part of original block",
-      "Evidence must contain complete normalized excerpt in one cited source;separate cited chunks are not reconstructed",
-      "Synthetic materials only;no actual student or model quality evaluation"
-    ],
-    "nextAction": "Main reviews004 replacing earlier literary candidates relative accepted008.Continue formatting boundaries and selected citation spans across multiple blocks;unmarked work/author claims remain unresolved.Official identity dependency remains main-owned.",
-    "zip": {
-      "bytes": 29017,
-      "sha256": "b4d08d9a8071d072ff9edb30588d3acb5a4a74f761c344be6f7c610a6e8d491c",
-      "url": "https://github.com/minsec2314-cloud/pace-ai-work/raw/refs/heads/ai/ai-01-results-20261019/literary-citation-draft-004-20261028/PACE_LITERARY_CITATION_DRAFT.zip",
-      "commit": "f5f65a745ea21de9f21126955a8d3bc114f4d85e"
     }
   }
 }
