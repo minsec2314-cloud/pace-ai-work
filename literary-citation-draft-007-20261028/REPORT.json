@@ -1,0 +1,49 @@
+{
+  "submissionId": "AI01-LITERARY-CITATION-DRAFT-20261028-007",
+  "status": "incomplete_literary_review_candidate_not_general_identity_validation",
+  "replyTo": "PACE-DELEGATE-20261027-007",
+  "baselineMainCommit": "9469f395ec4b597e4606bc4991ca4db7230f744d",
+  "baselineSubmissionId": "AI-01-20261026-iteration-008",
+  "files": [
+    {
+      "path": "lib/ai.ts",
+      "base008Sha256": "4d5f58fcc2c4bbe5da4403451f453d8c0dec5828300e9060cad64935f04d71cf",
+      "bytes": 19959,
+      "sha256": "3997a1628fc6eaa6f8858421425a266e298be6f9f6aeed5edc94b2e3b3fa2333"
+    },
+    {
+      "path": "lib/answer-grounding.ts",
+      "base008Sha256": null,
+      "bytes": 3571,
+      "sha256": "65da07548cb4720830c20db5a9be9292f8b2f56c0c73123b792c827ecb67c9db"
+    },
+    {
+      "path": "tests/answer-grounding.test.mjs",
+      "base008Sha256": null,
+      "bytes": 21076,
+      "sha256": "b49c42c7b83b39c19294ea3597959ed0f0eb6ed4d5568a07a5007a5249b3c44e"
+    }
+  ],
+  "patchKind": "additional_only_vs008;REPLACES_literary001through006;apply_only007;separate_from_research002_and_UI003",
+  "replacesCandidate": "AI01-LITERARY-CITATION-DRAFT-20261028-006",
+  "reproduction": "5new failing cases before fix:multi-work/single-work request let an excerpt be explicitly attributed to another work,actual ask returned wrong-work quotation,and two long title markers were misread as original excerpts.5other controls retained.",
+  "change": "Track excerpt positions and explicit response work markers of form bracketed-title plus 의 원문/시구/구절.Scope each following original excerpt to that claimed work instead of any requested work.Treat such work-title markers as metadata,while title quoted as actual original still requires evidence.No external work/author identity claim.",
+  "validation": {
+    "groundingTests": "85pass0fail",
+    "fullIsolatedTests": "225pass0fail",
+    "typecheck": "pass",
+    "build": "pass",
+    "patchAppliedExactBytes": true,
+    "modelCalls": 0
+  },
+  "preserved": "008 strict finish_reason/retry behavior;all inherited tests;007 and prior009draft archives unchanged",
+  "limitations": [
+    "Explicit bracketed-title plus 의 원문/시구/구절 attribution pattern only;not general named-entity or semantic attribution parsing",
+    "Nearest explicit response attribution scopes subsequent excerpts;unmarked topic switches/ambiguous multi-work answers remain incomplete",
+    "Exact excerpt and title-to-provided-material checks do not establish independent author/work authenticity;AKS key unavailable",
+    "Nested quoted spans and general Markdown/HTML formats remain incomplete",
+    "Actual contiguous reference-ID chunks only;separate pages/materials/sections and legacy excerpts not concatenated",
+    "Synthetic materials only;zero actual model calls;no real student data"
+  ],
+  "nextAction": "Main reviews007 replacing earlier literary candidates relative accepted008.Continue ambiguous/unmarked work/author assertions and nested quotation cases if authorized;official catalog connection remains main-owned dependency."
+}
