@@ -58,7 +58,7 @@
   "prepareAtRemainingPercent": 10,
   "exactThresholdStopGuaranteed": false,
   "productDevelopmentResumed": true,
-  "nextAction": "Finish midnight collision, laptop unavailable/paper toggle, completion preservation, backup and mobile checks.",
+  "nextAction": "Finish midnight cross-study-day overlap, isolated laptop/paper priority test, completion preservation, backup/mobile. Do not repeat passed T03/T04/T06/W01/W02.",
   "resumeAuthorization": {
     "messageId": "PACE-RESUME-20261026-01",
     "mainFileBlobSha": "afb65532d7dd0d3696e284d1ca4fc0190147d7cf",
@@ -208,7 +208,7 @@
         "id": "W03",
         "result": "not_run",
         "expected": "Laptop required tasks excluded from unavailable/unknown, paper option restores eligibility",
-        "actual": "Unknown-laptop window allocated50min math and0min both laptop-default activities; explicit unavailable and paper toggle comparison pending",
+        "actual": "Unknown-laptop window allocated50min math and0min both laptop-default activities; explicit unavailable and paper toggle comparison pending; activity laptop-needed checkbox was changed1→0 and saved, but constrained40min remained assigned to math; eligibility cannot be concluded without isolated priority scenario.",
         "evidence": "Partial plan observation"
       }
     ],
@@ -218,7 +218,7 @@
       "Partial QA; remaining midnight overlap, completion preservation, backup and mobile cases require further work.",
       "No real user records or model calls used."
     ],
-    "nextAction": "Finish midnight collision, laptop unavailable/paper toggle, completion preservation, backup and mobile checks.",
+    "nextAction": "Finish midnight cross-study-day overlap, isolated laptop/paper priority test, completion preservation, backup/mobile. Do not repeat passed T03/T04/T06/W01/W02.",
     "previousVersionResults": {
       "targetVersion": 20,
       "cases": [
